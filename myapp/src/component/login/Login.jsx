@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Task.css'; // Import the CSS file
+import './Login.css'; // Import the CSS file
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -7,8 +7,6 @@ const LoginPage = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogin = () => {
-    // Here you can implement your login logic, such as calling an API
-    // For simplicity, let's just check if the username and password match
     if (username === 'user' && password === 'password') {
       setLoggedIn(true);
       alert('Login successful!');
@@ -24,12 +22,11 @@ const LoginPage = () => {
   };
 
   const handleForgotPassword = () => {
-    // Implement your forgot password logic here
-    alert('Forgot Password?');
+   alert('Forgot Password?');
   };
 
   return (
-    <div className="container">
+    <div className="container-login">
       <div className="content">
         <div className="picture">
           <img src={require('./Login.jpg')} alt="Frame1" />

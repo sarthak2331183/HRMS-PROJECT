@@ -1,6 +1,6 @@
 import './App.css';
 import Dashboard from './component/admin/Dashboard';
-import Task from "./component/login/Task"
+import Login from './component/login/Login';
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -8,10 +8,11 @@ import { getAuth } from "firebase/auth";
 
 
 
+
 function App() {
   return (
     <div>
-      {/* <Task /> */}
+      {/* <Login /> */}
       <Dashboard />
       </div>
   );
