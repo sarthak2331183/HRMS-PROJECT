@@ -1,0 +1,105 @@
+ *{
+  box-sizing: border-box;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 99vh;
+  background-color: white; /* Background color of the container */
+  box-sizing: border-box;
+}
+
+.content {
+  display: flex; /* Use flexbox */
+  justify-content: center;
+  max-width: 800px;
+  background-color: transparent; /* Transparent background */
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Box shadow */
+}
+
+.picture {
+  flex: 1.3; /* Take up remaining space */
+  overflow: hidden; /* Hide overflow to round the corners */
+  width: 70%;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.picture img {
+  width: 100%;
+  display: block;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  height: 90vh;
+}
+
+.form {
+  flex: 1; /* Take up remaining space */
+  /* border: 5px solid black; */
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  padding-left: 20px;
+background-color: #f8fafd;
+}
+
+.login-container {
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add box shadow */
+  height: 50%;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 150px;
+  height: 100px;
+  position: absolute;
+  top: 40px; /* Adjusted position */
+  left: 50%;
+  transform: translateX(80%);
+  background-color: transparent;
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+}
+
+.form h2 {
+  margin-bottom: 20px;
+}
+
+.form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff; /* Change the button color as needed */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background-color: #0056b3; /* Change the button hover color as needed */
+}  
+.forgot-password {
+  font-size: 12px;
+  cursor: pointer;
+  padding-left: 90px;
+  padding-bottom: 10px;
+}
+
+
+
+
