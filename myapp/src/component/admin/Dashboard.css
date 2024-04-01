@@ -385,17 +385,114 @@ main .inside > div.income {
 }
 
 /* upcoming tasks */
-.right .upcoming_tasks{
-      margin-top: 1rem;
-      margin-left: -20px;
-}
-.right .upcoming_tasks .updates{
+
+.right .upcoming_tasks .Meetings{
     background-color: var(--clr-white);
     padding: var(--card-padding);
     border-radius: var(--card-border-radius);
     box-shadow: var(--box-shadow);
     transition: all .3s ease;
+
 }
+.right .upcoming_tasks .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--clr-danger);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .right .upcoming_tasks .circle .number {
+    font-size: 20px;
+    color: white;
+  }
+  .Meetings {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .meeting {
+    display: flex;
+    align-items: center;
+  }
+  .details {
+    flex: 1;
+  }
+  
+  .time {
+    margin-left: auto;
+    display: flex;
+  align-items: center;
+  }
+  /* ends upcoming tasks */
+  
+  /* starts employees on work */
+ .right .employees_on_work {
+    margin-top: 2rem;
+ }
+ .right .employees_on_work .activity{
+    background-color: var(--clr-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1;
+    margin: 10px 0;
+    width: 100%;
+    margin-bottom: 0.8rem;
+    padding: 1.4rem var(--card-padding);
+    border-radius: var(--border-radius-3);
+    box-shadow: var(--box-shadow);
+ }
+ .right .employees_on_work .activity:hover{
+    box-shadow: none;
+ }
+ .right .employees_on_work .activity .OnWork{
+    background: coral;
+    padding: 0.6rem;
+    color: var(--clr-white);
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    align-items: center;
+ }
+ .right .employees_on_work .activity .OnLeave{
+    background: rgb(232, 20, 20);
+    padding: 0.6rem;
+    color: var(--clr-white);
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    align-items: center;
+ }
+ .right .employees_on_work .activity .Late{
+    background: rgb(226, 237, 17);
+    padding: 0.6rem;
+    color: var(--clr-dark);
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    align-items: center;
+ }
+ h5.danger{
+    font-size: larger;
+ }
+ small.text-muted{
+    font-size: 10px;
+    line-height: 1.6;
+    
+ }
+
+  /* ends employees on work */
+
+
+
+
 
 
 
