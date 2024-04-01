@@ -1,14 +1,8 @@
+import React from 'react';
 import './App.css';
 import Dashboard from './component/admin/Dashboard';
 import Login from './component/login/Login';
-import Employee from './component/admin/Employee';
-
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-
-
-
-
+import Employee from './component/admin/Employee'; 
 
 function App() {
   return (
@@ -16,10 +10,9 @@ function App() {
       {/* <Login /> */}
       {/* <Dashboard /> */}
       <Employee />
-      
-
-      </div>
+    </div>
   );
 }
 
 export default App;
+
