@@ -1,5 +1,9 @@
 import React from "react";
 import "./Employee.css";
+import Dashboard from "./Dashboard";
+import { useNavigate } from "react-router-dom";
+import { auth } from '../../firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -13,8 +17,21 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
     </a>
   );
 };
-
 const Employee = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    const confirmed = window.confirm('Are you sure you want to log out?');
+    if (confirmed) {
+      signOut(auth).then(() => {
+        navigate('/');
+      }).catch((error) => {
+        console.error('Error signing out:', error);
+      });
+    }
+  };
+  const openDashBoard = () => {
+    navigate('/Dashboard');
+  };
   return (
     <div className="container">
       {/* aside section starts*/}
@@ -32,11 +49,15 @@ const Employee = () => {
         {/* top ends */}
 
         <div className="sidebar">
-          <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => {}} />
+          <NavItem
+            itemName="Dashboard"
+            icon="grid_view"
+            selected={true}
+            onSelect={openDashBoard}
+          />
           <NavItem
             itemName="Employees"
             icon="diversity_3"
-            selected={true}
             onSelect={() => {}}
           />
           <NavItem
@@ -51,7 +72,7 @@ const Employee = () => {
           />
           <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
           <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
-          <NavItem itemName="Log out" icon="logout" onSelect={() => {}} />
+          <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
       {/* aside section ends */}

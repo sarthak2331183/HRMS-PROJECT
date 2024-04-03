@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import './Login.css'; // Import the CSS file
+import './Login.css';
+import {useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import Dashboard from '../admin/Dashboard';
 
-const LoginPage = () => {
-  const [username, setUsername] = useState('');
+const Login = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleLogin = () => {
-    if (username === 'user' && password === 'password') {
-      setLoggedIn(true);
-      alert('Login successful!');
-    } else {
-      alert('Invalid username or password');
-    }
-  };
-
-  const handleLogout = () => {
-    setLoggedIn(false);
-    setUsername('');
-    setPassword('');
+  const navigate = useNavigate();
+  const handleLogin = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(getAuth(), email, password)
+      .then((userCredential) => {
+        navigate('Dashboard');
+      })
+      .catch((error) => {
+        alert('Invalid email or passowrd!!')
+        setError(true);
+      });
   };
 
   const handleForgotPassword = () => {
@@ -33,33 +34,25 @@ const LoginPage = () => {
         </div>
         <div className="form">
           <div className="login-container">
-            {loggedIn ? (
-              <div>
-                <h2>Welcome, {username}!</h2>
-                <button onClick={handleLogout}>Logout</button>
-              </div>
-            ) : (
               <div>
                 <h2>Login</h2>
                 <input
-                  type="text"
-                  placeholder="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <br />
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <br />
-                <p onClick={handleForgotPassword} className="forgot-password">Forgot Password?</p> 
+                <p onClick={handleForgotPassword} className="forgot-password">Forgot Password?</p> {/* Forgot Password link */}
                 <button onClick={handleLogin}>Login</button>
-            
               </div>
-            )}
           </div>
         </div>
       </div>
@@ -67,4 +60,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;
