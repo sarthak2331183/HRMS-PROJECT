@@ -55,7 +55,7 @@ const LoginPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <br />
-                <p onClick={handleForgotPassword} className="forgot-password">Forgot Password?</p> {/* Forgot Password link */}
+                <p onClick={handleForgotPassword} className="forgot-password">Forgot Password?</p> 
                 <button onClick={handleLogin}>Login</button>
             
               </div>

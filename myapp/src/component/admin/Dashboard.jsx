@@ -146,31 +146,31 @@ const Dashboard = () => {
               <tr>
                 <td>Innovate Suite</td>
                 <td>IS-2023</td>
-                <td>Pending</td>
+                <td className="danger">Pending</td>
                 <td className="warning">Processing</td>
               </tr>
               <tr>
                 <td>CloudConnect</td>
                 <td>CC-2452</td>
-                <td>Paid</td>
+                <td className="danger">Paid</td>
                 <td className="warning">Delivered</td>
               </tr>
               <tr>
                 <td>NetGuard Pro</td>
                 <td>NG-2314</td>
-                <td>Pending</td>
+                <td className="danger">Pending</td>
                 <td className="warning">Processing</td>
               </tr>
               <tr>
                 <td>SmartTrack Lite</td>
                 <td>ST-6563</td>
-                <td>Pending</td>
+                <td className="danger">Pending</td>
                 <td className="warning">Processing</td>
               </tr>
               <tr>
                 <td>DataScape Pro</td>
                 <td>DS-5643</td>
-                <td>Paid</td>
+                <td className="danger">Paid</td>
                 <td className="warning">Shipped</td>
               </tr>
             </tbody>

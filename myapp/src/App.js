@@ -7,8 +7,8 @@ import Employee from './component/admin/Employee';
 function App() {
   return (
     <div>
-      {/* <Login /> */}
-      {/* <Dashboard /> */}
+      <Login />
+      <Dashboard />
       <Employee />
     </div>
   );
