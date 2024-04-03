@@ -1,9 +1,6 @@
 .container{
-    display: grid;
-    width: 96%;
-    gap: 1.8rem;
-    grid-template-columns: 14rem auto 14rem;
-    margin: 0 auto;
+    display: flex;
+    width: 100%;
 }
 .profile-photo{
     width: 2.8rem;
@@ -13,26 +10,15 @@
 }
 aside{
     height: 100vh;
+    width: 17%;
 }
 aside .top{
-    background-color: var(--clr-white);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 1.4rem;
+    margin-top: 1.4px;
 }
-aside.logo{
-    width: 150px;
-    height: 100px;
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(80%);
-    background-color: transparent
+aside .top h2{
+    font-size: 17px;
 }
-aside .top div.close{
-    display: none;
-}
+
 /* sidebar */
 
 aside .sidebar{
@@ -82,7 +68,10 @@ Starts Main section
 */
 main{
     margin-top: 1.4 rem;
-    width: auto;
+    width: 60%;
+}
+main h1{
+    padding-left: 10px;
 }
 main input{
     background-color: transparent;
@@ -98,9 +87,8 @@ main .date{
     padding: 0.5rem 1.6rem;
 }
 main .inside {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.6rem; 
+    display: flex;
+    justify-content:space-around;
 }
 
 main .inside > div {
@@ -116,70 +104,9 @@ main .inside > div:hover {
     box-shadow: none;
 }
 
-main .inside > div span {
-    background: coral;
-    padding: 0.5rem;
-    border-radius: 50%;
-    color: var(--clr-white);
-    font-size: 2rem;
-}
 
-main .inside > div.expenses span {
-    background: var(--clr-danger);
-}
 
-main .inside > div.income span {
-    background: var(--clr-success);
-}
-main .inside > div .middle{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-main .inside > div .middle h1{
-    font-size: 1.6rem;
-}
-main h1{
-    color: var(--clr-dark);
-}
-main .inside h1{
-    color: var(--clr-dark);
-}
-main .inside h3{
-    color: var(--clr-dark);
-}
-main .inside p{
-    color: var(--clr-dark);
-}
-main .inside .progress{
-    position: relative;
-    height: 68px;
-    width: 68px;
-    border-radius: 50px;
-}
-main .inside svg{
-    height: 150px;
-    width: 150px;
-    position: absolute;
-    top: 0;
-}
-main .inside svg circle{
-    fill: none;
-    stroke: var(--clr-primary);
-    transform: rotate(270,80,80);
-    stroke-width: 5;
-}
-main .inside .sales svg circle{
-    stroke-dashoffset: 10;
-    stroke-dasharray: 150;
-}
-main .inside .expenses svg circle{
-    stroke-dashoffset: 0;
-    stroke-dasharray: 150;
-}
-main .inside .income svg circle{
-    stroke: var(--clr-success);
-}
+
 main .inside .progress .number{
     position: absolute;
     top: 5%;
@@ -192,13 +119,16 @@ main .inside .progress .number{
 }
 main .recent_order{
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 main .recent_order h2{
     color: var(--clr-dark);
 }
 main .recent_order table {
     background-color: var(--clr-white);
-    width: 100%;
+    width: 80%;
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
     text-align: center;
@@ -232,6 +162,12 @@ main .inside > div.expenses,
 main .inside > div.income {
     border: 2px solid var(--clr-primary); 
     box-sizing: border-box; 
+    height: 30vh;
+    width: 15vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 /* right side starts */
@@ -367,11 +303,3 @@ main .inside > div.income {
  }
 
   /* ends employees on work */
-
-
-
-
-
-
-
-
