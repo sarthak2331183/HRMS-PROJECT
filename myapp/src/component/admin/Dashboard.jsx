@@ -4,6 +4,7 @@ import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 import Employee from "./Employee";
+import logo from '../Images/logo.png'
 
 
 
@@ -46,9 +47,7 @@ const navigate = useNavigate();
       <aside>
         <div className="top">
           <div className="logo">
-            <h2>
-              Innovate<span className="danger">Nepal</span>
-            </h2>
+            <img src={logo} alt="Logo" />
           </div>
           <div className="close">
             <span className="material-symbols-outlined">crowdsource</span>
@@ -255,7 +254,7 @@ const navigate = useNavigate();
 
 
         {/* Starts employees on work*/}
-        <div className="employees_on_work">
+        {/* <div className="employees_on_work">
           <h2>Employees On Work</h2>
 
           <div className="activity">
@@ -306,7 +305,7 @@ const navigate = useNavigate();
           </div>
         </div>
         {/* Ends employees on work*/}
-      </div>
+      </div> 
       {/* right section ends*/}
     </div>
   );
