@@ -6,6 +6,7 @@ import Employee from './component/admin/Employee';
 import { getAuth } from 'firebase/auth';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import AddEmployee from './component/admin/AddEmployee';
+import Empdashboard from './component/Employee/Empdashboard';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -56,10 +57,17 @@ function App() {
             </RequireAuth>
           }
         />
+        {/* <Route
+          path="/"
+          element={
+            
+              <Empdashboard />
+            
+          }
+        /> */}
       </Routes>
     </Router>
   );
 }
 
 export default App;
-

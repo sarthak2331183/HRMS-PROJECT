@@ -1,0 +1,44 @@
+.mytask{
+    border: 2px solid green;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 50vh;
+    border-radius: 20px;
+}
+
+.mytask .lef{
+    border: 2px solid red;
+    width: 40%;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+.mytask .mid{
+    border: 2px solid red;
+    width: 40%;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.mytask .rig{
+    border: 2px solid green;
+    width: 40%;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.upcoming_tasks h4{
+    height: 100px;
+    width: 110px;
+    border: 2px solid green;
+}
