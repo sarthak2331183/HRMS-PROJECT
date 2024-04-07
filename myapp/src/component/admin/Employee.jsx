@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import AddEmployee from "./AddEmployee";
+import logo from '../Images/logo.png'
 
 
 
@@ -42,11 +43,9 @@ const Employee = () => {
     <div className="container">
       {/* aside section starts*/}
       <aside>
-        <div className="top">
+      <div className="top">
           <div className="logo">
-            <h2>
-              Innovate<span className="danger">Nepal</span>
-            </h2>
+            <img src={logo} alt="Logo" />
           </div>
           <div className="close">
             <span className="material-symbols-outlined">crowdsource</span>
