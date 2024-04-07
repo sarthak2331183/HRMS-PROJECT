@@ -41,8 +41,8 @@ const navigate = useNavigate();
   };
 
   return (
+    
     <div className="container">
-      
       {/* aside section starts*/}
       <aside>
         <div className="top">
@@ -86,7 +86,8 @@ const navigate = useNavigate();
 
       {/* main section starts*/}
       <main>
-        <h1>Hello</h1>
+        <h1>Hello</h1> <h3>Swekchhya</h3>
+        <p>Admin</p>
         <div className="date">
           <input type="date" />
         </div>
@@ -173,18 +174,7 @@ const navigate = useNavigate();
           <button id="menu_bar">
             <span className="material-symbols-outlined">menu</span>
           </button>
-          <div className="profile">
-            <div className="info">
-              <p>
-                <b>Swechhya Maharjan</b>
-              </p>
-              <p>Admin</p>
-              <small className="text-muted"></small>
-            </div>
-            <div className="profile-photo">
-              <img src="Images/Admin.jpg" alt="" />
-            </div>
-          </div>
+          
         </div>
         {/* ends top */}
        

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
+
+
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
     <a

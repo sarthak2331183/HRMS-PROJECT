@@ -3,6 +3,9 @@
     width: 100%;
     flex-wrap: wrap;
 }
+.profile{
+    border: 2px solid red;
+}
 .profile-photo{
     width: 2.8rem;
     height: 2.8 rem;
@@ -74,6 +77,20 @@ aside .sidebar a:hover span{
     aside{
         width: 24%;
     }
+    aside .sidebar a span{
+        font-size: 1rem;
+        margin-left: 0;
+    }
+    aside .sidebar a{
+        margin-left: 0;
+    }
+  }
+
+  @media screen and (max-width: 693px) {
+    aside{
+        width: 38%;
+    }
+    
   }
 /*
 Starts Main section
@@ -190,6 +207,12 @@ main .inside > div.income {
     }
   }
 
+
+  @media screen and (max-width: 693px) {
+    main{
+        width: 60%;
+    }
+  }
 /* right side starts */
 .right{
     padding-top: 10px;
@@ -276,6 +299,14 @@ main .inside > div.income {
       display: flex;
       flex-direction: column;
       border: 4px solid black;
+      justify-content: center;
+      align-items: center;
+    }
+    .meeting{
+        width: 100%;
+        height: 40%;
+        display: flex;
+        flex-direction: row;
     }
     
     .right .upcoming_tasks .Meetings {
