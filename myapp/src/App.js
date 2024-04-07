@@ -5,6 +5,7 @@ import Login from './component/login/Login';
 import Employee from './component/admin/Employee';
 import { getAuth } from 'firebase/auth';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import AddEmployee from './component/admin/AddEmployee';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -44,6 +45,14 @@ function App() {
           element={
             <RequireAuth>
               <Employee />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/AddEmployee"
+          element={
+            <RequireAuth>
+              <AddEmployee />
             </RequireAuth>
           }
         />

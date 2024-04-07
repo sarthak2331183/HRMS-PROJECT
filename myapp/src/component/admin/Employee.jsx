@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import AddEmployee from "./AddEmployee";
 
 
 
@@ -33,6 +34,9 @@ const Employee = () => {
   };
   const openDashBoard = () => {
     navigate('/Dashboard');
+  };
+  const openAddEmployee = () => {
+    navigate('/AddEmployee');
   };
   return (
     <div className="container">
@@ -189,7 +193,7 @@ const Employee = () => {
           </table>
         </div>
         {/* ends recent order */}
-        <button className="add-employee-btn">
+        <button className="add-employee-btn" onClick={openAddEmployee}>
           <span className="material-symbols-outlined">add</span>
           Add Employee
         </button>
