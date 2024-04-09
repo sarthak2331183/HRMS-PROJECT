@@ -4,6 +4,7 @@ import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 import Employee from "./Employee";
+import Admin from "./Admin";
 import logo from '../Images/logo.png'
 
 
@@ -39,6 +40,9 @@ const navigate = useNavigate();
   const openEmployee = () => {
     navigate('/Employee');
   };
+  const openAdmin = () => {
+    navigate('/Admin');
+  };
 
   return (
     
@@ -61,6 +65,11 @@ const navigate = useNavigate();
             icon="grid_view"
             selected={true}
             onSelect={() => {}}
+          />
+          <NavItem
+            itemName="Admins"
+            icon="diversity_3"
+            onSelect={openAdmin}
           />
           <NavItem
             itemName="Employees"

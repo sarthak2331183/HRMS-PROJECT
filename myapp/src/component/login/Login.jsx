@@ -1,15 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import Dashboard from '../admin/Dashboard';
+import ForgetPassword from './ForgetPassword';
+import { auth, db } from "../../firebase";
+import { doc, getDoc } from 'firebase/firestore';
+import Empdashboard from '../Employee/Empdashboard';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+
+  }, []);
+
+  // const fetchUserRole = async (email) => {
+  //   const userRef = db.collection('users').doc(email);
+  
+  //   try {
+  //     const userSnap = await userRef.get();
+  
+  //     if (userSnap.exists) {
+  //       const userData = userSnap.data();
+  //       return userData.userRole; // Assuming the role is stored in a field named "role"
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching user role:', error);
+  //     return null;
+  //   }
+  // };
+  
+
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   try {
+  //     await signInWithEmailAndPassword(auth, email, password);
+  //     const userRole = await fetchUserRole(email);
+  //     if (userRole === 'employee') {
+  //       navigate('/Empdashboard');
+  //     } else if (userRole === 'admin') {
+  //       navigate('/Dashboard');
+  //     } else {
+  //       // Handle other roles or scenarios
+  //       alert('User role not found.');
+  //     }
+  //   } catch (error) {
+  //     alert('Invalid email or password!!')
+  //     setError(true);
+  //   }
+  //   setLoading(false);
+  // };
+
   const handleLogin = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(getAuth(), email, password)
@@ -21,9 +70,10 @@ const Login = () => {
         setError(true);
       });
   };
+  
 
   const handleForgotPassword = () => {
-   alert('Forgot Password?');
+    navigate('/ForgetPassword');
   };
 
   return (
@@ -50,8 +100,8 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <br />
-                <p onClick={handleForgotPassword} className="forgot-password">Forgot Password?</p> {/* Forgot Password link */}
-                <button onClick={handleLogin}>Login</button>
+                <p onClick={handleForgotPassword} className="forgot-password">Forgot Password?</p>
+                <button onClick={handleLogin} disabled={loading}>{loading ? 'Logging in...' : 'Login'}</button>
               </div>
           </div>
         </div>

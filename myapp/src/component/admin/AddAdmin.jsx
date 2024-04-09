@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./AddEmployee.css";
+import "./AddAdmin.css";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
@@ -7,6 +7,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebase";
 import logo from '../Images/logo.png';
 import { createUserWithEmailAndPassword } from "firebase/auth";
+
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -21,21 +22,18 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
   );
 };
 
-const AddEmployee = () => {
+const AddAdmin = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
-  const [employeeId, setEmployeeId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mobile, setMobile] = useState("");
-  const [userRole, setUserRole] = useState("employee");
-  const [employmentType, setEmploymentType] = useState("");
+  const [userRole, setUserRole] = useState("admin");
   const [gender, setGender] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
-  const [branch, setBranch] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleLogout = () => {
     const confirmed = window.confirm('Are you sure you want to log out?');
@@ -67,11 +65,7 @@ const AddEmployee = () => {
         email: email,
         mobile: mobile,
         userRole: userRole,
-        employmentType: employmentType,
-        gender: gender,
-        jobTitle: jobTitle,
-        branch: branch,
-        employeeId: employeeId
+        gender: gender
       });
 
       // Reset form fields after successful submission
@@ -79,18 +73,14 @@ const AddEmployee = () => {
       setEmail("");
       setPassword("");
       setMobile("");
-      setEmploymentType("");
       setGender("");
-      setJobTitle("");
-      setBranch("");
-      setEmployeeId("");
 
       // Set success message
       setSuccessMessage("Employee added successfully!");
 
       // Navigate to employee page after a delay
       setTimeout(() => {
-        navigate('/Employee');
+        navigate('/Dashboard');
       }, 2000); // Navigate after 2 seconds (adjust as needed)
       
     } catch (error) {
@@ -144,9 +134,15 @@ const AddEmployee = () => {
 
       {/* main section starts*/}
       <main>
-        <h1>Add Employee</h1>
-        {successMessage && <p className="success-message">{successMessage}</p>}
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <h1>Add Admin</h1>
+        {/* Popup for success and error messages */}
+        {showPopup && (
+          <div className="popup">
+            {successMessage && <p className="success-message">{successMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <button onClick={() => setShowPopup(false)}>Close</button>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="form">
           {/* Form fields */}
           <div className="row">
@@ -157,16 +153,6 @@ const AddEmployee = () => {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="column">
-              <label htmlFor="employeeId">Employee ID:</label>
-              <input
-                type="text"
-                id="employeeId"
-                value={employeeId}
-                onChange={(e) => setEmployeeId(e.target.value)}
                 required
               />
             </div>
@@ -207,20 +193,6 @@ const AddEmployee = () => {
           </div>
           <div className="row">
             <div className="column">
-              <label htmlFor="employmentType">Employment Type:</label>
-              <select
-                id="employmentType"
-                value={employmentType}
-                onChange={(e) => setEmploymentType(e.target.value)}
-                required
-              >
-                <option value="">Select One</option>
-                <option value="fullTime">Full Time</option>
-                <option value="partTime">Part Time</option>
-                <option value="contract">Contract</option>
-              </select>
-            </div>
-            <div className="column">
               <label htmlFor="gender">Gender:</label>
               <select
                 id="gender"
@@ -236,33 +208,9 @@ const AddEmployee = () => {
             </div>
           </div>
           <div className="row">
-            <div className="column">
-              <label htmlFor="jobTitle">Job Title:</label>
-              <input
-                type="text"
-                id="jobTitle"
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
-                required
-              />
-            </div>
-            <div className="column">
-              <label htmlFor="branch">Branch:</label>
-              <select
-                id="branch"
-                value={branch}
-                onChange={(e) => setBranch(e.target.value)}
-                required
-              >
-                <option value="">Select One</option>
-                <option value="branch1">Branch 1</option>
-                <option value="branch2">Branch 2</option>
-                <option value="branch3">Branch 3</option>
-              </select>
-            </div>
           </div>
           <div className="row buttons">
-            <button type="submit" className="add-button" >Add Employee</button>
+            <button type="submit" className="add-button" >Add Admin</button>
             <button type="button" className="cancel-button">Cancel</button>
           </div>
         </form>
@@ -272,4 +220,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default AddAdmin;
