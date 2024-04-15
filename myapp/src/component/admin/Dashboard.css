@@ -15,7 +15,6 @@
 aside{
     height: 100vh;
     width: 17%;
-    border: 2px solid yellow;
 }
 aside .top{
     margin-top: 1.4px;
@@ -24,7 +23,6 @@ aside .top h2{
     font-size: 17px;
 }
 .logo{
-    background-color: #f7fafd;
     width: 70%;
 }
 
@@ -36,7 +34,6 @@ aside .sidebar{
     flex-direction: column;
     height: 85vh;
     position: relative;
-    top: 1rem;
 }
 aside h3{
     font-weight: 400;
@@ -98,10 +95,18 @@ Starts Main section
 main{
     margin-top: 1.4 rem;
     width: 60%;
-    border: 2px solid green;
 }
 main h1{
-    padding-left: 10px;
+    padding-left: 38px;
+    padding-bottom: 20px;
+    color: var(--clr-primary);
+}
+main h2{
+    padding-left: 38px;
+    padding-bottom: 1px;
+}
+main p{
+    padding-left: 38px;
 }
 main input{
     background-color: transparent;
@@ -149,7 +154,7 @@ main .inside .progress .number{
     align-items: center;
 }
 main .recent_order{
-    margin-top: 2rem;
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -159,7 +164,7 @@ main .recent_order h2{
 }
 main .recent_order table {
     background-color: var(--clr-white);
-    width: 80%;
+    width: 95%;
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
     text-align: center;
@@ -193,11 +198,12 @@ main .inside > div.expenses,
 main .inside > div.income {
     border: 2px solid var(--clr-primary); 
     box-sizing: border-box; 
-    height: 30vh;
+    height: 19vh;
     width: 15vw;
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     flex-direction: column;
 }
 
@@ -217,7 +223,6 @@ main .inside > div.income {
 .right{
     padding-top: 10px;
     width: 23%;
-    border: 2px solid red;
 }
 .right h2{
     padding-top: 50px;

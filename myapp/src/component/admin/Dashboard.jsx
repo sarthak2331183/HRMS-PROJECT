@@ -95,17 +95,15 @@ const navigate = useNavigate();
 
       {/* main section starts*/}
       <main>
-        <h1>Hello</h1> <h3>Swekchhya</h3>
+        <h1>Dashboard</h1>
+        <h2>Hello, Swekchhya</h2> 
         <p>Admin</p>
-        <div className="date">
-          <input type="date" />
-        </div>
 
         <div className="inside">
           {/* start selling */}
           <div className="sales">
               <h3>On duty</h3>
-              <p>3</p>
+              <h3>30</h3>
 
 
           </div>
@@ -113,15 +111,15 @@ const navigate = useNavigate();
 
           {/* start expenses */}
           <div className="expenses">
-          <h3>On duty</h3>
-              <p>3</p>
+          <h3>On Leave</h3>
+              <h3>5</h3>
           </div>
           {/* ends expenses */}
 
           {/* start income*/}
           <div className="income">
-          <h3>On duty</h3>
-              <p>3</p>
+          <h3>Late</h3>
+              <h3>3</h3>
           </div>
           {/* ends income */}
         </div>
@@ -129,7 +127,7 @@ const navigate = useNavigate();
 
         {/* start recent order */}
         <div className="recent_order">
-          <h1>New Joins</h1>
+          <h2>New Joins</h2>
           <table>
             <thead>
               <tr>
@@ -186,7 +184,9 @@ const navigate = useNavigate();
           
         </div>
         {/* ends top */}
-       
+        <div className="date">
+          <input type="date" />
+        </div>
        {/* Starts upcoming tasks*/}
 <div className="upcoming_tasks">
   <h2>Upcoming Tasks</h2>
