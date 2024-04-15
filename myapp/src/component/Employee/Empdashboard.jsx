@@ -35,9 +35,9 @@ const navigate = useNavigate();
     }
   };
 
-  const openEmployee = () => {
-    navigate('/Employee');
-  };
+  // const openEmployee = () => {
+  //   navigate('/Employee');
+  // };
 
   return (
     
@@ -62,11 +62,6 @@ const navigate = useNavigate();
             onSelect={() => {}}
           />
           <NavItem
-            itemName="Employees"
-            icon="diversity_3"
-            onSelect={openEmployee}
-          />
-          <NavItem
             itemName="Attendance"
             icon="person_check"
             onSelect={() => {}}
@@ -86,7 +81,7 @@ const navigate = useNavigate();
       {/* main section starts*/}
       <main>
         <h1>Hello</h1> <h3>Swekchhya</h3>
-        <p>Admin</p>
+        <p>Employee</p>
         <div className="date">
           <input type="date" />
         </div>

@@ -1,76 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import Dashboard from '../admin/Dashboard';
-import ForgetPassword from './ForgetPassword';
-import { auth, db } from "../../firebase";
-import { doc, getDoc } from 'firebase/firestore';
-import Empdashboard from '../Employee/Empdashboard';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, collection, db } from "../../firebase"; // Import collection and db
+import { getDocs, where, query } from 'firebase/firestore'; // Import Firestore query functions
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-
-  }, []);
-
-  // const fetchUserRole = async (email) => {
-  //   const userRef = db.collection('users').doc(email);
-  
-  //   try {
-  //     const userSnap = await userRef.get();
-  
-  //     if (userSnap.exists) {
-  //       const userData = userSnap.data();
-  //       return userData.userRole; // Assuming the role is stored in a field named "role"
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching user role:', error);
-  //     return null;
-  //   }
-  // };
-  
-
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   try {
-  //     await signInWithEmailAndPassword(auth, email, password);
-  //     const userRole = await fetchUserRole(email);
-  //     if (userRole === 'employee') {
-  //       navigate('/Empdashboard');
-  //     } else if (userRole === 'admin') {
-  //       navigate('/Dashboard');
-  //     } else {
-  //       // Handle other roles or scenarios
-  //       alert('User role not found.');
-  //     }
-  //   } catch (error) {
-  //     alert('Invalid email or password!!')
-  //     setError(true);
-  //   }
-  //   setLoading(false);
-  // };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    signInWithEmailAndPassword(getAuth(), email, password)
-      .then((userCredential) => {
-        navigate('Dashboard');
-      })
-      .catch((error) => {
-        alert('Invalid email or passowrd!!')
-        setError(true);
-      });
+  const fetchUserRole = async (email) => {
+    try {
+      const q = query(collection(db, 'users'), where('email', '==', email)); // Query the users collection by email
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        return userData.userRole; // Assuming the role is stored in a field named "userRole"
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+      return null;
+    }
   };
-  
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      const userRole = await fetchUserRole(email);
+      if (userRole === 'admin') {
+        navigate('/Dashboard'); // Navigate to admin dashboard
+      } else if (userRole === 'employee') {
+        navigate('/Empdashboard'); // Navigate to employee dashboard
+      } else {
+        // Handle other roles or scenarios
+        alert('User role not found.');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      alert('Invalid email or password!!');
+    }
+    setLoading(false);
+  };
 
   const handleForgotPassword = () => {
     navigate('/ForgetPassword');

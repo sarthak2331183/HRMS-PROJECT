@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection } from "firebase/firestore"; // Import collection function
 
 const firebaseConfig = {
   apiKey: "AIzaSyCYpyjvxab1EDzngd2miVw3AWgCftrjMRs",
@@ -20,5 +20,4 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-
-export { app, analytics, auth, db };
+export { app, analytics, auth, db, collection }; // Export collection function along with other Firebase utilities

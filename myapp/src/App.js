@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { getAuth } from 'firebase/auth';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './component/admin/Dashboard';
 import Login from './component/login/Login';
 import Employee from './component/admin/Employee';
-import { getAuth } from 'firebase/auth';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import AddEmployee from './component/admin/AddEmployee';
 import Empdashboard from './component/Employee/Empdashboard';
 import ForgetPassword from './component/login/ForgetPassword';
@@ -35,61 +35,13 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route
-          path="/ForgetPassword"
-          element={
-              <ForgetPassword />
-          }
-        />
-        <Route
-          path="/Dashboard"
-          element={
-            
-              <Dashboard />
-            
-          }
-        />
-
-        <Route
-          path="/Employee"
-          element={
-            
-              <Employee />
-            
-          }
-        />
-        <Route
-          path="/AddEmployee"
-          element={
-            
-              <AddEmployee />
-            
-          }
-        />
-        <Route
-          path="/Empdashboard"
-          element={
-            
-              <Empdashboard />
-            
-          }
-        />
-        <Route
-          path="/Admin"
-          element={
-            
-              <Admin />
-            
-          }
-        />
-        <Route
-          path="/AddAdmin"
-          element={
-            
-              <AddAdmin />
-            
-          }
-        />
+        <Route path="/ForgetPassword" element={<ForgetPassword />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/Employee" element={<Employee />} />
+        <Route path="/AddEmployee" element={<AddEmployee />} />
+        <Route path="/Empdashboard" element={<Empdashboard />} />
+        <Route path="/Admin" element={<Admin />} />
+        <Route path="/AddAdmin" element={<AddAdmin />} />
       </Routes>
     </Router>
   );
