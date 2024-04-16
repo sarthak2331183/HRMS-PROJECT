@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./AddEmployee.css";
 import { useNavigate } from "react-router-dom";
-import { auth } from '../../firebase';
-import { signOut } from 'firebase/auth';
+import { auth } from "../../firebase";
+import { signOut } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebase";
-import logo from '../Images/logo.png';
+import logo from "../Images/logo.png";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
@@ -38,21 +38,24 @@ const AddEmployee = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogout = () => {
-    const confirmed = window.confirm('Are you sure you want to log out?');
+    const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
-      signOut(auth).then(() => {
-        navigate('/');
-      }).catch((error) => {
-        console.error('Error signing out:', error);
-      });
+      signOut(auth)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("Error signing out:", error);
+        });
     }
   };
 
   const openDashBoard = () => {
-    navigate('/Dashboard');
+    navigate("/Dashboard");
   };
+
   const openEmployee = () => {
-    navigate('/Employee');
+    navigate("/Employee");
   };
 
   const handleSubmit = async (e) => {
@@ -71,7 +74,7 @@ const AddEmployee = () => {
         gender: gender,
         jobTitle: jobTitle,
         branch: branch,
-        employeeId: employeeId
+        employeeId: employeeId,
       });
 
       // Reset form fields after successful submission
@@ -90,12 +93,11 @@ const AddEmployee = () => {
 
       // Navigate to employee page after a delay
       setTimeout(() => {
-        navigate('/Employee');
+        navigate("/Employee");
       }, 2000); // Navigate after 2 seconds (adjust as needed)
-      
     } catch (error) {
       setErrorMessage(error.message);
-      console.error('Error adding employee:', error);
+      console.error("Error adding employee:", error);
     }
   };
 
@@ -144,7 +146,7 @@ const AddEmployee = () => {
 
       {/* main section starts*/}
       <main>
-        <h1>Add Employee</h1>
+        <h1 id = "addemployee">Add Employee</h1>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <form onSubmit={handleSubmit} className="form">
@@ -204,8 +206,32 @@ const AddEmployee = () => {
                 required
               />
             </div>
+            <div className="column">
+              <label htmlFor="jobTitle">Job Title:</label>
+              <input
+                type="text"
+                id="jobTitle"
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
+                required
+              />
+            </div>
           </div>
           <div className="row">
+            <div className="column">
+              <label htmlFor="branch">Branch:</label>
+              <select
+                id="branch"
+                value={branch}
+                onChange={(e) => setBranch(e.target.value)}
+                required
+              >
+                <option value="">Select One</option>
+                <option value="branch1">Branch 1</option>
+                <option value="branch2">Branch 2</option>
+                <option value="branch3">Branch 3</option>
+              </select>
+            </div>
             <div className="column">
               <label htmlFor="employmentType">Employment Type:</label>
               <select
@@ -235,35 +261,14 @@ const AddEmployee = () => {
               </select>
             </div>
           </div>
-          <div className="row">
-            <div className="column">
-              <label htmlFor="jobTitle">Job Title:</label>
-              <input
-                type="text"
-                id="jobTitle"
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
-                required
-              />
-            </div>
-            <div className="column">
-              <label htmlFor="branch">Branch:</label>
-              <select
-                id="branch"
-                value={branch}
-                onChange={(e) => setBranch(e.target.value)}
-                required
-              >
-                <option value="">Select One</option>
-                <option value="branch1">Branch 1</option>
-                <option value="branch2">Branch 2</option>
-                <option value="branch3">Branch 3</option>
-              </select>
-            </div>
-          </div>
+
           <div className="row buttons">
-            <button type="submit" className="add-button" >Add Employee</button>
-            <button type="button" className="cancel-button">Cancel</button>
+            <button type="submit" className="addbtn">
+              Add Employee
+            </button>
+            <button type="button" className="cancelbtn">
+              Cancel
+            </button>
           </div>
         </form>
       </main>
@@ -273,3 +278,4 @@ const AddEmployee = () => {
 };
 
 export default AddEmployee;
+

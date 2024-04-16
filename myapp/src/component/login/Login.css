@@ -1,4 +1,4 @@
- *{
+*{
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
@@ -53,8 +53,8 @@ background-color: #f8fafd;
 .login-container {
   border-radius: 10px;
   box-shadow: 0 2rem 3rem var(rgba(132, 139, 200, 0.18)); 
-  height: 50%;
-  width: 90%;
+  height: 86vh;
+  width: 56%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -118,8 +118,3 @@ background-color: #f8fafd;
     text-decoration: underline;
   }
   
-
-
-
-
-

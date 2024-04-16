@@ -121,6 +121,7 @@ main table tbody tr:last-child td {
   background-color: var(--clr-primary);
   color: var(--clr-white);
   border-radius: var(--card-border-radius);
+  margin-top: 2rem;
 }
 
 .add-employee-btn:hover {
@@ -180,3 +181,4 @@ div.dropdown {
 .material-symbols-outlined {
   margin-right: 5px;
 }
+
