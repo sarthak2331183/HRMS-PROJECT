@@ -149,7 +149,7 @@ const AddEmployee = () => {
         <h1 id = "addemployee">Add Employee</h1>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <form onSubmit={handleSubmit} className="form">
+        <form onSubmit={handleSubmit} className="fom">
           {/* Form fields */}
           <div className="row">
             <div className="column">
@@ -257,7 +257,6 @@ const AddEmployee = () => {
                 <option value="">Select One</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="other">Other</option>
               </select>
             </div>
           </div>
@@ -278,4 +277,3 @@ const AddEmployee = () => {
 };
 
 export default AddEmployee;
-

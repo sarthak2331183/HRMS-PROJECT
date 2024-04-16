@@ -143,7 +143,7 @@ const AddAdmin = () => {
             <button onClick={() => setShowPopup(false)}>Close</button>
           </div>
         )}
-        <form onSubmit={handleSubmit} className="form">
+        <form onSubmit={handleSubmit} className="fom">
           {/* Form fields */}
           <div className="row">
             <div className="column">
