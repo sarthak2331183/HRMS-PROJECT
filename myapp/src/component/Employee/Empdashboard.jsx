@@ -4,8 +4,12 @@ import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 import logo from '../Images/logo.png'
-
-
+import search from '../Employee/search_mg.png'
+import notification from '../Employee/notification.png'
+import user from '../Employee/user.png'
+import attendance from '../Employee/attendance.png'
+import profile from '../Employee/profile.png'
+import chart from '../Employee/chart.png'
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -43,7 +47,7 @@ const navigate = useNavigate();
     
     <div className="container">
       {/* aside section starts*/}
-      <aside>
+      <aside className="likelynav">
         <div className="top">
           <div className="logo">
             <img src={logo} alt="Logo" />
@@ -77,28 +81,62 @@ const navigate = useNavigate();
         </div>
       </aside>
       {/* aside section ends */}
+      
+
+      {/* Top Section  */}
+     
 
       {/* main section starts*/}
-      <main>
-        <h1>Hello</h1> <h3>Swekchhya</h3>
-        <p>Employee</p>
-        <div className="date">
-          <input type="date" />
+      <main className="main">
+      <header className="Above">
+        <input type="text" placeholder="Search" />
+        <img src={search} alt="IMG" />
+        <img src={notification} alt="IMG" />
+      </header>
+
+        <h1>Dashboard </h1>
+        <hr /> 
+       
+        <span className="gm">
+        <p>Hello, Employee Name</p>
+        <h2>Good Morning</h2></span>
+        
+        <div className="tasks">
+          <span className="table_head"><h2>My tasks</h2></span> 
+          <div className="bar_info">
+            <p>1 Active Task </p>
+            <p>Due Date</p>
+            <p>Status</p>
+          </div>
+          <div className="tasksleft">
+         <h3>Sprint 1 designining</h3>
+         <h3>Today</h3> 
+          <input type="number" placeholder="In Progress" name="" id="" />
+          </div>
+  
+          <div className="alltasks">
+          <hr />
+            <h2>See all tasks</h2>
+          </div>
         </div>
 
-        <div className="mytask">
-            <div className="lef">
-                <p>1 active task</p>
-                <h2>Hello</h2>
-            </div>
-            <div className="mid">
-            <p>1 active task</p>
-                <h2>Hello</h2>
-            </div>
-            <div className="rig">
-            <p>1 active task</p>
-                <h2>Hello</h2>
-            </div>
+        <div className="working_hour">
+        <span className="table_head"><h2>Total hours worked this week</h2></span> 
+        <div className="chart_hrs">
+        <div className="hrs">
+        
+        <h2>8 hrs</h2>
+        <h2>6 hrs</h2>
+        <h2>4 hrs</h2>
+        <h2>2 hrs</h2>
+
+        </div>
+
+        <div className="chart">
+          <img src={chart} alt="" />
+        </div>
+        </div>
+
         </div>
       </main>
       {/* main section ends*/}
@@ -115,30 +153,40 @@ const navigate = useNavigate();
        
        {/* Starts upcoming tasks*/}
 <div className="upcoming_tasks">
-    <h4>Attendance</h4>
-    <h4>Profile</h4>
+        <div className="emp">
+          <img src={user} alt="" />  
+          <div className="emp2">
+          <h3>Employee Name</h3>
+          <p>Employee</p>
+          </div>      
+        </div>
+        
+        
+        <div className="rnd">
+          <h4>Attendance <img src={attendance} alt="" /></h4>
+          <h4>Profile <img src={profile} alt="" /></h4>
 
-  <h2>Upcoming Tasks</h2>
-  <div className="Meetings">
-    <div className="meeting">
-      <div className="circle">
-        <span className="number">1</span>
-      </div>
+         <h2>Upcoming Tasks</h2>
+         <div className="Meetings">
+         <div className="meeting">
+         <div className="circle">
+         <span className="number">1</span>
+         </div>
 
 
 
-      <div className="details">
+        <div className="details">
         <p>
           <b>Team Meeting</b>
-        </p>
-        <p>Group D</p>
+          </p>
+          <p>Group D</p>
         <small className="text-muted"></small>
-      </div>
-      <div className="time">
+        </div>
+        <div className="time">
         <p>12:00-13:00</p>
         <span className="material-symbols-outlined">more_vert</span>
-      </div>
-    </div>
+        </div>
+        </div>
 
 
 
@@ -177,6 +225,9 @@ const navigate = useNavigate();
       </div>
     </div>
   </div>
+
+        </div>
+   
 </div>
 {/* Ends upcoming tasks*/}
 
