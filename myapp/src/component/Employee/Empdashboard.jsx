@@ -87,7 +87,7 @@ const navigate = useNavigate();
      
 
       {/* main section starts*/}
-      <main className="main">
+      <main className="mainn">
       <header className="Above">
         <input type="text" placeholder="Search" />
         <img src={search} alt="IMG" />
