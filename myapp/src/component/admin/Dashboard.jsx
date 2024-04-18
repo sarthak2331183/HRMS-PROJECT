@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase'; // Import db from firebase.js
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 import Employee from "./Employee";
 import Admin from "./Admin";
+import { getDocs, query, collection, where } from "firebase/firestore";
+import user from '../Employee/user.png'
 import logo from '../Images/logo.png'
 
 
@@ -23,8 +25,35 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
 };
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
 
-const navigate = useNavigate();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserEmail(user.email);
+        // Fetch name from Firestore based on user email
+        try {
+          const querySnapshot = await getDocs(
+            query(collection(db, "users"), where("email", "==", user.email))
+          );
+          if (!querySnapshot.empty) {
+            querySnapshot.forEach((doc) => {
+              const userData = doc.data();
+              setUserName(userData.name);
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      } else {
+        setUserEmail("");
+        setUserName("");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleLogout = () => {
     const confirmed = window.confirm('Are you sure you want to log out?');
@@ -40,6 +69,7 @@ const navigate = useNavigate();
   const openEmployee = () => {
     navigate('/Employee');
   };
+
   const openAdmin = () => {
     navigate('/Admin');
   };
@@ -96,7 +126,7 @@ const navigate = useNavigate();
       {/* main section starts*/}
       <main>
         <h1>Dashboard</h1>
-        <h2>Hello, Swekchhya</h2> 
+        <h2>Hello, {userName}</h2> 
         <p>Admin</p>
 
         <div className="inside">
@@ -189,6 +219,12 @@ const navigate = useNavigate();
         </div>
        {/* Starts upcoming tasks*/}
 <div className="upcoming_tasks">
+<div className="emp">
+            <img src={user} alt="" />  
+            <div className="emp2">
+              <h3>{userName}</h3>
+            </div>      
+          </div>
   <h2>Upcoming Tasks</h2>
   <div className="Meetings">
     <div className="meeting">
