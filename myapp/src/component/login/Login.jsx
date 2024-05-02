@@ -2,22 +2,24 @@ import React, { useState } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, collection, db } from "../../firebase"; // Import collection and db
-import { getDocs, where, query } from 'firebase/firestore'; // Import Firestore query functions
+import { auth, collection, db } from "../../firebase";
+import { getDocs, where, query } from 'firebase/firestore';
+import Req from './Req';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showReq, setShowReq] = useState(false);
   const navigate = useNavigate();
 
   const fetchUserRole = async (email) => {
     try {
-      const q = query(collection(db, 'users'), where('email', '==', email)); // Query the users collection by email
+      const q = query(collection(db, 'users'), where('email', '==', email));
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data();
-        return userData.userRole; // Assuming the role is stored in a field named "userRole"
+        return userData.userRole;
       } else {
         return null;
       }
@@ -34,11 +36,24 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
       const userRole = await fetchUserRole(email);
       if (userRole === 'admin') {
-        navigate('/Dashboard'); // Navigate to admin dashboard
+        navigate('/Dashboard');
       } else if (userRole === 'employee') {
-        navigate('/Empdashboard'); // Navigate to employee dashboard
+        const q = query(collection(db, 'users'), where('email', '==', email));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data();
+          if (!userData.citizenshipId || !userData.age || !userData.parentsName || !userData.gender) {
+            setShowReq(true);
+            setLoading(false); // Set loading to false here to enable the login button
+            return; // Prevent further execution of code
+          } else {
+            setShowReq(false); // Hide the requirement message if all fields are filled
+            navigate('/Empdashboard');
+          }
+        } else {
+          alert('User data not found.');
+        }
       } else {
-        // Handle other roles or scenarios
         alert('User role not found.');
       }
     } catch (error) {
@@ -60,25 +75,28 @@ const Login = () => {
         </div>
         <div className="form">
           <div className="login-container">
-              <div>
-                <h2 id = "login">Login</h2>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <br />
-                <input
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <br />
-                <p onClick={handleForgotPassword} className="forgot-password">Forgot Password?</p>
-                <button onClick={handleLogin} disabled={loading}>{loading ? 'Logging in...' : 'Login'}</button>
-              </div>
+            <div>
+              <h2 id="login">Login</h2>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <br />
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <br />
+              <p onClick={handleForgotPassword} className="forgot-password">Forgot Password?</p>
+              <button onClick={handleLogin} disabled={loading}>
+                {loading ? 'Logging in...' : 'Login'}
+              </button>
+              {showReq && <Req email={email} />}
+            </div>
           </div>
         </div>
       </div>

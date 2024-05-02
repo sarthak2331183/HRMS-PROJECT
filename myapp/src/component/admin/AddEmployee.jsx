@@ -34,6 +34,9 @@ const AddEmployee = () => {
   const [gender, setGender] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [branch, setBranch] = useState("");
+  const [citizenshipId, setCitizenshipId] = useState("");
+  const [age, setAge] = useState("");
+  const [parentsName, setParentsName] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -64,9 +67,10 @@ const AddEmployee = () => {
       // Create user with email and password
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      // Add a new document to the "employees" collection
+      // Add a new document to the "users" collection with the employee name as document name
       await addDoc(collection(db, "users"), {
         name: name,
+        employeeId: employeeId,
         email: email,
         mobile: mobile,
         userRole: userRole,
@@ -74,11 +78,15 @@ const AddEmployee = () => {
         gender: gender,
         jobTitle: jobTitle,
         branch: branch,
-        employeeId: employeeId,
+        // Add Citizenship ID, Age, and Parents' Name to the database but not shown in UI
+        citizenshipId: citizenshipId,
+        age: age,
+        parentsName: parentsName,
       });
 
       // Reset form fields after successful submission
       setName("");
+      setEmployeeId("");
       setEmail("");
       setPassword("");
       setMobile("");
@@ -86,7 +94,6 @@ const AddEmployee = () => {
       setGender("");
       setJobTitle("");
       setBranch("");
-      setEmployeeId("");
 
       // Set success message
       setSuccessMessage("Employee added successfully!");
@@ -146,7 +153,7 @@ const AddEmployee = () => {
 
       {/* main section starts*/}
       <main>
-        <h1 id = "addemployee">Add Employee</h1>
+        <h1 id="addemployee">Add Employee</h1>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <form onSubmit={handleSubmit} className="fom">
@@ -232,6 +239,7 @@ const AddEmployee = () => {
                 <option value="branch3">Branch 3</option>
               </select>
             </div>
+
             <div className="column">
               <label htmlFor="employmentType">Employment Type:</label>
               <select
@@ -241,11 +249,12 @@ const AddEmployee = () => {
                 required
               >
                 <option value="">Select One</option>
-                <option value="fullTime">Full Time</option>
-                <option value="partTime">Part Time</option>
-                <option value="contract">Contract</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Contract">Contract</option>
               </select>
             </div>
+
             <div className="column">
               <label htmlFor="gender">Gender:</label>
               <select
@@ -255,9 +264,13 @@ const AddEmployee = () => {
                 required
               >
                 <option value="">Select One</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
+            </div>
+            <div className="column">
+              {/* These fields are not shown in the UI */}
+              {/* Citizenship ID, Age, Gender, and Parents' Name */}
             </div>
           </div>
 

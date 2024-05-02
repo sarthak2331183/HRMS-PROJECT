@@ -29,6 +29,8 @@ const Empdashboard = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
+  const [greeting, setGreeting] = useState("");
+  const [currentDateTime, setCurrentDateTime] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -56,6 +58,35 @@ const Empdashboard = () => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const updateDateTime = () => {
+      const now = new Date();
+      const date = now.toLocaleDateString();
+      const time = now.toLocaleTimeString();
+      setCurrentDateTime(`${date} ${time}`);
+    };
+
+    updateDateTime(); // Update immediately
+    const interval = setInterval(updateDateTime, 1000); // Update every second
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    let greetingText = "";
+    if (hour >= 5 && hour < 12) {
+      greetingText = "Good Morning";
+    } else if (hour >= 12 && hour < 17) {
+      greetingText = "Good Afternoon";
+    } else if (hour >= 17 && hour < 20) {
+      greetingText = "Good Evening";
+    } else {
+      greetingText = "Good Night";
+    }
+    setGreeting(`${greetingText}, ${userName}`);
+  }, [userName]);
+
   const handleLogout = () => {
     const confirmed = window.confirm('Are you sure you want to log out?');
     if (confirmed) {
@@ -66,6 +97,8 @@ const Empdashboard = () => {
       });
     }
   };
+
+
 
   return (
     <div className="container">
@@ -109,8 +142,8 @@ const Empdashboard = () => {
       {/* main section starts*/}
       <main>
       <h1>Dashboard</h1>
-        <h2>Hello, {userName}</h2> 
-        <p>Admin</p>
+        <h2>{greeting}</h2>
+        <p>Employee</p>
         
         <div className="tasks">
           <span className="table_head"><h2>My tasks</h2></span> 
@@ -160,7 +193,9 @@ const Empdashboard = () => {
        
         {/* Starts upcoming tasks*/}
         <div className="upcoming_tasks">
+        <p>{currentDateTime}</p> 
           <div className="emp">
+          
             <img src={user} alt="" />  
             <div className="emp2">
               <h3>{userName}</h3>

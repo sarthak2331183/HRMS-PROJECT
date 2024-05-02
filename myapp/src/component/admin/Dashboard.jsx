@@ -28,6 +28,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
+  const [greeting, setGreeting] = useState("");
+  const [currentDateTime, setCurrentDateTime] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -54,6 +56,34 @@ const Dashboard = () => {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const updateDateTime = () => {
+      const date = new Date();
+      const formattedDateTime = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+      setCurrentDateTime(formattedDateTime);
+    };
+
+    updateDateTime(); // Update immediately
+    const interval = setInterval(updateDateTime, 1000); // Update every second
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    let greetingText = "";
+    if (hour >= 5 && hour < 12) {
+      greetingText = "Good Morning";
+    } else if (hour >= 12 && hour < 17) {
+      greetingText = "Good Afternoon";
+    } else if (hour >= 17 && hour < 20) {
+      greetingText = "Good Evening";
+    } else {
+      greetingText = "Good Night";
+    }
+    setGreeting(`${greetingText}, ${userName}`);
+  }, [userName]);
 
   const handleLogout = () => {
     const confirmed = window.confirm('Are you sure you want to log out?');
@@ -126,7 +156,8 @@ const Dashboard = () => {
       {/* main section starts*/}
       <main>
         <h1>Dashboard</h1>
-        <h2>Hello, {userName}</h2> 
+        <h2>{greeting}</h2> 
+
         <p>Admin</p>
 
         <div className="inside">
@@ -215,7 +246,7 @@ const Dashboard = () => {
         </div>
         {/* ends top */}
         <div className="date">
-          <input type="date" />
+        <input type="text" value={currentDateTime} disabled />
         </div>
        {/* Starts upcoming tasks*/}
 <div className="upcoming_tasks">

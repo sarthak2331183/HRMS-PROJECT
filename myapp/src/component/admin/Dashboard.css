@@ -3,9 +3,7 @@
     width: 100%;
     flex-wrap: wrap;
 }
-.profile{
-    border: 2px solid red;
-}
+
 .profile-photo{
     width: 2.8rem;
     height: 2.8 rem;
@@ -16,9 +14,7 @@ aside{
     height: 100vh;
     width: 17%;
 }
-aside .top{
-    margin-top: 1.4px;
-}
+
 aside .top h2{
     font-size: 17px;
 }
@@ -93,7 +89,6 @@ aside .sidebar a:hover span{
 Starts Main section
 */
 main{
-    margin-top: 1.4 rem;
     width: 60%;
 }
 main h1{
