@@ -6,6 +6,7 @@ import AddAdmin from "./AddAdmin";
 import logo from '../Images/logo.png';
 import Employee from "./Employee";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import Attendance from "./Attendance";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -74,6 +75,10 @@ const Admin = () => {
   const openAdmin = () => {
     navigate('/Admin');
   };
+  const openAttendance = () => {
+    navigate('/Attendance');
+  };
+  
 
 
   return (
@@ -110,7 +115,7 @@ const Admin = () => {
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            onSelect={() => {}}
+            onSelect={openAttendance}
           />
           <NavItem
             itemName="Projects"

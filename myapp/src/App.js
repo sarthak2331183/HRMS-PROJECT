@@ -10,6 +10,7 @@ import Empdashboard from './component/Employee/Empdashboard';
 import ForgetPassword from './component/login/ForgetPassword';
 import AddAdmin from './component/admin/AddAdmin';
 import Admin from './component/admin/Admin';
+import Attendance from './component/admin/Attendance';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -42,6 +43,7 @@ function App() {
         <Route path="/Empdashboard" element={<Empdashboard />} />
         <Route path="/Admin" element={<Admin />} />
         <Route path="/AddAdmin" element={<AddAdmin />} />
+        <Route path="/Attendance" element={<Attendance />} />
       </Routes>
     </Router>
   );
