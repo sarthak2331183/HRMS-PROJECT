@@ -8,6 +8,7 @@ import Admin from "./Admin";
 import { getDocs, query, collection, where } from "firebase/firestore";
 import user from '../Employee/user.png'
 import logo from '../Images/logo.png'
+import Attendance from './Attendance'
 
 
 
@@ -103,7 +104,10 @@ const Dashboard = () => {
   const openAdmin = () => {
     navigate('/Admin');
   };
-
+  const openAttendance = () => {
+    navigate('/Attendance');
+  };
+  
   return (
     
     <div className="container">
@@ -139,7 +143,7 @@ const Dashboard = () => {
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            onSelect={() => {}}
+            onSelect={openAttendance}
           />
           <NavItem
             itemName="Projects"

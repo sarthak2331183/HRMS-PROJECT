@@ -20,7 +20,7 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
   );
 };
 
-const Admin = () => {
+const Attendance = () => {
     const navigate = useNavigate();
     const [admins, setAdmins] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -99,7 +99,6 @@ const Admin = () => {
           <NavItem
             itemName="Admins"
             icon="diversity_3"
-            selected={true}
             onSelect={openAdmin}
           />
           <NavItem
@@ -110,6 +109,7 @@ const Admin = () => {
           <NavItem
             itemName="Attendance"
             icon="person_check"
+            selected={true}
             onSelect={() => {}}
           />
           <NavItem
@@ -144,7 +144,7 @@ const Admin = () => {
         </div>
         {/* Admins table */}
         <div className="employee_details">
-          <h1>Details of Admins</h1>
+          <h1>Attendance</h1>
           <table>
             <thead>
               <tr>
@@ -182,4 +182,4 @@ const Admin = () => {
     )
 };
 
-export default Admin;
+export default Attendance;

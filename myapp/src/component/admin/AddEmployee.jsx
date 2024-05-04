@@ -61,6 +61,11 @@ const AddEmployee = () => {
     navigate("/Employee");
   };
 
+
+  const openAdmin = () => {
+    navigate('/Admin');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -108,6 +113,7 @@ const AddEmployee = () => {
     }
   };
 
+
   return (
     <div className="container">
       {/* aside section starts*/}
@@ -128,6 +134,12 @@ const AddEmployee = () => {
             icon="grid_view"
             selected={true}
             onSelect={openDashBoard}
+          />
+          <NavItem
+            itemName="Admins"
+            icon="diversity_3"
+            selected={true}
+            onSelect={openAdmin}
           />
           <NavItem
             itemName="Employees"

@@ -69,6 +69,11 @@ const Employee = () => {
   const openAddEmployee = () => {
     navigate('/AddEmployee');
   };
+
+  const openAdmin = () => {
+    navigate('/Admin');
+  };
+
   return (
     <div className="container">
       {/* aside section starts*/}
@@ -87,12 +92,17 @@ const Employee = () => {
           <NavItem
             itemName="Dashboard"
             icon="grid_view"
-            selected={true}
             onSelect={openDashBoard}
+          />
+          <NavItem
+            itemName="Admins"
+            icon="diversity_3"
+            onSelect={openAdmin}
           />
           <NavItem
             itemName="Employees"
             icon="diversity_3"
+            selected={true}
             onSelect={() => {}}
           />
           <NavItem
