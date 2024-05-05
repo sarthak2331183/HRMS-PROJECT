@@ -8,8 +8,6 @@ import logo from '../Images/logo.png';
 import { auth, db } from '../../firebase';
 import { collection, getDocs, query, where } from "firebase/firestore";
 
-
-
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
     <a
@@ -22,36 +20,58 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
     </a>
   );
 };
+
 const Employee = () => {
   const navigate = useNavigate();
 
   const [employees, setEmployees] = useState([]);
-    const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-        const fetchEmployees = async () => {
-          try {
-            const q = query(collection(db, "users"), where("userRole", "==", "employee"));
-            const querySnapshot = await getDocs(q);
-      
-            const employeesData = [];
-            querySnapshot.forEach((doc) => {
-              const { name, gender, mobile, employeeId, employmentType, jobTitle, branch } = doc.data();
-              employeesData.push({ id: doc.id, name, gender, mobile, employeeId, employmentType, jobTitle, branch });
-          });
-      
-            setEmployees(employeesData);
-            setLoading(false);
-          } catch (error) {
-            console.error('Error fetching employees:', error);
-            setLoading(false);
-          }
-        };
-      
-        fetchEmployees();
-      }, []);
-      
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [sortBy, setSortBy] = useState(""); // State for sorting criteria
 
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const q = query(collection(db, "users"), where("userRole", "==", "employee"));
+        const querySnapshot = await getDocs(q);
+
+        const employeesData = [];
+        querySnapshot.forEach((doc) => {
+          const { name, gender, mobile, employeeId, employmentType, jobTitle, branch } = doc.data();
+          employeesData.push({ id: doc.id, name, gender, mobile, employeeId, employmentType, jobTitle, branch });
+        });
+
+        setEmployees(employeesData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
+
+  // Filter employees based on search query
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      employee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      employee.employeeId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      employee.branch.toLowerCase().includes(searchQuery.toLowerCase())
+    // Add more conditions for other fields if needed
+  );
+
+  // Sort employees based on selected criteria
+  const sortedEmployees = [...filteredEmployees].sort((a, b) => {
+    if (sortBy === "name") {
+      return a.name.localeCompare(b.name);
+    } else if (sortBy === "employeeId") {
+      return a.employeeId.localeCompare(b.employeeId);
+    } else if (sortBy === "date") {
+      // Assuming "date" is a field in the employee object
+      return new Date(a.date) - new Date(b.date);
+    }
+  });
 
   const handleLogout = () => {
     const confirmed = window.confirm('Are you sure you want to log out?');
@@ -63,9 +83,11 @@ const Employee = () => {
       });
     }
   };
+
   const openDashBoard = () => {
     navigate('/Dashboard');
   };
+
   const openAddEmployee = () => {
     navigate('/AddEmployee');
   };
@@ -78,7 +100,7 @@ const Employee = () => {
     <div className="container">
       {/* aside section starts*/}
       <aside>
-      <div className="top">
+        <div className="top">
           <div className="logo">
             <img src={logo} alt="Logo" />
           </div>
@@ -127,20 +149,24 @@ const Employee = () => {
         <h1 id="employee">Employees</h1>
         <div className="search-container">
           <div className="search">
-  {/* Search bar */}
-  <span className="material-symbols-outlined">search</span>
-  <input type="text" placeholder="Search..." />
-  </div>
-  {/* Sort by dropdown */}
-  <div className="dropdown">
-  <span className="material-symbols-outlined">sort</span>
-  <select>
-    <option value="name">Sort by Name</option>
-    <option value="id">Sort by ID</option>
-  </select>
-</div>
-</div>
-
+            {/* Search bar */}
+            <span className="material-symbols-outlined">search</span>
+            <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          </div>
+          {/* Sort by dropdown */}
+          <div className="dropdown">
+            <span className="material-symbols-outlined">sort</span>
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <option value="name">Sort by Name</option>
+              <option value="employeeId">Sort by ID</option>
+              <option value="post">Sort by Post</option>
+            </select>
+          </div>
+          <button className="add-employee-btn" onClick={openAddEmployee}>
+          <span className="material-symbols-outlined">add</span>
+          Add Employee
+        </button>
+        </div>
 
         {/* start employees details */}
         <div className="employee_details">
@@ -159,7 +185,7 @@ const Employee = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee, index) => (
+              {sortedEmployees.map((employee, index) => (
                 <tr key={employee.id}>
                   <td>{index + 1}</td>
                   <td>{employee.name}</td>
@@ -180,10 +206,6 @@ const Employee = () => {
           </table>
         </div>
         {/* ends recent order */}
-        <button className="add-employee-btn" onClick={openAddEmployee}>
-          <span className="material-symbols-outlined">add</span>
-          Add Employee
-        </button>
       </main>
       {/* main section ends*/}
     </div>

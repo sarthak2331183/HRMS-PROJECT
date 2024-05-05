@@ -121,7 +121,6 @@ main table tbody tr:last-child td {
   background-color: var(--clr-primary);
   color: var(--clr-white);
   border-radius: var(--card-border-radius);
-  margin-top: 2rem;
 }
 
 .add-employee-btn:hover {
@@ -163,11 +162,13 @@ div.search {
   display: flex;
   align-items: center;
   text-align: center;
+  padding-right: 2rem;
 }
 div.dropdown {
   display: flex;
   align-items: center;
   text-align: center;
+  padding-right: 4rem;
 }
 .dropdown select {
   padding: 10px;
