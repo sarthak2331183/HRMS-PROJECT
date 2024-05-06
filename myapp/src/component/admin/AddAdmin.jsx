@@ -151,7 +151,7 @@ const AddAdmin = () => {
           <div className="popup">
             {successMessage && <p className="success-message">{successMessage}</p>}
             {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <button onClick={() => setShowPopup(false)}>Close</button>
+            <button onClick={() => setShowPopup(true)}>Close</button>
           </div>
         )}
         <form onSubmit={handleSubmit} className="fom">
@@ -222,7 +222,7 @@ const AddAdmin = () => {
           </div>
           <div className="row buttons">
             <button type="submit" className="add-button" >Add Admin</button>
-            <button type="button" className="cancel-button">Cancel</button>
+            <button type="button" className="cancel-button" onClick={() => navigate("/Admin")} >Cancel</button>
           </div>
         </form>
       </main>

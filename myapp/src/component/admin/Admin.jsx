@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from '../../firebase'; // Import db from firebase.js
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import AddAdmin from "./AddAdmin";
-import logo from '../Images/logo.png';
-import Employee from "./Employee";
+import { auth, db } from "../../firebase"; // Import db from firebase.js
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import Attendance from "./Attendance";
+import logo from "../Images/logo.png";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
     <a
       href="#"
       className={selected ? "active" : ""}
-      onClick={() => onSelect(itemName)}
+      onClick={(e) => {
+        e.preventDefault(); // Prevent default anchor behavior
+        onSelect();
+      }}
     >
       <span className="material-symbols-outlined">{icon}</span>
       <h3>{itemName}</h3>
@@ -22,70 +22,71 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
 };
 
 const Admin = () => {
-    const navigate = useNavigate();
-    const [admins, setAdmins] = useState([]);
-    const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-        const fetchAdmins = async () => {
-          try {
-            const q = query(collection(db, "users"), where("userRole", "==", "admin"));
-            const querySnapshot = await getDocs(q);
-      
-            const adminsData = [];
-            querySnapshot.forEach((doc) => {
-              // Extract the name, gender, and mobile fields from the document data
-              const { name, gender, mobile } = doc.data();
-              adminsData.push({ id: doc.id, name, gender, mobile });
-            });
-      
-            setAdmins(adminsData);
-            setLoading(false);
-          } catch (error) {
-            console.error('Error fetching admins:', error);
-            setLoading(false);
-          }
-        };
-      
-        fetchAdmins();
-      }, []);
-      
+  const navigate = useNavigate();
+  const [admins, setAdmins] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("name");
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchAdmins = async () => {
+      try {
+        const q = query(collection(db, "users"), where("userRole", "==", "admin"));
+        const querySnapshot = await getDocs(q);
+
+        const adminsData = [];
+        querySnapshot.forEach((doc) => {
+          const { name, gender, mobile } = doc.data();
+          adminsData.push({ id: doc.id, name, gender, mobile });
+        });
+
+        setAdmins(adminsData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching admins:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchAdmins();
+  }, []);
 
   const handleLogout = () => {
-    const confirmed = window.confirm('Are you sure you want to log out?');
+    const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
-      signOut(auth).then(() => {
-        navigate('/');
-      }).catch((error) => {
-        console.error('Error signing out:', error);
-      });
+      signOut(auth)
+        .then(() => navigate("/"))
+        .catch((error) => console.error("Error signing out:", error));
     }
   };
 
-  const openDashBoard = () => {
-    navigate('/Dashboard');
-  };
-  const openAddAdmin = () => {
-    navigate('/AddAdmin');
-  };
-  const openEmployee = () => {
-    navigate('/Employee');
-  };
-  const openAdmin = () => {
-    navigate('/Admin');
-  };
-  const openAttendance = () => {
-    navigate('/Attendance');
-  };
-  
+  const openDashBoard = () => navigate("/Dashboard");
+  const openAddAdmin = () => navigate("/AddAdmin");
+  const openEmployee = () => navigate("/Employee");
+  const openAttendance = () => navigate("/Attendance");
 
+  // Filter admins based on the search query
+  const filteredAdmins = admins.filter((admin) =>
+    admin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    admin.mobile.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Sort admins based on the selected criteria
+  const sortedAdmins = [...filteredAdmins].sort((a, b) => {
+    if (sortBy === "name") {
+      return a.name.localeCompare(b.name);
+    } else if (sortBy === "id") {
+      return a.id.localeCompare(b.id);
+    } else {
+      return 0;
+    }
+  });
 
   return (
-     <div className="container">
-      {/* aside section starts*/}
+    <div className="container">
+      {/* Aside Section */}
       <aside>
-      <div className="top">
+        <div className="top">
           <div className="logo">
             <img src={logo} alt="Logo" />
           </div>
@@ -93,7 +94,6 @@ const Admin = () => {
             <span className="material-symbols-outlined">crowdsource</span>
           </div>
         </div>
-        {/* top ends */}
 
         <div className="sidebar">
           <NavItem
@@ -105,7 +105,7 @@ const Admin = () => {
             itemName="Admins"
             icon="diversity_3"
             selected={true}
-            onSelect={openAdmin}
+            onSelect={() => navigate("/Admin")}
           />
           <NavItem
             itemName="Employees"
@@ -117,74 +117,78 @@ const Admin = () => {
             icon="person_check"
             onSelect={openAttendance}
           />
-          <NavItem
-            itemName="Projects"
-            icon="model_training"
-            onSelect={() => {}}
-          />
           <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
           <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
-          <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
+          <NavItem itemName="Log Out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
-      {/* aside section ends */}
 
-      {/* main section starts*/}
+      {/* Main Section */}
       <main>
-        <h1 id="employee">Admins</h1>
+        <h1>Admins</h1>
+
         <div className="search-container">
           <div className="search">
-        {/* Search bar */}
-        <span className="material-symbols-outlined">search</span>
-        <input type="text" placeholder="Search..." />
-        </div>
-        {/* Sort by dropdown */}
-        <div className="dropdown">
-        <span className="material-symbols-outlined">sort</span>
-        <select>
-            <option value="name">Sort by Name</option>
-            <option value="id">Sort by ID</option>
-        </select>
-        </div>
-        </div>
-        {/* Admins table */}
-        <div className="employee_details">
-          <h1>Details of Admins</h1>
-          <table>
-            <thead>
-              <tr>
-                <th>S.no</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Contact No.</th>
-              </tr>
-            </thead>
-            <tbody>
-              {admins.map((admin, index) => (
-                <tr key={admin.id}>
-                  <td>{index + 1}</td>
-                  <td>{admin.name}</td>
-                  <td>{admin.gender}</td>
-                  <td>{admin.mobile}</td>
-                  <td>
-                    <a href="#" className="details-link">
-                      Details
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {/* Add admin button */}
-        <button className="add-employee-btn" onClick={openAddAdmin}>
+            <span className="material-symbols-outlined">search</span>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          <div className="dropdown">
+            <span className="material-symbols-outlined">sort</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="name">Sort by Name</option>
+              <option value="id">Sort by ID</option>
+            </select>
+          </div>
+          <button className="add-employee-btn" onClick={openAddAdmin}>
           <span className="material-symbols-outlined">add</span>
           Add Admin
         </button>
+        </div>
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="employee_details">
+            <h1>Details of Admins</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>S.no</th>
+                  <th>Name</th>
+                  <th>Gender</th>
+                  <th>Contact No.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedAdmins.map((admin, index) => (
+                  <tr key={admin.id}>
+                    <td>{index + 1}</td>
+                    <td>{admin.name}</td>
+                    <td>{admin.gender}</td>
+                    <td>{admin.mobile}</td>
+                    <td>
+                    <a href="#" className="details-link">
+                      Details
+                    </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </main>
-      {/* main section ends*/}
     </div>
-    )
+  );
 };
 
 export default Admin;
