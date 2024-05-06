@@ -60,18 +60,17 @@ const Attendance = () => {
       employee.employeeId.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-// Sort employees based on selected criteria
-const sortedEmployees = [...filteredEmployees].sort((a, b) => {
-  if (sortBy === "name") {
-    return a.name.localeCompare(b.name);
-  } else if (sortBy === "employeeId") {
-    return a.employeeId.localeCompare(b.employeeId);
-  } else if (sortBy === "date") {
-    // Assuming "date" is a field in the employee object
-    return new Date(a.date) - new Date(b.date);
-  }
-});
-
+  // Sort employees based on selected criteria
+  const sortedEmployees = [...filteredEmployees].sort((a, b) => {
+    if (sortBy === "name") {
+      return a.name.localeCompare(b.name);
+    } else if (sortBy === "employeeId") {
+      return a.employeeId.localeCompare(b.employeeId);
+    } else if (sortBy === "date") {
+      // Assuming "date" is a field in the employee object
+      return new Date(a.date) - new Date(b.date);
+    }
+  });
 
   const handleLogout = () => {
     const confirmed = window.confirm("Are you sure you want to log out?");
@@ -169,7 +168,7 @@ const sortedEmployees = [...filteredEmployees].sort((a, b) => {
         </div>
         {/* Attendance table */}
         <div className="employee_details">
-          <h1>Attendance</h1>
+          <h1>Attendance Report</h1>
           <table>
             <thead>
               <tr>
@@ -182,8 +181,8 @@ const sortedEmployees = [...filteredEmployees].sort((a, b) => {
                 <th>Post</th>
                 <th>Check In</th>
                 <th>Check Out</th>
-                <th>Hours Worked</th>
                 <th>Status</th>
+                <th>Notes</th>
               </tr>
             </thead>
             <tbody>
@@ -195,11 +194,31 @@ const sortedEmployees = [...filteredEmployees].sort((a, b) => {
                   <td>2024-03-30</td>
                   <td>Monday</td>
                   <td>{employee.branch}</td>
-                  <td>{employee.post}</td>
-                  <td>09:00 AM</td>
-                  <td>06:00 PM</td>
-                  <td>9 hours</td>
-                  <td>Present</td>
+                  <td>{employee.post}</td>{" "}
+                  <td style={{ color: "black" }}>09:00 AM</td>
+                  <td style={{ color: "black" }}>06:00 PM</td>
+                  <td
+                    style={{
+                      color:
+                        employee.status && employee.status === "Present"
+                          ? "green"
+                          : "red",
+                    }}
+                  >
+                    {employee.status || "Absent"}
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      placeholder="Add notes"
+                      style={{
+                        padding: "5px",
+                        border: "1px solid #ccc",
+                        color: "#677483",
+                        borderRadius: "5px",
+                      }}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
