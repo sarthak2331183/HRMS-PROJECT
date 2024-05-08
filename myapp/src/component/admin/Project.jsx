@@ -9,7 +9,6 @@ import { getDocs, query, collection, where } from "firebase/firestore";
 import user from '../Employee/user.png'
 import logo from '../Images/logo.png'
 import Attendance from './Attendance'
-import Project from "./Project";
 
 
 
@@ -26,7 +25,7 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
   );
 };
 
-const Dashboard = () => {
+const Project = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
@@ -108,11 +107,7 @@ const Dashboard = () => {
   const openAttendance = () => {
     navigate('/Attendance');
   };
-  const openProject = () => {
-    navigate('/Project');
-  };
-
-
+  
   return (
     
     <div className="container">
@@ -153,7 +148,7 @@ const Dashboard = () => {
           <NavItem
             itemName="Projects"
             icon="model_training"
-            onSelect={openProject}
+            onSelect={() => {}}
           />
           <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
           <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
@@ -164,7 +159,7 @@ const Dashboard = () => {
 
       {/* main section starts*/}
       <main>
-        <h1>Dashboard</h1>
+        <h1>Project</h1>
         <h2>{greeting}</h2> 
 
         <p>Admin</p>
@@ -386,4 +381,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Project;

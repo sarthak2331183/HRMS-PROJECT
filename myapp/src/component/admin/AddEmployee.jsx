@@ -132,18 +132,17 @@ const AddEmployee = () => {
           <NavItem
             itemName="Dashboard"
             icon="grid_view"
-            selected={true}
             onSelect={openDashBoard}
           />
           <NavItem
             itemName="Admins"
             icon="diversity_3"
-            selected={true}
             onSelect={openAdmin}
           />
           <NavItem
             itemName="Employees"
             icon="diversity_3"
+            selected={true}
             onSelect={openEmployee}
           />
           <NavItem
