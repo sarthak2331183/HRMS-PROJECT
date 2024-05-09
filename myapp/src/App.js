@@ -14,6 +14,7 @@ import Attendance from './component/admin/Attendance';
 import Project from './component/admin/Project';
 import Profile from './component/Employee/Profile';
 import EmpAttendance from './component/Employee/EmpAttendance'
+import AddProject from './component/admin/AddProject';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -50,6 +51,7 @@ function App() {
         <Route path="/Project" element={<Project />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/EmpAttendance" element={<EmpAttendance />} />
+        <Route path="/AddProject" element={<AddProject />} />
       </Routes>
     </Router>
   );
