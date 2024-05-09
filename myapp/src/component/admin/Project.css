@@ -1,0 +1,76 @@
+
+.project-stats {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 62px;
+  padding-left: 38px;
+}
+
+.stat-btn {
+  padding: 10px 20px;
+  background: #7380ec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.stat-btn:hover {
+  border: 1px solid #7380ec;
+  background-color: #f8fafd;
+  color: #7380ec;
+}
+
+.employee_details {
+  padding: 20px;
+}
+
+.srh-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-left: 38px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+.search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding-left: 10px;
+}
+
+.add-project-btn {
+  padding: 10px 20px;
+  background: #7380ec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-items: center;
+  text-align: center;
+}
+
+.add-project-btn:hover {
+  border: 1px solid #7380ec;
+  background-color: #f8fafd;
+  color: #7380ec;
+}
+.edit-btn,
+.delete-btn {
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  background: #ddd;
+}

@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Dashboard.css";
-import { auth, db } from '../../firebase'; // Import db from firebase.js
-import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
-import Employee from "./Employee";
-import Admin from "./Admin";
-import { getDocs, query, collection, where } from "firebase/firestore";
-import user from '../Employee/user.png'
-import logo from '../Images/logo.png'
-import Attendance from './Attendance'
-
-
+import logo from '../Images/logo.png';
+import "./Project.css";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -27,91 +19,75 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
 
 const Project = () => {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState("");
-  const [userName, setUserName] = useState("");
-  const [greeting, setGreeting] = useState("");
-  const [currentDateTime, setCurrentDateTime] = useState("");
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUserEmail(user.email);
-        // Fetch name from Firestore based on user email
-        try {
-          const querySnapshot = await getDocs(
-            query(collection(db, "users"), where("email", "==", user.email))
-          );
-          if (!querySnapshot.empty) {
-            querySnapshot.forEach((doc) => {
-              const userData = doc.data();
-              setUserName(userData.name);
-            });
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      } else {
-        setUserEmail("");
-        setUserName("");
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const updateDateTime = () => {
-      const date = new Date();
-      const formattedDateTime = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-      setCurrentDateTime(formattedDateTime);
-    };
-
-    updateDateTime(); // Update immediately
-    const interval = setInterval(updateDateTime, 1000); // Update every second
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const hour = new Date().getHours();
-    let greetingText = "";
-    if (hour >= 5 && hour < 12) {
-      greetingText = "Good Morning";
-    } else if (hour >= 12 && hour < 17) {
-      greetingText = "Good Afternoon";
-    } else if (hour >= 17 && hour < 20) {
-      greetingText = "Good Evening";
-    } else {
-      greetingText = "Good Night";
-    }
-    setGreeting(`${greetingText}, ${userName}`);
-  }, [userName]);
+  const [projects, setProjects] = useState([
+    {
+      id: 1,
+      title: "Project A",
+      clientName: "Client 1",
+      status: "Ongoing",
+      startDate: "2024-01-15",
+      endDate: "2024-07-30",
+      assignedTo: "Team Alpha",
+    },
+    {
+      id: 2,
+      title: "Project B",
+      clientName: "Client 2",
+      status: "Completed",
+      startDate: "2023-06-10",
+      endDate: "2023-12-20",
+      assignedTo: "Team Beta",
+    },
+  ]);
 
   const handleLogout = () => {
-    const confirmed = window.confirm('Are you sure you want to log out?');
+    const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
-      signOut(auth).then(() => {
-        navigate('/');
-      }).catch((error) => {
-        console.error('Error signing out:', error);
-      });
+      // signOut logic here
+      navigate("/");
     }
   };
 
-  const openEmployee = () => {
-    navigate('/Employee');
+  const handleEdit = (projectId) => {
+    // Handle edit logic, e.g., open a modal or navigate to an edit page
+    console.log("Editing project with ID:", projectId);
   };
 
-  const openAdmin = () => {
-    navigate('/Admin');
+  const handleDelete = (projectId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this project?"
+    );
+    if (confirmed) {
+      // Delete logic, like calling an API to remove the project
+      setProjects((prevProjects) => prevProjects.filter((p) => p.id !== projectId));
+    }
   };
-  const openAttendance = () => {
-    navigate('/Attendance');
-  };
-  
+
+  const openDashboard = () => navigate("/Dashboard");
+  const openEmployee = () => navigate("/Employee");
+  const openAdmin = () => navigate("/Admin");
+  const openAttendance = () => navigate("/Attendance");
+
+  // Categorize projects by their current state
+  const upcomingProjects = projects.filter(
+    (project) => new Date(project.startDate) > new Date()
+  );
+  const inProgressProjects = projects.filter(
+    (project) => project.status === 'Ongoing'
+  );
+  const completedProjects = projects.filter(
+    (project) => project.status === 'Completed'
+  );
+  const cancelledProjects = projects.filter(
+    (project) => project.status === 'Cancelled'
+  );
+  const endedProjects = projects.filter(
+    (project) => new Date(project.endDate) < new Date() || project.status === 'Ended'
+  );
+
   return (
-    
     <div className="container">
-      {/* aside section starts*/}
+      {/* Sidebar */}
       <aside>
         <div className="top">
           <div className="logo">
@@ -121,262 +97,86 @@ const Project = () => {
             <span className="material-symbols-outlined">crowdsource</span>
           </div>
         </div>
-        {/* top ends */}
 
         <div className="sidebar">
-          <NavItem
-            itemName="Dashboard"
-            icon="grid_view"
-            selected={true}
-            onSelect={() => {}}
-          />
-          <NavItem
-            itemName="Admins"
-            icon="diversity_3"
-            onSelect={openAdmin}
-          />
-          <NavItem
-            itemName="Employees"
-            icon="diversity_3"
-            onSelect={openEmployee}
-          />
-          <NavItem
-            itemName="Attendance"
-            icon="person_check"
-            onSelect={openAttendance}
-          />
-          <NavItem
-            itemName="Projects"
-            icon="model_training"
-            onSelect={() => {}}
-          />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
+          <NavItem itemName="Dashboard" icon="grid_view" onSelect={openDashboard} />
+          <NavItem itemName="Admins" icon="diversity_3" onSelect={openAdmin} />
+          <NavItem itemName="Employees" icon="diversity_3" onSelect={openEmployee} />
+          <NavItem itemName="Attendance" icon="person_check" onSelect={openAttendance} />
+          <NavItem itemName="Projects" icon="model_training" selected={true} />
+          <NavItem itemName="Payroll" icon="paid" />
+          <NavItem itemName="Setting" icon="settings" />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
-      {/* aside section ends */}
 
-      {/* main section starts*/}
+      {/* Main content */}
       <main>
-        <h1>Project</h1>
-        <h2>{greeting}</h2> 
-
-        <p>Admin</p>
-
-        <div className="inside">
-          {/* start selling */}
-          <div className="sales">
-              <h3>On duty</h3>
-              <h3>30</h3>
-
-
-          </div>
-          {/* ends selling */}
-
-          {/* start expenses */}
-          <div className="expenses">
-          <h3>On Leave</h3>
-              <h3>5</h3>
-          </div>
-          {/* ends expenses */}
-
-          {/* start income*/}
-          <div className="income">
-          <h3>Late</h3>
-              <h3>3</h3>
-          </div>
-          {/* ends income */}
+        <h1 id="employee">Project</h1>
+        {/* Project statistics */}
+        <div className="project-stats">
+          <button className="stat-btn">Upcoming: {upcomingProjects.length}</button>
+          <button className="stat-btn">In Progress: {inProgressProjects.length}</button>
+          <button className="stat-btn">Completed: {completedProjects.length}</button>
+          <button className="stat-btn">Cancelled: {cancelledProjects.length}</button>
+          <button className="stat-btn">Ended: {endedProjects.length}</button>
         </div>
-        {/* inside ends */}
 
-        {/* start recent order */}
-        <div className="recent_order">
-          <h2>New Joins</h2>
+        {/* Project table */}
+        <div className="employee_details">
+          <h1>Project Summary</h1>
+          <div className="srh-container">
+          <div className="search">
+            {/* Search bar */}
+            <span className="material-symbols-outlined">search</span>
+            <input type="text" placeholder="Enter project title..." />
+          </div>
+          <button className="add-project-btn" >
+          <span className="material-symbols-outlined">add</span>
+          Add Project
+        </button>
+        </div>
           <table>
             <thead>
               <tr>
-                <th>Full Name</th>
-                <th>Location</th>
-                <th>Branch</th>
-                {/* <th>Status</th> */}
+                <th>Project Title</th>
+                <th>Client Name</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Assigned To</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Innovate Suite</td>
-                <td>IS-2023</td>
-                <td className="danger">Pending</td>
-                {/* <td className="warning">Processing</td> */}
-              </tr>
-              <tr>
-                <td>CloudConnect</td>
-                <td>CC-2452</td>
-                <td className="danger">Paid</td>
-                {/* <td className="warning">Delivered</td> */}
-              </tr>
-              <tr>
-                <td>NetGuard Pro</td>
-                <td>NG-2314</td>
-                <td className="danger">Pending</td>
-                {/* <td className="warning">Processing</td> */}
-              </tr>
-              <tr>
-                <td>SmartTrack Lite</td>
-                <td>ST-6563</td>
-                <td className="danger">Pending</td>
-                {/* <td className="warning">Processing</td> */}
-              </tr>
-              <tr>
-                <td>DataScape Pro</td>
-                <td>DS-5643</td>
-                <td className="danger">Paid</td>
-                {/* <td className="warning">Shipped</td> */}
-              </tr>
+              {projects.map((project) => (
+                <tr key={project.id}>
+                  <td>{project.title}</td>
+                  <td>{project.clientName}</td>
+                  <td>{project.status}</td>
+                  <td>{project.startDate}</td>
+                  <td>{project.endDate}</td>
+                  <td>{project.assignedTo}</td>
+                  <td>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(project.id)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(project.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
-        {/* ends recent order */}
       </main>
-      {/* main section ends*/}
-
-      {/* right section starts*/}
-      <div className="right">
-        <div className="top">
-          <button id="menu_bar">
-            <span className="material-symbols-outlined">menu</span>
-          </button>
-          
-        </div>
-        {/* ends top */}
-        <div className="date">
-        <input type="text" value={currentDateTime} disabled />
-        </div>
-       {/* Starts upcoming tasks*/}
-<div className="upcoming_tasks">
-<div className="emp">
-            <img src={user} alt="" />  
-            <div className="emp2">
-              <h3>{userName}</h3>
-            </div>      
-          </div>
-  <h2>Upcoming Tasks</h2>
-  <div className="Meetings">
-    <div className="meeting">
-      <div className="circle">
-        <span className="number">1</span>
-      </div>
-
-
-
-      <div className="details">
-        <p>
-          <b>Team Meeting</b>
-        </p>
-        <p>Group D</p>
-        <small className="text-muted"></small>
-      </div>
-      <div className="time">
-        <p>12:00-13:00</p>
-        <span className="material-symbols-outlined">more_vert</span>
-      </div>
-    </div>
-
-
-
-
-    <div className="meeting">
-      <div className="circle">
-        <span className="number">2</span>
-      </div>
-      <div className="details">
-        <p>
-          <b>Team Meeting</b>
-        </p>
-        <p>Group D</p>
-        <small className="text-muted"></small>
-      </div>
-      <div className="time">
-        <p>12:00-13:00</p>
-        <span className="material-symbols-outlined">more_vert</span>
-      </div>
-    </div>
-
-    <div className="meeting">
-      <div className="circle">
-        <span className="number">3</span>
-      </div>
-      <div className="details">
-        <p>
-          <b>Team Meeting</b>
-        </p>
-        <p>Group D</p>
-        <small className="text-muted"></small>
-      </div>
-      <div className="time">
-        <p>1:00-13:00</p>
-        <span className="material-symbols-outlined">more_vert</span>
-      </div>
-    </div>
-  </div>
-</div>
-{/* Ends upcoming tasks*/}
-
-
-        {/* Starts employees on work*/}
-        {/* <div className="employees_on_work">
-          <h2>Employees On Work</h2>
-
-          <div className="activity">
-            <div className="OnWork">
-              <span class="material-symbols-outlined">display_settings</span>
-            </div>
-            <div className="right_text">
-              <div className="info">
-                <h3>On Duty</h3>
-                <small class="text-muted">Total no. of employees Working</small>
-              </div>
-              <h5 class="danger">44</h5>
-            </div>
-          </div>
-
-          <div className="activity">
-            <div className="OnLeave">
-              <span class="material-symbols-outlined">
-                <span class="material-symbols-outlined">event_busy</span>
-              </span>
-            </div>
-            <div className="right_text">
-              <div className="info">
-                <h3>On Leave</h3>
-                <small class="text-muted">
-                  Total no. of employees on leave
-                </small>
-              </div>
-              <h5 class="danger">20</h5>
-            </div>
-          </div>
-
-          <div className="activity">
-            <div className="Late">
-              <span class="material-symbols-outlined">
-                <span class="material-symbols-outlined">delete_history</span>
-              </span>
-            </div>
-            <div className="right_text">
-              <div className="info">
-                <h3>Late</h3>
-                <small class="text-muted">
-                  Total no. of employees running late to work
-                </small>
-              </div>
-              <h5 class="danger">11</h5>
-            </div>
-          </div>
-        </div>
-        {/* Ends employees on work*/}
-      </div> 
-      {/* right section ends*/}
     </div>
   );
 };

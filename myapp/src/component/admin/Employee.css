@@ -101,9 +101,6 @@ main table tbody td {
   height: 3.8rem;
   border-bottom: 1px solid var(--clr-dark);
 }
-main table tbody tr:last-child td {
-  border: none;
-}
 .details-link {
   color: var(--clr-danger);
   text-decoration: underline;
@@ -143,7 +140,7 @@ input[type="text"] {
 .search-container {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: -78px;
   padding-left: 38px;
 }
 

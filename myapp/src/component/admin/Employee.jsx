@@ -58,7 +58,6 @@ const Employee = () => {
       employee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       employee.employeeId.toLowerCase().includes(searchQuery.toLowerCase()) ||
       employee.branch.toLowerCase().includes(searchQuery.toLowerCase())
-    // Add more conditions for other fields if needed
   );
 
   // Sort employees based on selected criteria
