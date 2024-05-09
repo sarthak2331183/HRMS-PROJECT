@@ -12,7 +12,7 @@ import profile from '../Employee/profile.png'
 import chart from '../Employee/chart.png'
 import { getDocs, query, collection, where } from "firebase/firestore";
 import Profile from './Profile'
-import EmpAttendance from "./EmpAttendance";
+import Empdashboard from "./Empdashboard";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -27,7 +27,7 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
   );
 };
 
-const Empdashboard = () => {
+const EmpAttendance = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
@@ -100,11 +100,8 @@ const Empdashboard = () => {
     }
   };
 
-  const openProfile = () => {
-    navigate('/Profile');
-  };
-  const openAttendance = () => {
-    navigate('/EmpAttendance');
+  const openDashboard = () => {
+    navigate('/Empdashboard');
   };
 
   // const openAdmin = () => {
@@ -129,13 +126,13 @@ const Empdashboard = () => {
           <NavItem
             itemName="Dashboard"
             icon="grid_view"
-            selected={true}
-            onSelect={() => {}}
+            onSelect={openDashboard}
           />
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            onSelect={openAttendance}
+            selected={true}
+            onSelect={() => {}}
           />
           <NavItem
             itemName="Projects"
@@ -152,7 +149,7 @@ const Empdashboard = () => {
       {/* Top Section  */}
       {/* main section starts*/}
       <main>
-      <h1>Dashboard</h1>
+      <h1>Attendance</h1>
         <h2>{greeting}</h2>
         <p>Employee</p>
         
@@ -217,7 +214,6 @@ const Empdashboard = () => {
         
           <div className="rnd">
             <h4>Attendance <img src={attendance} alt="" /></h4>
-            <h4 onClick={openProfile} style={{ cursor: 'pointer' }}>Profile <img src={profile} alt="" /></h4>
             <h2>Upcoming Tasks</h2>
             <div className="Meetings">
               <div className="meeting">
@@ -278,4 +274,4 @@ const Empdashboard = () => {
   );
 };
 
-export default Empdashboard;
+export default EmpAttendance;
