@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./Empdashboard.css";
-import { auth, db } from '../../firebase'; // Import db from firebase.js
+import "./Empattendances.css"
+import { auth, db } from '../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 import logo from '../Images/logo.png'
-import search from '../Employee/search_mg.png'
-import notification from '../Employee/notification.png'
 import user from '../Employee/user.png'
-import attendance from '../Employee/attendance.png'
-import profile from '../Employee/profile.png'
-import chart from '../Employee/chart.png'
 import { getDocs, query, collection, where } from "firebase/firestore";
-import Profile from './Profile'
-import Empdashboard from "./Empdashboard";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -31,14 +24,13 @@ const EmpAttendance = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
-  const [greeting, setGreeting] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState("");
+  const [attendanceData, setAttendanceData] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUserEmail(user.email);
-        // Fetch name from Firestore based on user email
         try {
           const querySnapshot = await getDocs(
             query(collection(db, "users"), where("email", "==", user.email))
@@ -68,26 +60,30 @@ const EmpAttendance = () => {
       setCurrentDateTime(`${date} ${time}`);
     };
 
-    updateDateTime(); // Update immediately
-    const interval = setInterval(updateDateTime, 1000); // Update every second
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    const hour = new Date().getHours();
-    let greetingText = "";
-    if (hour >= 5 && hour < 12) {
-      greetingText = "Good Morning";
-    } else if (hour >= 12 && hour < 17) {
-      greetingText = "Good Afternoon";
-    } else if (hour >= 17 && hour < 20) {
-      greetingText = "Good Evening";
-    } else {
-      greetingText = "Good Night";
-    }
-    setGreeting(`${greetingText}, ${userName}`);
-  }, [userName]);
+    const fetchAttendanceData = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          query(collection(db, "attendance"), where("email", "==", userEmail))
+        );
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          data.push(doc.data());
+        });
+        setAttendanceData(data);
+      } catch (error) {
+        console.error('Error fetching attendance data:', error);
+      }
+    };
+
+    fetchAttendanceData();
+  }, [userEmail]);
 
   const handleLogout = () => {
     const confirmed = window.confirm('Are you sure you want to log out?');
@@ -100,18 +96,13 @@ const EmpAttendance = () => {
     }
   };
 
-  const openDashboard = () => {
-    navigate('/Empdashboard');
+  const openAttendance = () => {
+    navigate('/EmpAttendance'); 
   };
-
-  // const openAdmin = () => {
-  //   navigate('/Admin');
-  // };
 
   return (
     <div className="container">
-      {/* aside section starts*/}
-      <aside className="likelynav">
+      <aside className="likelynav left">
         <div className="top">
           <div className="logo">
             <img src={logo} alt="Logo" />
@@ -120,18 +111,17 @@ const EmpAttendance = () => {
             <span className="material-symbols-outlined">crowdsource</span>
           </div>
         </div>
-        {/* top ends */}
 
         <div className="sidebar">
           <NavItem
             itemName="Dashboard"
             icon="grid_view"
-            onSelect={openDashboard}
+            selected={true}
+            onSelect={() => {}}
           />
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            selected={true}
             onSelect={() => {}}
           />
           <NavItem
@@ -144,132 +134,88 @@ const EmpAttendance = () => {
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
-      {/* aside section ends */}
 
-      {/* Top Section  */}
-      {/* main section starts*/}
-      <main>
-      <h1>Attendance</h1>
-        <h2>{greeting}</h2>
-        <p>Employee</p>
-        
-        <div className="tasks">
-          <span className="table_head"><h2>My tasks</h2></span> 
-          <div className="bar_info">
-            <p>1 Active Task </p>
-            <p>Due Date</p>
-            <p>Status</p>
+      <div className="dashboard-container">
+        <div className="navigation">
+          <h2>Dashboard</h2>
+          <span className="right-arrow">&#62;</span>
+          <h2>Attendance</h2>
+        </div>
+        <div className="buttons">
+  <div className="button-group">
+    <div>
+      <button className="green-button">Check-in Time</button>
+      <p>Text for Check-in Time</p>
+    </div>
+    <div>
+      <button className="red-button">Check-out Time</button>
+      <p>Text for Check-out Time</p>
+    </div>
+    <div>
+      <button className="green-button">Work Progress</button>
+      <p>Text for Work Progress</p>
+    </div>
+  </div>
+</div>
+
+
+        <div className="attendance-record-container">
+          <div className="left-section">
+            <h2>Attendance Record</h2>
           </div>
-          <div className="tasksleft">
-            <h3>Sprint 1 designining</h3>
-            <h3>Today</h3> 
-            <input type="number" placeholder="In Progress" name="" id="" />
-          </div>
-  
-          <div className="alltasks">
-            <hr />
-            <h2>See all tasks</h2>
+          <div className="right-section">
+            <button className="gray-button">Calendar</button>
+            <button className="gray-button">Calendar</button>
+            <button className="green-button">Show</button>
           </div>
         </div>
 
-        <div className="working_hour">
-          <span className="table_head"><h2>Total hours worked this week</h2></span> 
-          <div className="chart_hrs">
-            <div className="hrs">
-              <h2>8 hrs</h2>
-              <h2>6 hrs</h2>
-              <h2>4 hrs</h2>
-              <h2>2 hrs</h2>
-            </div>
+        <table className="attendance-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Day</th>
+              <th>Check in Time</th>
+              <th>Check out Time</th>
+              <th>Hours Worked</th>
+              <th>Worked On</th>
+            </tr>
+          </thead>
+          <tbody>
+            {attendanceData.map((attendanceRecord, index) => (
+              <tr key={index}>
+                <td>{attendanceRecord.date}</td>
+                <td>{attendanceRecord.day}</td>
+                <td>{attendanceRecord.checkInTime}</td>
+                <td>{attendanceRecord.checkOutTime}</td>
+                <td>{attendanceRecord.hoursWorked}</td>
+                <td>{attendanceRecord.workedOn}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-            <div className="chart">
-              <img src={chart} alt="" />
-            </div>
-          </div>
-        </div>
-      </main>
-      {/* main section ends*/}
 
-      {/* right section starts*/}
+      </div>
+
       <div className="right">
         <div className="top">
           <button id="menu_bar">
             <span className="material-symbols-outlined">menu</span>
           </button>
         </div>
-        {/* ends top */}
-       
-        {/* Starts upcoming tasks*/}
+        
         <div className="upcoming_tasks">
-        <p>{currentDateTime}</p> 
+          <p>{currentDateTime}</p> 
           <div className="emp">
-          
             <img src={user} alt="" />  
             <div className="emp2">
               <h3>{userName}</h3>
               <p>Employee</p>
             </div>      
           </div>
-        
-        
-          <div className="rnd">
-            <h4>Attendance <img src={attendance} alt="" /></h4>
-            <h2>Upcoming Tasks</h2>
-            <div className="Meetings">
-              <div className="meeting">
-                <div className="circle">
-                  <span className="number">1</span>
-                </div>
-                <div className="details">
-                  <p>
-                    <b>Team Meeting</b>
-                  </p>
-                  <p>Group D</p>
-                  <small className="text-muted"></small>
-                </div>
-                <div className="time">
-                  <p>12:00-13:00</p>
-                  <span className="material-symbols-outlined">more_vert</span>
-                </div>
-              </div>
-              <div className="meeting">
-                <div className="circle">
-                  <span className="number">2</span>
-                </div>
-                <div className="details">
-                  <p>
-                    <b>Team Meeting</b>
-                  </p>
-                  <p>Group D</p>
-                  <small className="text-muted"></small>
-                </div>
-                <div className="time">
-                  <p>12:00-13:00</p>
-                  <span className="material-symbols-outlined">more_vert</span>
-                </div>
-              </div>
-              <div className="meeting">
-                <div className="circle">
-                  <span className="number">3</span>
-                </div>
-                <div className="details">
-                  <p>
-                    <b>Team Meeting</b>
-                  </p>
-                  <p>Group D</p>
-                  <small className="text-muted"></small>
-                </div>
-                <div className="time">
-                  <p>1:00-13:00</p>
-                  <span className="material-symbols-outlined">more_vert</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-        {/* Ends upcoming tasks*/}
-      </div> 
-      {/* right section ends*/}
+      </div>
     </div>
   );
 };

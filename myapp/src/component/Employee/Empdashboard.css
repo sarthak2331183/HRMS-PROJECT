@@ -153,6 +153,11 @@
     margin-left: 10vh;
     border: 1px solid black;
     width: 15vh;
+    color: #FF7A00;
+ }
+
+ .tasksleft input::placeholder{
+    color: #FF7A00;
  }
 
  .alltasks h2{
@@ -161,7 +166,9 @@
     font-weight: 400;
     text-align: center;
     padding: 10px;
-   font-size: large
+   font-size: large;
+   color : #1045FF;
+   text-decoration: underline;
  }
 hr{
     margin: auto;
@@ -200,9 +207,19 @@ hr{
     width: 75vh;
  }
  .working_hour{
+    border: solid 2px black;
     border-radius: 8px;
     max-width: 110vh;
     margin: auto;
+    margin-top : 10px;
+ }
+ .tasks{
+    border: solid 2px black;
+    border-radius: 8px;
+    max-width: 110vh;
+    margin: auto;
+    margin-top : 115px;
+
 
     background-color: var(--clr-white);
     padding: var(--card-padding);
@@ -210,5 +227,6 @@ hr{
     margin-top: 1rem;
     box-shadow: var(--box-shadow);
     transition: all 0.3s ease;
+
 
  }

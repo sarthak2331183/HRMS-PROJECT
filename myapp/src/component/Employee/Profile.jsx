@@ -8,7 +8,6 @@ import search from '../Employee/search_mg.png'
 import notification from '../Employee/notification.png'
 import user from '../Employee/user.png'
 import attendance from '../Employee/attendance.png'
-import profile from '../Employee/profile.png'
 import chart from '../Employee/chart.png'
 import { getDocs, query, collection, where } from "firebase/firestore";
 import Empdashboard from "./Empdashboard";
@@ -107,6 +106,9 @@ const Profile = () => {
   const openDashboard = () => {
     navigate('/Empdashboard');
   };
+  const openAttendance=()=>{
+    navigate('/EmpAttedance')
+  }
 
   return (
     <div className="container">
@@ -213,7 +215,7 @@ const Profile = () => {
         
         
           <div className="rnd">
-            <h4>Attendance <img src={attendance} alt="" /></h4>
+            <h4 onClick={openAttendance}>Attendance <img src={attendance} alt="" /></h4>
             <h2>Upcoming Tasks</h2>
             <div className="Meetings">
               <div className="meeting">

@@ -14,6 +14,7 @@ import { getDocs, query, collection, where } from "firebase/firestore";
 import Profile from './Profile'
 import EmpAttendance from "./EmpAttendance";
 
+
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
     <a
@@ -135,7 +136,7 @@ const Empdashboard = () => {
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            onSelect={openAttendance}
+            onSelect={()=>{}}
           />
           <NavItem
             itemName="Projects"
@@ -216,7 +217,7 @@ const Empdashboard = () => {
         
         
           <div className="rnd">
-            <h4>Attendance <img src={attendance} alt="" /></h4>
+            <h4 onClick={openAttendance}>Attendance <img src={attendance} alt="" /></h4>
             <h4 onClick={openProfile} style={{ cursor: 'pointer' }}>Profile <img src={profile} alt="" /></h4>
             <h2>Upcoming Tasks</h2>
             <div className="Meetings">
