@@ -11,6 +11,9 @@ import ForgetPassword from './component/login/ForgetPassword';
 import AddAdmin from './component/admin/AddAdmin';
 import Admin from './component/admin/Admin';
 import Attendance from './component/admin/Attendance';
+import Project from './component/admin/Project';
+import Profile from './component/Employee/Profile';
+import EmpAttendance from './component/Employee/EmpAttendance'
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -44,6 +47,9 @@ function App() {
         <Route path="/Admin" element={<Admin />} />
         <Route path="/AddAdmin" element={<AddAdmin />} />
         <Route path="/Attendance" element={<Attendance />} />
+        <Route path="/Project" element={<Project />} />
+        <Route path="/Profile" element={<Profile />} />
+        <Route path="/EmpAttendance" element={<EmpAttendance />} />
       </Routes>
     </Router>
   );
