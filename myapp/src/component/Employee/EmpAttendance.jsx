@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
-import "./Empattendances.css"
-import { auth, db } from '../../firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import "./Empattendances.css";
+import { auth, db } from "../../firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import logo from '../Images/logo.png'
-import user from '../Employee/user.png'
-import { getDocs, query, collection, where } from "firebase/firestore";
+import logo from "../Images/logo.png";
+import user from "../Employee/user.png";
+import {
+  getDocs,
+  query,
+  collection,
+  where
+} from "firebase/firestore";
+import Popup from "./Popup"; // Import the Popup component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -26,6 +32,7 @@ const EmpAttendance = () => {
   const [userName, setUserName] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [attendanceData, setAttendanceData] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -42,7 +49,7 @@ const EmpAttendance = () => {
             });
           }
         } catch (error) {
-          console.error('Error fetching user data:', error);
+          console.error("Error fetching user data:", error);
         }
       } else {
         setUserEmail("");
@@ -78,7 +85,7 @@ const EmpAttendance = () => {
         });
         setAttendanceData(data);
       } catch (error) {
-        console.error('Error fetching attendance data:', error);
+        console.error("Error fetching attendance data:", error);
       }
     };
 
@@ -86,18 +93,20 @@ const EmpAttendance = () => {
   }, [userEmail]);
 
   const handleLogout = () => {
-    const confirmed = window.confirm('Are you sure you want to log out?');
+    const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
-      signOut(auth).then(() => {
-        navigate('/');
-      }).catch((error) => {
-        console.error('Error signing out:', error);
-      });
+      signOut(auth)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("Error signing out:", error);
+        });
     }
   };
 
-  const openAttendance = () => {
-    navigate('/EmpAttendance'); 
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
   };
 
   return (
@@ -131,7 +140,11 @@ const EmpAttendance = () => {
           />
           <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
           <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
-          <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
+          <NavItem
+            itemName="Log out"
+            icon="logout"
+            onSelect={handleLogout}
+          />
         </div>
       </aside>
 
@@ -142,22 +155,25 @@ const EmpAttendance = () => {
           <h2>Attendance</h2>
         </div>
         <div className="buttons">
-  <div className="button-group">
-    <div>
-      <button className="green-button">Check-in Time</button>
-      <p>Text for Check-in Time</p>
-    </div>
-    <div>
-      <button className="red-button">Check-out Time</button>
-      <p>Text for Check-out Time</p>
-    </div>
-    <div>
-      <button className="green-button">Work Progress</button>
-      <p>Text for Work Progress</p>
-    </div>
-  </div>
-</div>
-
+          <div className="button-group">
+            <div>
+              <button className="green-button">Check-in Time</button>
+              <p>At: 11:00 Am</p>
+            </div>
+            <div>
+              <button className="red-button">Check-out Time</button>
+              <p>At: 5:00 Pm</p>
+            </div>
+            <div>
+              <button
+                className="progress-button"
+                onClick={togglePopup}
+              >
+                Work Progress
+              </button>
+            </div>
+          </div>
+        </div>
 
         <div className="attendance-record-container">
           <div className="left-section">
@@ -165,8 +181,7 @@ const EmpAttendance = () => {
           </div>
           <div className="right-section">
             <button className="gray-button">Calendar</button>
-            <button className="gray-button">Calendar</button>
-            <button className="green-button">Show</button>
+            <button className="show-button">Show</button>
           </div>
         </div>
 
@@ -182,20 +197,24 @@ const EmpAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            {attendanceData.map((attendanceRecord, index) => (
-              <tr key={index}>
-                <td>{attendanceRecord.date}</td>
-                <td>{attendanceRecord.day}</td>
-                <td>{attendanceRecord.checkInTime}</td>
-                <td>{attendanceRecord.checkOutTime}</td>
-                <td>{attendanceRecord.hoursWorked}</td>
-                <td>{attendanceRecord.workedOn}</td>
-              </tr>
-            ))}
+            <tr>
+              <td>4/3/2024</td>
+              <td>Wed</td>
+              <td>10:AM</td>
+              <td>2:00 PM</td>
+              <td>4 </td>
+              <td>Not a project</td>
+            </tr>
+            <tr>
+              <td>4/3/2024</td>
+              <td>Wed</td>
+              <td>10:AM</td>
+              <td>2:00 PM</td>
+              <td>4 </td>
+              <td>HRMS</td>
+            </tr>
           </tbody>
         </table>
-
-
       </div>
 
       <div className="right">
@@ -204,18 +223,21 @@ const EmpAttendance = () => {
             <span className="material-symbols-outlined">menu</span>
           </button>
         </div>
-        
+
         <div className="upcoming_tasks">
-          <p>{currentDateTime}</p> 
+          <p>{currentDateTime}</p>
           <div className="emp">
-            <img src={user} alt="" />  
+            <img src={user} alt="" />
             <div className="emp2">
               <h3>{userName}</h3>
               <p>Employee</p>
-            </div>      
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Popup */}
+      {showPopup && <Popup onClose={togglePopup} />}
     </div>
   );
 };

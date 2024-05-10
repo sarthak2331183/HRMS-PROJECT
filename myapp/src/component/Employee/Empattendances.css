@@ -80,10 +80,29 @@
 .red-button {
   color: white;
   border: none;
-  padding: 10px 20px; /* Adjust padding as needed */
+  padding: 30px 40px; /* Adjust padding as needed */
   border-radius: 5px;
   cursor: pointer;
   background-color: transparent; /* Make background transparent */
+}
+
+.progress-button{
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: green;
+  margin-top: 20px;
+}
+
+.show-button{
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: green;
 }
 
 .green-button {
@@ -95,11 +114,20 @@
 }
 
 .buttons-container {
-  width: 100%;
+
   padding: 10px;
   background-color: #dddddd; /* Gray padding color */
   border-radius: 5px;
 }
+.gray-button{
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgb(138, 143, 138);
+}
+
 
 .attendance-record-container {
   display: flex;
