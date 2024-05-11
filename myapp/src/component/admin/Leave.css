@@ -1,0 +1,29 @@
+
+.submit-btn,
+.delete-btn {
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.submit-btn {
+    margin-right: 10px; 
+}
+
+
+
+.submit-btn:hover,
+.delete-btn:hover {
+  background: #ddd;
+}
+.leaveType-btn {
+  padding: 10px 20px;
+  background: #7380ec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-items: center;
+  text-align: center;
+}
