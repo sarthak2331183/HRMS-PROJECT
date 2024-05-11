@@ -94,6 +94,9 @@ const Employee = () => {
   const openAdmin = () => {
     navigate('/Admin');
   };
+  const openAttendance = () => {
+    navigate('/Attendance');
+  };
 
   return (
     <div className="container">
@@ -122,22 +125,21 @@ const Employee = () => {
           />
           <NavItem
             itemName="Employees"
-            icon="diversity_3"
+            icon="badge"
             selected={true}
             onSelect={() => {}}
           />
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            onSelect={() => {}}
+            onSelect={openAttendance}
           />
           <NavItem
             itemName="Projects"
             icon="model_training"
             onSelect={() => {}}
           />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
+          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={() => {}} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
