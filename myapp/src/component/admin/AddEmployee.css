@@ -3,11 +3,7 @@
   min-height: 100vh;
 }
 
-/* Main section */
-main {
-  flex: 1;
-  padding: 2rem;
-}
+
 #addemployee{
   padding-left: 38px;
     padding-bottom: 30px;
