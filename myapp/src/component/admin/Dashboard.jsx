@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
-import { auth, db } from '../../firebase'; // Import db from firebase.js
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth, db } from "../../firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Employee from "./Employee";
 import Admin from "./Admin";
 import { getDocs, query, collection, where } from "firebase/firestore";
-import user from '../Employee/user.png'
-import logo from '../Images/logo.png'
-import Attendance from './Attendance'
+import user from "../Employee/user.png";
+import logo from "../Images/logo.png";
+import Attendance from "./Attendance";
 import Project from "./Project";
-
-
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -49,7 +47,7 @@ const Dashboard = () => {
             });
           }
         } catch (error) {
-          console.error('Error fetching user data:', error);
+          console.error("Error fetching user data:", error);
         }
       } else {
         setUserEmail("");
@@ -88,33 +86,36 @@ const Dashboard = () => {
   }, [userName]);
 
   const handleLogout = () => {
-    const confirmed = window.confirm('Are you sure you want to log out?');
+    const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
-      signOut(auth).then(() => {
-        navigate('/');
-      }).catch((error) => {
-        console.error('Error signing out:', error);
-      });
+      signOut(auth)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("Error signing out:", error);
+        });
     }
   };
 
   const openEmployee = () => {
-    navigate('/Employee');
+    navigate("/Employee");
   };
 
   const openAdmin = () => {
-    navigate('/Admin');
+    navigate("/Admin");
   };
   const openAttendance = () => {
-    navigate('/Attendance');
+    navigate("/Attendance");
   };
   const openProject = () => {
-    navigate('/Project');
+    navigate("/Project");
+  };
+  const openLeave = () => {
+    navigate("/Leave");
   };
 
-
   return (
-    
     <div className="container">
       {/* aside section starts*/}
       <aside>
@@ -126,7 +127,6 @@ const Dashboard = () => {
             <span className="material-symbols-outlined">crowdsource</span>
           </div>
         </div>
-        {/* top ends */}
 
         <div className="sidebar">
           <NavItem
@@ -135,14 +135,11 @@ const Dashboard = () => {
             selected={true}
             onSelect={() => {}}
           />
-          <NavItem
-            itemName="Admins"
-            icon="diversity_3"
-            onSelect={openAdmin}
-          />
+          <NavItem itemName="Admins" icon="diversity_3" onSelect={openAdmin} />
           <NavItem
             itemName="Employees"
-            icon="diversity_3"
+            icon="
+badge"
             onSelect={openEmployee}
           />
           <NavItem
@@ -155,8 +152,11 @@ const Dashboard = () => {
             icon="model_training"
             onSelect={openProject}
           />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
+          <NavItem
+            itemName="Leave"
+            icon="prompt_suggestion"
+            onSelect={openLeave}
+          />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
@@ -165,31 +165,29 @@ const Dashboard = () => {
       {/* main section starts*/}
       <main>
         <h1>Dashboard</h1>
-        <h2>{greeting}</h2> 
+        <h2>{greeting}</h2>
 
         <p>Admin</p>
 
         <div className="inside">
           {/* start selling */}
           <div className="sales">
-              <h3>On duty</h3>
-              <h3>30</h3>
-
-
+            <h3>On duty</h3>
+            <h3>30</h3>
           </div>
           {/* ends selling */}
 
           {/* start expenses */}
           <div className="expenses">
-          <h3>On Leave</h3>
-              <h3>5</h3>
+            <h3>On Leave</h3>
+            <h3>5</h3>
           </div>
           {/* ends expenses */}
 
           {/* start income*/}
           <div className="income">
-          <h3>Late</h3>
-              <h3>3</h3>
+            <h3>Late</h3>
+            <h3>3</h3>
           </div>
           {/* ends income */}
         </div>
@@ -251,136 +249,76 @@ const Dashboard = () => {
           <button id="menu_bar">
             <span className="material-symbols-outlined">menu</span>
           </button>
-          
         </div>
         {/* ends top */}
         <div className="date">
-        <input type="text" value={currentDateTime} disabled />
+          <input type="text" value={currentDateTime} disabled />
         </div>
-       {/* Starts upcoming tasks*/}
-<div className="upcoming_tasks">
-<div className="emp">
-            <img src={user} alt="" />  
+        {/* Starts upcoming tasks*/}
+        <div className="upcoming_tasks">
+          <div className="emp">
+            <img src={user} alt="" />
             <div className="emp2">
               <h3>{userName}</h3>
-            </div>      
-          </div>
-  <h2>Upcoming Tasks</h2>
-  <div className="Meetings">
-    <div className="meeting">
-      <div className="circle">
-        <span className="number">1</span>
-      </div>
-
-
-
-      <div className="details">
-        <p>
-          <b>Team Meeting</b>
-        </p>
-        <p>Group D</p>
-        <small className="text-muted"></small>
-      </div>
-      <div className="time">
-        <p>12:00-13:00</p>
-        <span className="material-symbols-outlined">more_vert</span>
-      </div>
-    </div>
-
-
-
-
-    <div className="meeting">
-      <div className="circle">
-        <span className="number">2</span>
-      </div>
-      <div className="details">
-        <p>
-          <b>Team Meeting</b>
-        </p>
-        <p>Group D</p>
-        <small className="text-muted"></small>
-      </div>
-      <div className="time">
-        <p>12:00-13:00</p>
-        <span className="material-symbols-outlined">more_vert</span>
-      </div>
-    </div>
-
-    <div className="meeting">
-      <div className="circle">
-        <span className="number">3</span>
-      </div>
-      <div className="details">
-        <p>
-          <b>Team Meeting</b>
-        </p>
-        <p>Group D</p>
-        <small className="text-muted"></small>
-      </div>
-      <div className="time">
-        <p>1:00-13:00</p>
-        <span className="material-symbols-outlined">more_vert</span>
-      </div>
-    </div>
-  </div>
-</div>
-{/* Ends upcoming tasks*/}
-
-
-        {/* Starts employees on work*/}
-        {/* <div className="employees_on_work">
-          <h2>Employees On Work</h2>
-
-          <div className="activity">
-            <div className="OnWork">
-              <span class="material-symbols-outlined">display_settings</span>
-            </div>
-            <div className="right_text">
-              <div className="info">
-                <h3>On Duty</h3>
-                <small class="text-muted">Total no. of employees Working</small>
-              </div>
-              <h5 class="danger">44</h5>
             </div>
           </div>
-
-          <div className="activity">
-            <div className="OnLeave">
-              <span class="material-symbols-outlined">
-                <span class="material-symbols-outlined">event_busy</span>
-              </span>
-            </div>
-            <div className="right_text">
-              <div className="info">
-                <h3>On Leave</h3>
-                <small class="text-muted">
-                  Total no. of employees on leave
-                </small>
+          <h2>Upcoming Tasks</h2>
+          <div className="Meetings">
+            <div className="meeting">
+              <div className="circle">
+                <span className="number">1</span>
               </div>
-              <h5 class="danger">20</h5>
-            </div>
-          </div>
 
-          <div className="activity">
-            <div className="Late">
-              <span class="material-symbols-outlined">
-                <span class="material-symbols-outlined">delete_history</span>
-              </span>
-            </div>
-            <div className="right_text">
-              <div className="info">
-                <h3>Late</h3>
-                <small class="text-muted">
-                  Total no. of employees running late to work
-                </small>
+              <div className="details">
+                <p>
+                  <b>Team Meeting</b>
+                </p>
+                <p>Group D</p>
+                <small className="text-muted"></small>
               </div>
-              <h5 class="danger">11</h5>
+              <div className="time">
+                <p>12:00-13:00</p>
+                <span className="material-symbols-outlined">more_vert</span>
+              </div>
+            </div>
+
+            <div className="meeting">
+              <div className="circle">
+                <span className="number">2</span>
+              </div>
+              <div className="details">
+                <p>
+                  <b>Team Meeting</b>
+                </p>
+                <p>Group D</p>
+                <small className="text-muted"></small>
+              </div>
+              <div className="time">
+                <p>12:00-13:00</p>
+                <span className="material-symbols-outlined">more_vert</span>
+              </div>
+            </div>
+
+            <div className="meeting">
+              <div className="circle">
+                <span className="number">3</span>
+              </div>
+              <div className="details">
+                <p>
+                  <b>Team Meeting</b>
+                </p>
+                <p>Group D</p>
+                <small className="text-muted"></small>
+              </div>
+              <div className="time">
+                <p>1:00-13:00</p>
+                <span className="material-symbols-outlined">more_vert</span>
+              </div>
             </div>
           </div>
         </div>
-        {/* Ends employees on work*/}
-      </div> 
+        {/* Ends upcoming tasks*/}
+      </div>
       {/* right section ends*/}
     </div>
   );
