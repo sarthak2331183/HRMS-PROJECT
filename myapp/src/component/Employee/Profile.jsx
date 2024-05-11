@@ -8,6 +8,7 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
       href="#"
       className={selected ? "active" : ""}
       onClick={() => onSelect(itemName)}
+
     >
       <span className="material-symbols-outlined">{icon}</span>
       <h3>{itemName}</h3>
