@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase"; // Import db from firebase.js
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import logo from "../Images/logo.png";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
@@ -37,7 +37,7 @@ const Admin = () => {
         const adminsData = [];
         querySnapshot.forEach((doc) => {
           const { name, gender, mobile } = doc.data();
-          adminsData.push({ id: doc.id, name, gender, mobile });
+          adminsData.push({ id: doc.id, name, gender, mobile, editable: false });
         });
 
         setAdmins(adminsData);
@@ -66,6 +66,44 @@ const Admin = () => {
   const openAttendance = () => navigate("/Attendance");
   const openProject = () => navigate("/Project");
   const openLeave = () => navigate("/Leave");
+
+  const handleDeleteAdmin = async (adminId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this admin?");
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, "users", adminId));
+        setAdmins((prevAdmins) => prevAdmins.filter((admin) => admin.id !== adminId));
+      } catch (error) {
+        console.error("Error deleting admin:", error);
+      }
+    }
+  };
+
+  const handleEditAdmin = (adminId) => {
+    setAdmins((prevAdmins) =>
+      prevAdmins.map((admin) =>
+        admin.id === adminId ? { ...admin, editable: true } : admin
+      )
+    );
+  };
+
+  const handleSaveAdmin = async (adminId) => {
+    const adminToSave = admins.find((admin) => admin.id === adminId);
+    try {
+      await updateDoc(doc(db, "users", adminId), {
+        name: adminToSave.name,
+        gender: adminToSave.gender,
+        mobile: adminToSave.mobile
+      });
+      setAdmins((prevAdmins) =>
+        prevAdmins.map((admin) =>
+          admin.id === adminId ? { ...admin, editable: false } : admin
+        )
+      );
+    } catch (error) {
+      console.error("Error updating admin:", error);
+    }
+  };
 
   // Filter admins based on the search query
   const filteredAdmins = admins.filter((admin) =>
@@ -172,19 +210,76 @@ const Admin = () => {
                   <th>Name</th>
                   <th>Gender</th>
                   <th>Contact No.</th>
+                  <th>Actions</th>
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
                 {sortedAdmins.map((admin, index) => (
                   <tr key={admin.id}>
                     <td>{index + 1}</td>
-                    <td>{admin.name}</td>
-                    <td>{admin.gender}</td>
-                    <td>{admin.mobile}</td>
                     <td>
-                    <a href="#" className="details-link">
-                      Details
-                    </a>
+                      {admin.editable ? (
+                        <input
+                          type="text"
+                          value={admin.name}
+                          onChange={(e) =>
+                            setAdmins((prevAdmins) =>
+                              prevAdmins.map((a) =>
+                                a.id === admin.id ? { ...a, name: e.target.value } : a
+                              )
+                            )
+                          }
+                        />
+                      ) : (
+                        admin.name
+                      )}
+                    </td>
+                    <td>{admin.gender}</td>
+                    <td>
+                      {admin.editable ? (
+                        <input
+                          type="text"
+                          value={admin.mobile}
+                          onChange={(e) =>
+                            setAdmins((prevAdmins) =>
+                              prevAdmins.map((a) =>
+                                a.id === admin.id ? { ...a, mobile: e.target.value } : a
+                              )
+                            )
+                          }
+                        />
+                      ) : (
+                        admin.mobile
+                      )}
+                    </td>
+                    <td>
+                      {admin.editable ? (
+                        <button
+                          className="save-btn"
+                          onClick={() => handleSaveAdmin(admin.id)}
+                        >
+                          Save
+                        </button>
+                      ) : (
+                        <button
+                          className="edit-btn"
+                          onClick={() => handleEditAdmin(admin.id)}
+                        >
+                          Edit
+                        </button>
+                      )}
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteAdmin(admin.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                    <td>
+                      <a href="#" className="details-link">
+                        Details
+                      </a>
                     </td>
                   </tr>
                 ))}
