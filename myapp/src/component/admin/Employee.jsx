@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useEffect } from "react";
 import "./Employee.css";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -13,6 +13,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
+import Det from "./Det"; // Update import statement
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -35,6 +36,9 @@ const Employee = () => {
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [sortBy, setSortBy] = useState(""); // State for sorting criteria
 
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [showDetailsPopup, setShowDetailsPopup] = useState(false);
+
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -54,6 +58,11 @@ const Employee = () => {
             employmentType,
             jobTitle,
             branch,
+            citizenshipId,
+            email,
+            age,
+            parentsName
+
           } = doc.data();
           employeesData.push({
             id: doc.id,
@@ -64,6 +73,10 @@ const Employee = () => {
             employmentType,
             jobTitle,
             branch,
+            citizenshipId,
+            email,
+            age,
+            parentsName,
             editable: false,
           });
         });
@@ -78,6 +91,16 @@ const Employee = () => {
 
     fetchEmployees();
   }, []);
+
+  const handleDetailsClick = (employee) => {
+    setSelectedEmployee(employee);
+    setShowDetailsPopup(true); // Show the details popup
+  };
+
+  const handleCancel = () => {
+    setSelectedEmployee(null);
+    setShowDetailsPopup(false); // Hide the details popup
+  };
 
   // Filter employees based on search query
   const filteredEmployees = employees.filter(
@@ -161,25 +184,18 @@ const Employee = () => {
     );
   };
 
-  const handleSaveEmployee = async (employeeId) => {
-    const employeeToSave = employees.find(
-      (employee) => employee.id === employeeId
-    );
+  const handleSaveEmployee = async (updatedEmployee) => {
     try {
-      await updateDoc(doc(db, "users", employeeId), {
-        name: employeeToSave.name,
-        gender: employeeToSave.gender,
-        mobile: employeeToSave.mobile,
-      });
+      await updateDoc(doc(db, "users", updatedEmployee.id), updatedEmployee);
       setEmployees((prevEmployees) =>
         prevEmployees.map((employee) =>
-          employee.id === employeeId
-            ? { ...employee, editable: false }
-            : employee
+          employee.id === updatedEmployee.id ? updatedEmployee : employee
         )
       );
     } catch (error) {
       console.error("Error updating employee:", error);
+    } finally {
+      setSelectedEmployee(null);
     }
   };
 
@@ -414,8 +430,9 @@ const Employee = () => {
                   </td>
                   <td>
                     <a
-                      href={`/employee/${employee.id}`}
+                      href="#"
                       className="details-link"
+                      onClick={() => handleDetailsClick(employee)} // Handle details click
                     >
                       Details
                     </a>
@@ -426,6 +443,20 @@ const Employee = () => {
           </table>
         </div>
         {/* ends recent order */}
+
+        {/* Details Popup */}
+        {showDetailsPopup && selectedEmployee && (
+          <div className="popup">
+            <div className="popup-content">
+              <Det
+                employee={selectedEmployee}
+                onSave={handleSaveEmployee}
+                onCancel={handleCancel}
+              />
+            </div>
+          </div>
+        )}
+        {/* Details Popup ends */}
       </main>
       {/* main section ends*/}
     </div>
