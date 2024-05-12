@@ -1,7 +1,14 @@
 import React from 'react';
 import './Empdashboard.css';
 import logo from '../Images/logo.png'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Add this line
+
+import { auth, db } from '../../firebase'; // Import db from firebase.js
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+
+
+
+
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
     <a
@@ -16,7 +23,9 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
   );
 };
 // Example functional component
-const Empdashboard = () => {
+const Profile = () => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     const confirmed = window.confirm('Are you sure you want to log out?');
     if (confirmed) {
@@ -29,7 +38,7 @@ const Empdashboard = () => {
   };
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', background: '#F8FAFD' }}>
-      <div style={{ width: 1054, height: 739, left: 314, top: 109, position: 'absolute', background: 'white', borderRadius: 20 }}>
+      <div style={{ width: 1054, height: 739, left: 219, top: 78, position: 'absolute', background: 'white', borderRadius: 20 }}>
       
         <div style={{ paddingBottom: 3, left: 30, top: 63, position: 'absolute', justifyContent: 'flex-end', alignItems: 'flex-start', gap: 19, display: 'inline-flex' }}>
           <div style={{ width: 199, height: 656, position: 'relative', background: '#F8FAFD', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', display: 'flex' }}>
@@ -270,4 +279,4 @@ const Empdashboard = () => {
   );
 };
 
-export default Empdashboard;
+export default Profile;
