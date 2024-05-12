@@ -1,8 +1,8 @@
-import React, { useState } from "react"; // Import React once
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Dashboard.css"; // CSS for Dashboard
+import "./Dashboard.css"; 
 import logo from '../Images/logo.png';
-import "./Project.css"; // CSS for Project
+import "./Project.css"; 
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => (
   <a
@@ -19,7 +19,7 @@ const Project = () => {
   const navigate = useNavigate();
 
   const handleAddProject = () => {
-    navigate('/AddProject'); // Navigate to the AddProject component
+    navigate('/AddProject');
   };
 
   const [projects, setProjects] = useState([

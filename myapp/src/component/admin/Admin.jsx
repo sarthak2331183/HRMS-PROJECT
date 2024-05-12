@@ -65,6 +65,7 @@ const Admin = () => {
   const openEmployee = () => navigate("/Employee");
   const openAttendance = () => navigate("/Attendance");
   const openProject = () => navigate("/Project");
+  const openLeave = () => navigate("/Leave");
 
   // Filter admins based on the search query
   const filteredAdmins = admins.filter((admin) =>
@@ -123,7 +124,7 @@ const Admin = () => {
             icon="model_training"
             onSelect={openProject}
           />
-          <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={() => {}} />
+          <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={openLeave} />
           <NavItem itemName="Log Out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>

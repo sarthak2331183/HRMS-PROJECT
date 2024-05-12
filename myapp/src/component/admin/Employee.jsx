@@ -97,6 +97,12 @@ const Employee = () => {
   const openAttendance = () => {
     navigate('/Attendance');
   };
+  const openProject = () => {
+    navigate('/Project');
+  };
+  const openLeave = () => {
+    navigate('/Leave');
+  };
 
   return (
     <div className="container">
@@ -137,9 +143,9 @@ const Employee = () => {
           <NavItem
             itemName="Projects"
             icon="model_training"
-            onSelect={() => {}}
+            onSelect={openProject}
           />
-          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={() => {}} />
+          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={openLeave} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>

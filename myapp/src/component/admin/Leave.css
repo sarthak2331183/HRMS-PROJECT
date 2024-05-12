@@ -10,6 +10,24 @@
 .submit-btn {
     margin-right: 10px; 
 }
+.employee_details input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.status-pending {
+  color: #ffc107; 
+}
+
+.status-approved {
+  color: #28a745; 
+}
+
+.status-denied {
+  color: #dc3545; 
+}
 
 
 

@@ -22,7 +22,6 @@ const Leave = () => {
     navigate('/AddProject');
   };
 
-  // Sample leave requests
   const [leaveRequests, setLeaveRequests] = useState([
     {
       id: 1,
@@ -36,7 +35,10 @@ const Leave = () => {
     },
   ]);
 
-  // Function to handle deleting a leave request
+  const openLeaveTypes = () => {
+    navigate("/LeaveTypes");
+  };
+
   const handleDelete = (leaveRequestId) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this leave request?"
@@ -66,9 +68,12 @@ const Leave = () => {
   const openAttendance = () => navigate("/Attendance");
   const openProject = () => navigate("/Project");
 
+  const pendingRequests = leaveRequests.filter(request => request.status === "Pending");
+  const approvedRequests = leaveRequests.filter(request => request.status === "Approved");
+  const deniedRequests = leaveRequests.filter(request => request.status === "Denied");
+
   return (
     <div className="container">
-      {/* Sidebar */}
       <aside>
         <div className="top">
           <div className="logo">
@@ -90,18 +95,27 @@ const Leave = () => {
         </div>
       </aside>
 
-      {/* Main content */}
       <main>
-      <div className="employee_details">
+        <h1 id="employee">Leave Requests</h1>
+        
+        <div className="project-stats">
+          <button className="stat-btn">All: {leaveRequests.length}</button>
+          <button className="stat-btn">Pending: {pendingRequests.length}</button>
+          <button className="stat-btn">Approved: {approvedRequests.length}</button>
+          <button className="stat-btn">Denied: {deniedRequests.length}</button>
+        </div>
+        
+        <div className="employee_details">
           <div className="srh-container">
             <div className="search">
               <span className="material-symbols-outlined">search</span>
               <input type="text" placeholder="Search..." />
             </div>
-            <button className="leaveType-btn">
+            <button className="leaveType-btn" onClick={openLeaveTypes}>
               Leave Type
             </button>
           </div>
+          
           <table>
             <thead>
               <tr>
@@ -141,6 +155,11 @@ const Leave = () => {
                         updatedRequests.find((req) => req.id === request.id).status = e.target.value;
                         setLeaveRequests(updatedRequests);
                       }}
+                      className={
+                        request.status === "Denied" ? "status-denied" :
+                        request.status === "Pending" ? "status-pending" :
+                        request.status === "Approved" ? "status-approved" : ""
+                      }
                     >
                       <option value="Pending">Pending</option>
                       <option value="Approved">Approved</option>
@@ -171,5 +190,4 @@ const Leave = () => {
     </div>
   );
 };
-
 export default Leave;

@@ -16,6 +16,7 @@ import Profile from './component/Employee/Profile';
 import EmpAttendance from './component/Employee/EmpAttendance'
 import AddProject from './component/admin/AddProject';
 import Leave from './component/admin/Leave';
+import LeaveTypes from './component/admin/LeaveTypes';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -54,6 +55,7 @@ function App() {
         <Route path="/EmpAttendance" element={<EmpAttendance />} />
         <Route path="/AddProject" element={<AddProject />} />
         <Route path="/Leave" element={<Leave />} />
+        <Route path="/LeaveTypes" element={<LeaveTypes />} />
       </Routes>
     </Router>
   );
