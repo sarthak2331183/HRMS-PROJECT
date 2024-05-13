@@ -1,0 +1,68 @@
+.leave_details {
+  background-color: var(--clr-white);
+  width: 25%;
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  transition: all 0.3s ease;
+  color: var(--clr-dark);
+}
+
+.Addbtn, .Dltbtn {
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-leave-type {
+  padding-top: 40px;
+}
+
+.add-leave-type p {
+  display: inline;
+  padding-right: 15px;
+  padding-left: 9px;
+}
+
+.add-leave-type input.leave-type-input {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.add-leave-type button.Addbtn {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.add-leave-type .leave-type-input {
+  width: 200px;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 768px) {
+  .leave_details {
+    width: 100%; 
+    max-width: 300px; 
+  }
+
+  .add-leave-type {
+    padding-top: 20px; 
+  }
+  .add-leave-type input.leave-type-input,
+  .add-leave-type button.Addbtn {
+    width: 100%; 
+    margin-right: 0; 
+    margin-bottom: 10px; 
+  }
+
+  .add-leave-type button.Addbtn {
+    margin-left: 0; 
+  }
+}

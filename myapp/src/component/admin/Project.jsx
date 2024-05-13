@@ -1,8 +1,8 @@
-import React, { useState } from "react"; // Import React once
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Dashboard.css"; // CSS for Dashboard
+import "./Dashboard.css"; 
 import logo from '../Images/logo.png';
-import "./Project.css"; // CSS for Project
+import "./Project.css"; 
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => (
   <a
@@ -19,7 +19,7 @@ const Project = () => {
   const navigate = useNavigate();
 
   const handleAddProject = () => {
-    navigate('/AddProject'); // Navigate to the AddProject component
+    navigate('/AddProject');
   };
 
   const [projects, setProjects] = useState([
@@ -68,6 +68,7 @@ const Project = () => {
   const openEmployee = () => navigate("/Employee");
   const openAdmin = () => navigate("/Admin");
   const openAttendance = () => navigate("/Attendance");
+  const openLeave = () => navigate("/Leave");
 
   const upcomingProjects = projects.filter(
     (project) => new Date(project.startDate) > new Date()
@@ -101,11 +102,10 @@ const Project = () => {
         <div className="sidebar">
           <NavItem itemName="Dashboard" icon="grid_view" onSelect={openDashboard} />
           <NavItem itemName="Admins" icon="diversity_3" onSelect={openAdmin} />
-          <NavItem itemName="Employees" icon="diversity_3" onSelect={openEmployee} />
+          <NavItem itemName="Employees" icon="badge" onSelect={openEmployee} />
           <NavItem itemName="Attendance" icon="person_check" onSelect={openAttendance} />
           <NavItem itemName="Projects" icon="model_training" selected={true} />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
+          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={openLeave} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>

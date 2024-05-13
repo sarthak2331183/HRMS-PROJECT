@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase"; // Import db from firebase.js
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import logo from "../Images/logo.png";
+import AdmDet from "./AdmDet"; // Import the AdmDet component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -36,8 +37,8 @@ const Admin = () => {
 
         const adminsData = [];
         querySnapshot.forEach((doc) => {
-          const { name, gender, mobile } = doc.data();
-          adminsData.push({ id: doc.id, name, gender, mobile });
+          const { name, gender, mobile, age, citizenshipId, email, parentsName } = doc.data();
+          adminsData.push({ id: doc.id, name, gender, mobile, age, citizenshipId, email, parentsName, editable: false });
         });
 
         setAdmins(adminsData);
@@ -64,6 +65,41 @@ const Admin = () => {
   const openAddAdmin = () => navigate("/AddAdmin");
   const openEmployee = () => navigate("/Employee");
   const openAttendance = () => navigate("/Attendance");
+  const openProject = () => navigate("/Project");
+  const openLeave = () => navigate("/Leave");
+
+  const handleDeleteAdmin = async (adminId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this admin?");
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, "users", adminId));
+        setAdmins((prevAdmins) => prevAdmins.filter((admin) => admin.id !== adminId));
+      } catch (error) {
+        console.error("Error deleting admin:", error);
+      }
+    }
+  };
+
+  const handleEditAdmin = (adminId) => {
+    setAdmins((prevAdmins) =>
+      prevAdmins.map((admin) =>
+        admin.id === adminId ? { ...admin, editable: true } : admin
+      )
+    );
+  };
+
+  const handleSaveAdmin = async (updatedAdmin) => {
+    try {
+      await updateDoc(doc(db, "users", updatedAdmin.id), updatedAdmin);
+      setAdmins((prevAdmins) =>
+        prevAdmins.map((admin) =>
+          admin.id === updatedAdmin.id ? updatedAdmin : admin
+        )
+      );
+    } catch (error) {
+      console.error("Error updating admin:", error);
+    }
+  };
 
   // Filter admins based on the search query
   const filteredAdmins = admins.filter((admin) =>
@@ -81,6 +117,19 @@ const Admin = () => {
       return 0;
     }
   });
+
+  const handleDetailsClick = (admin) => {
+    setSelectedAdmin(admin);
+    setShowDetailsPopup(true);
+  };
+
+  const [selectedAdmin, setSelectedAdmin] = useState(null);
+  const [showDetailsPopup, setShowDetailsPopup] = useState(false);
+
+  const handleCancel = () => {
+    setSelectedAdmin(null);
+    setShowDetailsPopup(false);
+  };
 
   return (
     <div className="container">
@@ -109,7 +158,7 @@ const Admin = () => {
           />
           <NavItem
             itemName="Employees"
-            icon="diversity_3"
+            icon="badge"
             onSelect={openEmployee}
           />
           <NavItem
@@ -117,8 +166,12 @@ const Admin = () => {
             icon="person_check"
             onSelect={openAttendance}
           />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
+          <NavItem
+            itemName="Projects"
+            icon="model_training"
+            onSelect={openProject}
+          />
+          <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={openLeave} />
           <NavItem itemName="Log Out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
@@ -149,9 +202,9 @@ const Admin = () => {
             </select>
           </div>
           <button className="add-employee-btn" onClick={openAddAdmin}>
-          <span className="material-symbols-outlined">add</span>
-          Add Admin
-        </button>
+            <span className="material-symbols-outlined">add</span>
+            Add Admin
+          </button>
         </div>
 
         {loading ? (
@@ -166,25 +219,94 @@ const Admin = () => {
                   <th>Name</th>
                   <th>Gender</th>
                   <th>Contact No.</th>
+                  <th>Actions</th>
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
                 {sortedAdmins.map((admin, index) => (
                   <tr key={admin.id}>
                     <td>{index + 1}</td>
-                    <td>{admin.name}</td>
-                    <td>{admin.gender}</td>
-                    <td>{admin.mobile}</td>
                     <td>
-                    <a href="#" className="details-link">
-                      Details
-                    </a>
+                      {admin.editable ? (
+                        <input
+                          type="text"
+                          value={admin.name}
+                          onChange={(e) =>
+                            setAdmins((prevAdmins) =>
+                              prevAdmins.map((a) =>
+                                a.id === admin.id ? { ...a, name: e.target.value } : a
+                              )
+                            )
+                          }
+                        />
+                      ) : (
+                        admin.name
+                      )}
+                    </td>
+                    <td>{admin.gender}</td>
+                    <td>
+                      {admin.editable ? (
+                        <input
+                          type="text"
+                          value={admin.mobile}
+                          onChange={(e) =>
+                            setAdmins((prevAdmins) =>
+                              prevAdmins.map((a) =>
+                                a.id === admin.id ? { ...a, mobile: e.target.value } : a
+                              )
+                            )
+                          }
+                        />
+                      ) : (
+                        admin.mobile
+                      )}
+                    </td>
+                    <td>
+                      {admin.editable ? (
+                        <button
+                          className="save-btn"
+                          onClick={() => handleSaveAdmin(admin)}
+                        >
+                          Save
+                        </button>
+                      ) : (
+                        <button
+                          className="edit-btn"
+                          onClick={() => handleEditAdmin(admin.id)}
+                        >
+                          Edit
+                        </button>
+                      )}
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteAdmin(admin.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="details-link"
+                        onClick={() => handleDetailsClick(admin)}
+                      >
+                        Details
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+        )}
+
+        {/* Details Popup */}
+        {showDetailsPopup && (
+          <AdmDet
+            admin={selectedAdmin}
+            onSave={handleSaveAdmin}
+            onCancel={handleCancel}
+          />
         )}
       </main>
     </div>

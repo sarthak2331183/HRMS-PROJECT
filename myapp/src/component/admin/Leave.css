@@ -1,0 +1,47 @@
+
+.submit-btn,
+.delete-btn, .save-btn {
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.submit-btn {
+    margin-right: 10px; 
+}
+.employee_details input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.status-pending {
+  color: #ffc107; 
+}
+
+.status-approved {
+  color: #28a745; 
+}
+
+.status-denied {
+  color: #dc3545; 
+}
+
+
+
+.submit-btn:hover,
+.delete-btn:hover {
+  background: #ddd;
+}
+.leaveType-btn {
+  padding: 10px 20px;
+  background: #7380ec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-items: center;
+  text-align: center;
+}
