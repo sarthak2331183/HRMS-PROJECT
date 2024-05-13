@@ -4,6 +4,7 @@ import { auth, db } from "../../firebase"; // Import db from firebase.js
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, query, where, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import logo from "../Images/logo.png";
+import AdmDet from "./AdmDet"; // Import the AdmDet component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -36,8 +37,8 @@ const Admin = () => {
 
         const adminsData = [];
         querySnapshot.forEach((doc) => {
-          const { name, gender, mobile } = doc.data();
-          adminsData.push({ id: doc.id, name, gender, mobile, editable: false });
+          const { name, gender, mobile, age, citizenshipId, email, parentsName } = doc.data();
+          adminsData.push({ id: doc.id, name, gender, mobile, age, citizenshipId, email, parentsName, editable: false });
         });
 
         setAdmins(adminsData);
@@ -87,17 +88,12 @@ const Admin = () => {
     );
   };
 
-  const handleSaveAdmin = async (adminId) => {
-    const adminToSave = admins.find((admin) => admin.id === adminId);
+  const handleSaveAdmin = async (updatedAdmin) => {
     try {
-      await updateDoc(doc(db, "users", adminId), {
-        name: adminToSave.name,
-        gender: adminToSave.gender,
-        mobile: adminToSave.mobile
-      });
+      await updateDoc(doc(db, "users", updatedAdmin.id), updatedAdmin);
       setAdmins((prevAdmins) =>
         prevAdmins.map((admin) =>
-          admin.id === adminId ? { ...admin, editable: false } : admin
+          admin.id === updatedAdmin.id ? updatedAdmin : admin
         )
       );
     } catch (error) {
@@ -121,6 +117,19 @@ const Admin = () => {
       return 0;
     }
   });
+
+  const handleDetailsClick = (admin) => {
+    setSelectedAdmin(admin);
+    setShowDetailsPopup(true);
+  };
+
+  const [selectedAdmin, setSelectedAdmin] = useState(null);
+  const [showDetailsPopup, setShowDetailsPopup] = useState(false);
+
+  const handleCancel = () => {
+    setSelectedAdmin(null);
+    setShowDetailsPopup(false);
+  };
 
   return (
     <div className="container">
@@ -193,9 +202,9 @@ const Admin = () => {
             </select>
           </div>
           <button className="add-employee-btn" onClick={openAddAdmin}>
-          <span className="material-symbols-outlined">add</span>
-          Add Admin
-        </button>
+            <span className="material-symbols-outlined">add</span>
+            Add Admin
+          </button>
         </div>
 
         {loading ? (
@@ -257,7 +266,7 @@ const Admin = () => {
                       {admin.editable ? (
                         <button
                           className="save-btn"
-                          onClick={() => handleSaveAdmin(admin.id)}
+                          onClick={() => handleSaveAdmin(admin)}
                         >
                           Save
                         </button>
@@ -277,15 +286,27 @@ const Admin = () => {
                       </button>
                     </td>
                     <td>
-                      <a href="#" className="details-link">
+                      <button
+                        className="details-link"
+                        onClick={() => handleDetailsClick(admin)}
+                      >
                         Details
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+        )}
+
+        {/* Details Popup */}
+        {showDetailsPopup && (
+          <AdmDet
+            admin={selectedAdmin}
+            onSave={handleSaveAdmin}
+            onCancel={handleCancel}
+          />
         )}
       </main>
     </div>
