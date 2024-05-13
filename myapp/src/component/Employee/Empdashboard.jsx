@@ -13,8 +13,8 @@ import chart from '../Employee/chart.png'
 import { getDocs, query, collection, where } from "firebase/firestore";
 import Profile from './Profile'
 import EmpAttendance from "./EmpAttendance";
-
-
+import Empleave from "./Empleave"
+import Empproject from "./Empproject";
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
     <a
@@ -107,7 +107,12 @@ const Empdashboard = () => {
   const openAttendance = () => {
     navigate('/EmpAttendance');
   };
-
+  const openLeave = () => {
+    navigate('/Empleave');
+  };
+  const openProject = () => {
+    navigate('/Empproject');
+  };
   // const openAdmin = () => {
   //   navigate('/Admin');
   // };
@@ -136,14 +141,14 @@ const Empdashboard = () => {
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            onSelect={()=>{}}
+            onSelect={openAttendance}
           />
           <NavItem
             itemName="Projects"
             icon="model_training"
-            onSelect={() => {}}
+            onSelect={openProject}
           />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
+          <NavItem itemName="Leave" icon="paid" onSelect={openLeave} />
           <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>

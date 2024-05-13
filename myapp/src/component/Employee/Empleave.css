@@ -1,0 +1,133 @@
+
+.project-stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+  padding-left: 38px;
+}
+.project-stats .leaveType-btn{
+  margin-left:auto
+}
+
+.all-btn{
+  padding: 10px 20px;
+  background: #7380ec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  
+  
+}
+.all-btn:hover{
+  border: 1px solid #7380ec;
+  background-color: #f8fafd;
+  color: #7380ec;
+}
+.pending-btn{
+  padding: 10px 20px;
+  background: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.pending-btn:hover{
+  border: 1px solid #ff0000;
+  background-color: #f8fafd;
+  color: #ff0000;
+}
+.approved-btn{
+  padding: 10px 20px;
+  background: #00c608;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.approved-btn:hover{
+  border: 1px solid #00c608;
+  background-color: #f8fafd;
+  color: #00c608;
+}
+.denied-btn{
+  padding: 10px 20px;
+  background: #00c608;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.denied-btn:hover{
+  border: 1px solid #00c608;
+  background-color: #f8fafd;
+  color: #00c608;
+}
+.leaveType-btn{
+  padding: 10px 20px;
+  background: #00c608;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.employee_details {
+  padding: 20px;
+}
+
+.srh-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-left: 38px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: -40px;
+}
+.search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding-left: 10px;
+}
+
+.add-project-btn {
+  padding: 10px 20px;
+  background: #7380ec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-items: center;
+  text-align: center;
+}
+
+.add-project-btn:hover {
+  border: 1px solid #7380ec;
+  background-color: #f8fafd;
+  color: #7380ec;
+}
+.edit-btn,
+.delete-btn {
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.edit-btn {
+    margin-right: 10px; 
+}
+
+
+.edit-btn:hover,
+.delete-btn:hover {
+  background: #ddd;
+}

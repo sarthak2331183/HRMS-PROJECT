@@ -5,7 +5,9 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import logo from "../Images/logo.png";
 import user from "../Employee/user.png";
+import Empdashboard from "./Empdashboard";
 import {
+
   getDocs,
   query,
   collection,
@@ -108,6 +110,9 @@ const EmpAttendance = () => {
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
+  const openEmpdashboard = () => {
+    navigate('/Empdashboard');
+  };
 
   return (
     <div className="container">
@@ -126,7 +131,7 @@ const EmpAttendance = () => {
             itemName="Dashboard"
             icon="grid_view"
             selected={true}
-            onSelect={() => {}}
+            onSelect={openEmpdashboard}
           />
           <NavItem
             itemName="Attendance"
