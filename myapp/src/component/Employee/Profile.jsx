@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom"; // Add this line
 import { auth, db } from '../../firebase'; // Import db from firebase.js
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
+import userImage from './user.png';
+import bellImage from './bell.png';
 
 
 
@@ -39,19 +41,34 @@ const Profile = () => {
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', background: '#F8FAFD' }}>
       <div style={{ width: 1054, height: 739, left: 219, top: 78, position: 'absolute', background: 'white', borderRadius: 20 }}>
-      
-        <div style={{ paddingBottom: 3, left: 30, top: 63, position: 'absolute', justifyContent: 'flex-end', alignItems: 'flex-start', gap: 19, display: 'inline-flex' }}>
-          <div style={{ width: 199, height: 656, position: 'relative', background: '#F8FAFD', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', display: 'flex' }}>
-            <div style={{ width: 167, height: 167, background: '#D9D9D9', borderRadius: 9999 }} />
+      <div style={{ paddingBottom: 3, left: 30, top: 63, position: 'absolute', justifyContent: 'flex-end', alignItems: 'flex-start', gap: 19, display: 'inline-flex' }}>
+  <div style={{ width: 199, height: 656, position: 'relative', background: '#F8FAFD', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ position: 'absolute', left: '50%', top: '15%', transform: 'translate(-50%, -50%)' }}>
+    <img src={userImage} alt="User" style={{ width: 167, height: 167, borderRadius: '50%' }} />
+
+
+    </div>
+  
+
+
+
+
             
            
-            <div style={{ color: 'black', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', wordWrap: 'break-word' }}>Aashish Thapa</div>
-            <div style={{ color: 'rgba(0, 0, 0, 0.70)', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', wordWrap: 'break-word' }}>Business Analyst</div>
-            <div style={{ width: 78, height: 32, position: 'relative' }}>
-              <div style={{ width: 78, height: 32, left: 0, top: 0, position: 'absolute', background: '#D9D9D9', borderRadius: 14 }} />
-              <img style={{ width: 18, height: 18, left: 49, top: 5, position: 'absolute' }} src="https://via.placeholder.com/18x18" />
-              <div style={{ left: 16, top: 7, position: 'absolute', color: 'black', fontSize: 15, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word' }}>Edit</div>
-            </div>
+            <div style={{ position: 'relative', textAlign: 'center' }}>
+  <div style={{ width: 78, height: 32, margin: '0 auto', position: 'relative', marginBottom: '20px' }}>
+    <div style={{ width: 78, height: 32, left: -5, top: -55, position: 'absolute', background: '#D9D9D9', borderRadius: 14 }} />
+    
+    <div style={{ left: 16, top: -52,left: '25%' , position: 'absolute', color: '#1045FF', fontSize: 15, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word' }}>Edit</div>
+  </div>
+  <div style={{ textAlign: 'center', position: 'relative', top: '-140px', left: '10%' }}>
+  <div style={{ color: 'black', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', wordWrap: 'break-word', display: 'inline-block', marginLeft: '-20%', marginTop: '-5px' }}>Aashish Thapa</div>
+  <div style={{ color: 'rgba(0, 0, 0, 0.70)', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', wordWrap: 'break-word', marginLeft: '-23%', marginTop: '-3px' }}>Business Analyst</div>
+</div>
+
+
+</div>
+
           
             
           </div>
@@ -98,15 +115,15 @@ const Profile = () => {
   <div style={{ color: 'black', fontSize: 15, fontFamily: 'Inria Sans', fontWeight: '400', wordWrap: 'break-word' }}>March 26, 2002</div>
 </div>
 
-              <div style={{ width: 56.06, height: 23, left: 733, top: 6, position: 'absolute' }}>
-                <div style={{ width: 56.06, height: 23, left: 0, top: 0, position: 'absolute', background: '#D9D9D9', borderRadius: 10.06 }} />
-                <img style={{ width: 12.94, height: 12.94, left: 35.22, top: 3.59, position: 'absolute' }} src="https://via.placeholder.com/13x13" />
+              <div style={{ width: 56.06, height: 23, left: 733, top: 40, position: 'absolute' }}>
+                <div style={{ width: 56.06, height: 23, left: 0, top: 3, position: 'absolute', background: '#D9D9D9', borderRadius: 10.06 }} />
+               
                 <div style={{ left: 11.50, top: 5.03, position: 'absolute', color: '#1045FF', fontSize: 10.78, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word' }}>Edit</div>
               </div>
             </div>
             <div style={{ width: 785, height: 0, border: '1px black solid' }}></div>
             <div style={{ width: 796, height: 88, position: 'relative' }}>
-              <div style={{ left: 11, top: 0, position: 'absolute', color: '#172985', fontSize: 18, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Address Information</div>
+              <div style={{ left: 11, top: 5, position: 'absolute', color: '#172985', fontSize: 18, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Address Information</div>
               <div style={{ left: 14, top: 31, position: 'absolute' }}>
                 <div style={{ left: 0, top: 0, position: 'absolute', color: '#8C8383', fontSize: 15, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Address</div>
                 <div style={{ left: 127, top: 0, position: 'absolute', color: 'black', fontSize: 15, fontFamily: 'Inria Sans', fontWeight: '400', wordWrap: 'break-word' }}>Dhumbarahi</div>
@@ -131,7 +148,7 @@ const Profile = () => {
             </div>
             <div style={{ width: 785, height: 0, border: '1px black solid' }}></div>
             <div style={{ width: 796, height: 101, position: 'relative' }}>
-              <div style={{ left: 11, top: 0, position: 'absolute', color: '#172985', fontSize: 18, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Education</div>
+              <div style={{ left: 11, top: 5, position: 'absolute', color: '#172985', fontSize: 18, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Education</div>
               <div style={{ width: 328, height: 57, left: 14, top: 31, position: 'absolute' }}>
                 <div style={{ left: 0, top: 0, position: 'absolute', color: '#8C8383', fontSize: 15, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>2024</div>
                 <div style={{ left: 127, top: 0, position: 'absolute', color: 'black', fontSize: 15, fontFamily: 'Inria Sans', fontWeight: '400', wordWrap: 'break-word' }}>BSc(Hons) in Computer Science</div>
@@ -259,20 +276,23 @@ const Profile = () => {
    
  
 
-      <div style={{ width: 1126, height: 109, left: 314, top: 1, position: 'absolute' }}>
-        <div style={{ width: 42, height: 42, left: 717, top: 38, position: 'absolute', background: '#D9D9D9', borderRadius: 9999 }} />
+      <div style={{ width: 1126, height: 109, left: 250, top: -10, position: 'absolute' }}>
+      <div style={{ width: 32, height: 32, left: 717, top: 38, position: 'absolute', backgroundImage: `url(${bellImage})`, backgroundSize: '100%'}} />
+
         <div style={{ width: 252, height: 58, left: 799, top: 30, position: 'absolute' }}>
           <div style={{ left: 77, top: 0, position: 'absolute', color: 'black', fontSize: 24, fontFamily: 'Inria Sans', fontWeight: '400', wordWrap: 'break-word' }}>Aashish Thapa</div>
-          <div style={{ width: 58, height: 58, left: 0, top: 0, position: 'absolute', background: 'white', borderRadius: 9999, border: '1px black solid' }} />
-          <img style={{ width: 22, height: 22, left: 230, top: 7, position: 'absolute' }} src="https://via.placeholder.com/22x22" />
+          <div style={{ width: 58, height: 58, left: 0, top: -6, position: 'absolute', borderRadius: 9999 }}>
+  <img src={require('./user.png')} alt="User" style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
+</div>
+
+          
           <div style={{ left: 77, top: 29, position: 'absolute', color: 'rgba(0, 0, 0, 0.50)', fontSize: 16, fontFamily: 'Inria Sans', fontWeight: '400', wordWrap: 'break-word' }}>Administrator</div>
           <div style={{ width: 11, height: 11, left: 189, top: 34, position: 'absolute' }}>
             <div style={{ width: 11, height: 11, left: 0, top: 0, position: 'absolute', background: '#00C608', borderRadius: 9999 }} />
             <div style={{ width: 4.40, height: 4.40, left: 3.30, top: 3.30, position: 'absolute', background: 'white' }}></div>
           </div>
         </div>
-        <img style={{ width: 23, height: 23, left: 726, top: 47, position: 'absolute' }} src="https://via.placeholder.com/23x23" />
-        <img style={{ width: 50, height: 50, left: 803, top: 34, position: 'absolute' }} src="https://via.placeholder.com/50x50" />
+        
       </div>
     </div>
     
