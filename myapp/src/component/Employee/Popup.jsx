@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import "./Popup.css";
+import { db } from "../../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  getDocs,
+  query,
+  where,
+  setDoc,
+} from "firebase/firestore";
 
-const Popup = ({ onClose }) => {
+const Popup = ({ onClose, userEmail, userName, setMessage, onWorkProgressSubmit }) => {
   const [note, setNote] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
   const [selectedTask, setSelectedTask] = useState('');
@@ -18,15 +26,41 @@ const Popup = ({ onClose }) => {
     setSelectedTask(e.target.value);
   };
 
-  const handleSubmit = () => {
-    // Here you can handle the submission of the note, project, and task
-    // For now, let's just log them to the console
-    console.log('Note:', note);
-    console.log('Selected Project:', selectedProject);
-    console.log('Selected Task:', selectedTask);
-    onClose();
+  const handleSubmit = async () => {
+    try {
+      const date = new Date().toLocaleDateString();
+      const attendanceRef = collection(db, "attendance");
+      const querySnapshot = await getDocs(query(attendanceRef, where("email", "==", userEmail), where("date", "==", date)));
+      if (!querySnapshot.empty) {
+        // Update existing document
+        const doc = querySnapshot.docs[0];
+        await setDoc(doc.ref, {
+          ...doc.data(),
+          note: note,
+          project: selectedProject,
+          task: selectedTask,
+          timestamp: serverTimestamp(),
+        }, { merge: true });
+      } else {
+        // Create new document
+        await addDoc(attendanceRef, {
+          email: userEmail,
+          name: userName,
+          date: date,
+          note: note,
+          project: selectedProject,
+          task: selectedTask,
+          timestamp: serverTimestamp(),
+        });
+      }
+      console.log("Work progress recorded successfully.");
+      onWorkProgressSubmit(); // Call the callback function
+      onClose();
+    } catch (error) {
+      console.error("Error recording work progress:", error);
+    }
   };
-
+  
   return (
     <div className="popup-container">
       <div className="popup">

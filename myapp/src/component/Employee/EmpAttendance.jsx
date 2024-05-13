@@ -5,13 +5,16 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import logo from "../Images/logo.png";
 import user from "../Employee/user.png";
+import Popup from "./Popup"; // Import the Popup component
 import {
   getDocs,
   query,
   collection,
-  where
+  where,
+  addDoc,
+  setDoc,
+  serverTimestamp,
 } from "firebase/firestore";
-import Popup from "./Popup"; // Import the Popup component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -33,6 +36,10 @@ const EmpAttendance = () => {
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [attendanceData, setAttendanceData] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [checkInStatus, setCheckInStatus] = useState("");
+  const [checkOutStatus, setCheckOutStatus] = useState("");
+  const [workProgressStatus, setWorkProgressStatus] = useState("");
+  const [workProgressSubmitted, setWorkProgressSubmitted] = useState(false); // State to track if work progress is submitted
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -109,6 +116,81 @@ const EmpAttendance = () => {
     setShowPopup(!showPopup);
   };
 
+  const recordAttendance = async (checkType) => {
+    try {
+      const now = new Date();
+      const date = now.toLocaleDateString();
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const attendanceRef = collection(db, "attendance");
+      
+      if (checkType === "checkIn") {
+        // Create a new document for the current day
+        await addDoc(attendanceRef, {
+          email: userEmail,
+          name: userName,
+          date: date,
+          day: day,
+          checkIn: serverTimestamp(),
+        });
+        console.log("Check-in recorded successfully.");
+        setCheckInStatus("Check-in done");
+      } else if (checkType === "checkOut") {
+        // Update the existing document for the current day with check-out time
+        const querySnapshot = await getDocs(query(attendanceRef, where("email", "==", userEmail), where("date", "==", date)));
+        if (!querySnapshot.empty) {
+          const doc = querySnapshot.docs[0];
+          await setDoc(doc.ref, {
+            ...doc.data(),
+            checkOut: serverTimestamp(),
+          }, { merge: true });
+          console.log("Check-out recorded successfully.");
+          setCheckOutStatus("Check-out done");
+        }
+      }
+  
+    } catch (error) {
+      console.error(`Error recording ${checkType}:`, error);
+    }
+  };
+  
+
+  // const handleCheckIn = () => {
+  //   recordAttendance("checkIn");
+  // };
+  const handleCheckIn = async () => {
+    try {
+      const now = new Date();
+      const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000); // Two hours ago
+      const lastCheckIn = attendanceData.find(attendance => attendance.checkIn?.toDate() > twoHoursAgo);
+      
+      if (!lastCheckIn) {
+        // No recent check-in within the last two hours, allow check-in
+        await recordAttendance("checkIn");
+      } else {
+        const timeDifference = Math.floor((now.getTime() - lastCheckIn.checkIn.toDate().getTime()) / (1000 * 60)); // Time difference in minutes
+        const remainingTime = 120 - timeDifference; // Remaining time in minutes
+  
+        alert(`You cannot check in again within two hours. Please try again after ${remainingTime} minutes.`);
+      }
+    } catch (error) {
+      console.error("Error handling check-in:", error);
+    }
+  };
+  
+
+  const handleCheckOut = () => {
+    if (workProgressSubmitted) { // Allow check-out only if work progress is submitted
+      recordAttendance("checkOut");
+    } else {
+      alert("Please submit your work progress before checking out.");
+    }
+  };
+
+  const handleWorkProgressSubmit = () => {
+    setWorkProgressStatus("Work progress submitted");
+    setWorkProgressSubmitted(true); // Set work progress submission status to true
+  };
+
   return (
     <div className="container">
       <aside className="likelynav left">
@@ -157,20 +239,22 @@ const EmpAttendance = () => {
         <div className="buttons">
           <div className="button-group">
             <div>
-              <button className="green-button">Check-in Time</button>
-              <p>At: 11:00 Am</p>
+              <button className="green-button" onClick={handleCheckIn}>
+                Check-in Time
+              </button>
+              {checkInStatus && <p>{checkInStatus}</p>}
             </div>
             <div>
-              <button className="red-button">Check-out Time</button>
-              <p>At: 5:00 Pm</p>
+              <button className="red-button" onClick={handleCheckOut}>
+                Check-out Time
+              </button>
+              {checkOutStatus && <p>{checkOutStatus}</p>}
             </div>
             <div>
-              <button
-                className="progress-button"
-                onClick={togglePopup}
-              >
+              <button className="progress-button" onClick={togglePopup}>
                 Work Progress
               </button>
+              {workProgressStatus && <p>{workProgressStatus}</p>}
             </div>
           </div>
         </div>
@@ -197,22 +281,16 @@ const EmpAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>4/3/2024</td>
-              <td>Wed</td>
-              <td>10:AM</td>
-              <td>2:00 PM</td>
-              <td>4 </td>
-              <td>Not a project</td>
-            </tr>
-            <tr>
-              <td>4/3/2024</td>
-              <td>Wed</td>
-              <td>10:AM</td>
-              <td>2:00 PM</td>
-              <td>4 </td>
-              <td>HRMS</td>
-            </tr>
+            {attendanceData.map((attendance, index) => (
+              <tr key={index}>
+                <td>{attendance.date}</td>
+                <td>{attendance.day}</td>
+                <td>{attendance.checkIn && attendance.checkIn.toDate().toLocaleTimeString()}</td>
+                <td>{attendance.checkOut && attendance.checkOut.toDate().toLocaleTimeString()}</td>
+                <td>{/* Calculate hours worked */}</td>
+                <td>{attendance.project}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -237,7 +315,7 @@ const EmpAttendance = () => {
       </div>
 
       {/* Popup */}
-      {showPopup && <Popup onClose={togglePopup} />}
+      {showPopup && <Popup onClose={togglePopup} userEmail={userEmail} userName={userName} setMessage={setWorkProgressStatus} onWorkProgressSubmit={handleWorkProgressSubmit} />}
     </div>
   );
 };
