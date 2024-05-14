@@ -1,73 +1,96 @@
-.popup-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  }
-  
-  .popup {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 60%; /* Adjust width as needed */
-    max-width: 400px; /* Maximum width */
-    height: auto;
-  }
-  
-  .popup h2 {
-    margin-bottom: 20px;
-  }
-  
-  .popup select {
-    width: calc(50% - 5px); /* Set width to 50% of the container minus margin */
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  .popup select:first-child {
-    margin-right: 10px; /* Add margin between the two selects */
-  }
-  
-  .popup textarea {
-    width: 100%;
-    height: 150px; /* Adjust height as needed */
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: none;
-    outline: none;
-  }
-  
-  .popup .buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .popup button {
-    padding: 12px 24px; /* Adjust padding as needed */
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  .popup button:nth-child(2) {
-    background-color: #ff0000;
-    color: white;
-  }
-  
-  .popup button:nth-child(1) {
-    background-color: #4caf50;
-    color: white;
-  }
-  
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.popup-header h2 {
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.date-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.date-group > div {
+  width: 48%;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
