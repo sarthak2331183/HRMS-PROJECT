@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Dashboard.css"; 
+import "./Dashboard.css";
 import logo from '../Images/logo.png';
-import "./Project.css"; 
+import "./Project.css";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => (
   <a
@@ -22,30 +22,8 @@ const Project = () => {
     navigate('/AddProject');
   };
 
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      title: "Project A",
-      clientName: "Client 1",
-      status: "Ongoing",
-      startDate: "2024-01-15",
-      endDate: "2024-07-30",
-      assignedTo: "Team Alpha",
-    },
-    {
-      id: 2,
-      title: "Project B",
-      clientName: "Client 2",
-      status: "Completed",
-      startDate: "2023-06-10",
-      endDate: "2023-12-20",
-      assignedTo: "Team Beta",
-    },
-  ]);
-
-  const handleEdit = (projectId) => {
-    console.log("Editing project with ID:", projectId);
-    // Logic for editing (e.g., open a modal or navigate to an edit page)
+  const handleOpenProject = (projectId) => {
+    navigate(`/OpenProject/${projectId}`);
   };
 
   const handleDelete = (projectId) => {
@@ -69,6 +47,27 @@ const Project = () => {
   const openAdmin = () => navigate("/Admin");
   const openAttendance = () => navigate("/Attendance");
   const openLeave = () => navigate("/Leave");
+
+  const [projects, setProjects] = useState([
+    {
+      id: 1,
+      title: "Project A",
+      clientName: "Client 1",
+      status: "Ongoing",
+      startDate: "2024-01-15",
+      endDate: "2024-07-30",
+      assignedTo: "Team Alpha",
+    },
+    {
+      id: 2,
+      title: "Project B",
+      clientName: "Client 2",
+      status: "Completed",
+      startDate: "2023-06-10",
+      endDate: "2023-12-20",
+      assignedTo: "Team Beta",
+    },
+  ]);
 
   const upcomingProjects = projects.filter(
     (project) => new Date(project.startDate) > new Date()
@@ -113,7 +112,7 @@ const Project = () => {
       {/* Main content */}
       <main>
         <h1 id="employee">Project</h1>
-        
+
         {/* Project statistics */}
         <div className="project-stats">
           <button className="stat-btn">Upcoming: {upcomingProjects.length}</button>
@@ -159,10 +158,10 @@ const Project = () => {
                   <td>{project.assignedTo}</td>
                   <td>
                     <button
-                      className="edit-btn"
-                      onClick={() => handleEdit(project.id)}
+                      className="open-btn"
+                      onClick={() => handleOpenProject(project.id)}
                     >
-                      Edit
+                      Open
                     </button>
                     <button
                       className="delete-btn"

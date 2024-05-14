@@ -1,0 +1,48 @@
+.project-details {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.back-btn {
+  padding: 10px 20px;
+    background: #7380ec;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
+    text-align: center;
+}
+
+.back-btn:hover {
+  border: 1px solid #7380ec;
+    background-color: #f8fafd;
+    color: #7380ec;
+}
+.submit:hover{
+    border: 1px solid #7380ec;
+      background-color: #f8fafd;
+      color: #7380ec;
+  }
+  button.submit{
+    padding: 10px 20px;
+    font-size: 12px;
+  }
