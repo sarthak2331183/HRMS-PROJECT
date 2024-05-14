@@ -1,0 +1,33 @@
+.popup1 {
+  /* Center the popup */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; 
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.popup_inner1 {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.popup1 button.close1 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.popup1 h2 {
+  margin-top: 0;
+  font-size: 24px;
+  text-align: center;
+}
+

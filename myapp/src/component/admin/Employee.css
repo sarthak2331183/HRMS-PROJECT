@@ -166,6 +166,8 @@ div.dropdown {
   align-items: center;
   text-align: center;
   padding-right: 4rem;
+  padding-bottom: 43px;
+
 }
 .dropdown select {
   padding: 10px;
@@ -179,4 +181,5 @@ div.dropdown {
 .material-symbols-outlined {
   margin-right: 5px;
 }
+
 

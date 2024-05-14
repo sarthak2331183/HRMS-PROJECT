@@ -406,21 +406,6 @@ const Employee = () => {
                   </td>
 
                   <td>
-                    {employee.editable ? (
-                      <button
-                        className="save-btn"
-                        onClick={() => handleSaveEmployee(employee.id)}
-                      >
-                        Save
-                      </button>
-                    ) : (
-                      <button
-                        className="edit-btn"
-                        onClick={() => handleEditEmployee(employee.id)}
-                      >
-                        Edit
-                      </button>
-                    )}
                     <button
                       className="delete-btn"
                       onClick={() => handleDeleteEmployee(employee.id)}
