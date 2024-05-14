@@ -1,6 +1,6 @@
 
 .submit-btn,
-.delete-btn, .save-btn {
+.delete-btn, .save-btn, .view-btn{
   padding: 5px 10px;
   background: #f0f0f0;
   border: 1px solid #ccc;

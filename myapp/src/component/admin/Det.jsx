@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./Det.css";
 
 const Det = ({ employee, onSave, onCancel }) => {
   const [editedEmployee, setEditedEmployee] = useState(employee);
@@ -18,9 +19,9 @@ const Det = ({ employee, onSave, onCancel }) => {
   };
 
   return (
-    <div className="popup">
-      <div className="popup_inner">
-        <button className="close" onClick={onCancel}>
+    <div className="popup1">
+      <div className="popup_inner1">
+        <button className="close1" onClick={onCancel}>
           &times;
         </button>
         <h2>Employee Details</h2>

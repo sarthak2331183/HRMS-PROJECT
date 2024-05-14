@@ -114,24 +114,24 @@
 //     }
 //   };
 
-//   const openDashBoard = () => {
-//     navigate("/Dashboard");
-//   };
-//   const openAddAdmin = () => {
-//     navigate("/AddAdmin");
-//   };
-//   const openEmployee = () => {
-//     navigate("/Employee");
-//   };
-//   const openAdmin = () => {
-//     navigate("/Admin");
-//   };
-//   const openProject = () => {
-//     navigate("/Project");
-//   };
-//   const openLeave = () => {
-//     navigate("/Leave");
-//   };
+  // const openDashBoard = () => {
+  //   navigate("/Dashboard");
+  // };
+  // const openAddAdmin = () => {
+  //   navigate("/AddAdmin");
+  // };
+  // const openEmployee = () => {
+  //   navigate("/Employee");
+  // };
+  // const openAdmin = () => {
+  //   navigate("/Admin");
+  // };
+  // const openProject = () => {
+  //   navigate("/Project");
+  // };
+  // const openLeave = () => {
+  //   navigate("/Leave");
+  // };
 
 //   return (
 //     <div className="container">
@@ -347,6 +347,25 @@ const Attendance = () => {
         });
     }
   };
+  const openDashBoard = () => {
+    navigate("/Dashboard");
+  };
+  const openAddAdmin = () => {
+    navigate("/AddAdmin");
+  };
+  const openEmployee = () => {
+    navigate("/Employee");
+  };
+  const openAdmin = () => {
+    navigate("/Admin");
+  };
+  const openProject = () => {
+    navigate("/Project");
+  };
+  const openLeave = () => {
+    navigate("/Leave");
+  };
+
 
   return (
     <div className="container">
@@ -366,13 +385,13 @@ const Attendance = () => {
           <NavItem
             itemName="Dashboard"
             icon="grid_view"
-            onSelect={() => {}}
+            onSelect={openDashBoard}
           />
-          <NavItem itemName="Admins" icon="diversity_3" onSelect={() => {}} />
+          <NavItem itemName="Admins" icon="diversity_3" onSelect={openAdmin} />
           <NavItem
             itemName="Employees"
             icon="badge"
-            onSelect={() => {}}
+            onSelect={openEmployee}
           />
           <NavItem
             itemName="Attendance"
@@ -380,8 +399,8 @@ const Attendance = () => {
             selected={true}
             onSelect={() => {}}
           />
-          <NavItem itemName="Projects" icon="model_training" onSelect={() => {}} />
-          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={() => {}} />
+          <NavItem itemName="Projects" icon="model_training" onSelect={openProject} />
+          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={openLeave} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
@@ -440,7 +459,7 @@ const Attendance = () => {
                   <td>{employee.checkOut ? employee.checkOut.toLocaleTimeString() : '-'}</td>
                   <td>{calculateHoursWorked(employee.checkIn, employee.checkOut)}</td>
                   <td>
-                    <button onClick={() => { setSelectedEmployee(employee); toggleModal(); }}>View</button>
+                    <button className="view-btn" onClick={() => { setSelectedEmployee(employee); toggleModal(); }}>View</button>
                   </td>
                 </tr>
               ))}
