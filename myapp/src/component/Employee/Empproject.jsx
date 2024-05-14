@@ -207,9 +207,9 @@ const Empproject = () => {
         </div>
 
         {/* Additional elements */}
-        <div style={{ left: 420, top: 80, position: 'absolute', color: 'Blue', fontSize: 20, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Projects</div>
-        <div style={{ left: 280, top: 77, position: 'absolute', color: 'rgba(0, 0, 0, 0.50)', fontSize: 24, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Dashboard &gt;</div>
-        <div style={{ width: 1090, height: 0, left: 280, top: 100, position: 'absolute', border: '1px black solid' }}></div>
+        <div style={{ left: 455, top: 80, position: 'absolute', color: 'Blue', fontSize: 20, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Projects</div>
+        <div style={{ left: 320, top: 77, position: 'absolute', color: 'rgba(0, 0, 0, 0.50)', fontSize: 24, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Dashboard &gt;</div>
+        <div style={{ width: 1090, height: 0, left: 320, top: 100, position: 'absolute', border: '1px black solid' }}></div>
       </main>
     </div>
   );
