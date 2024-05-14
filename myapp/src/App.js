@@ -18,6 +18,7 @@ import AddProject from './component/admin/AddProject';
 import Empleave from './component/Employee/Empleave';
 import Leave from './component/admin/Leave';
 import LeaveTypes from './component/admin/LeaveTypes';
+import Empproject from './component/Employee/Empproject';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -58,6 +59,7 @@ function App() {
         <Route path="/Empleave" element={<Empleave />} />
         <Route path="/Leave" element={<Leave />} />
         <Route path="/LeaveTypes" element={<LeaveTypes />} />
+        <Route path="/Empproject" element={<Empproject />} />
       </Routes>
     </Router>
   );
