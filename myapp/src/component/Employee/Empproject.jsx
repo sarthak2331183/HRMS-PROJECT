@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Empdashboard.css"; 
+import "./Empdashboard.css";
 import logo from '../Images/logo.png';
-import "./Empproject.css"; 
+
+import "./Empproject.css";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => (
   <a
@@ -20,6 +21,10 @@ const Empproject = () => {
 
   const handleAddProject = () => {
     navigate('/AddProject');
+  };
+
+  const openProject = () => {
+    navigate("/Projects");
   };
 
   const [projects, setProjects] = useState([
@@ -65,8 +70,10 @@ const Empproject = () => {
   };
 
   const openDashboard = () => navigate("/Empdashboard");
-  const openAttendance = () => navigate("/Empattendance");
-  const openLeave = () => navigate("/Empleave");
+  const openEmployee = () => navigate("/Employee");
+  const openAdmin = () => navigate("/Admin");
+  const openAttendance = () => navigate("/Attendance");
+  const openLeave = () => navigate("/Leave");
 
   const upcomingProjects = projects.filter(
     (project) => new Date(project.startDate) > new Date()
@@ -87,7 +94,7 @@ const Empproject = () => {
   return (
     <div className="container">
       {/* Sidebar */}
-      <aside>
+      <aside className="likelynav">
         <div className="top">
           <div className="logo">
             <img src={logo} alt="Logo" />
@@ -96,20 +103,35 @@ const Empproject = () => {
             <span className="material-symbols-outlined">crowdsource</span>
           </div>
         </div>
+        {/* top ends */}
 
         <div className="sidebar">
-          <NavItem itemName="Dashboard" icon="grid_view" onSelect={openDashboard} />
-          <NavItem itemName="Attendance" icon="person_check" onSelect={openAttendance} />
-          <NavItem itemName="Projects" icon="model_training" selected={true} />
-          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={openLeave} />
+          <NavItem
+            itemName="Dashboard"
+            icon="grid_view"
+            selected={true}
+            onSelect={openDashboard}
+          />
+          <NavItem
+            itemName="Attendance"
+            icon="person_check"
+            onSelect={openAttendance}
+          />
+          <NavItem
+            itemName="Projects"
+            icon="model_training"
+            onSelect={openProject}
+          />
+          <NavItem itemName="Leave" icon="paid" onSelect={openLeave} />
+          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
 
       {/* Main content */}
       <main>
-        <h1 id="employee">Project</h1>
-        
+        <h1 id="employee">Project Summary</h1>
+
         {/* Project statistics */}
         <div className="project-stats">
           <button className="stat-btn">Upcoming: {upcomingProjects.length}</button>
@@ -128,7 +150,7 @@ const Empproject = () => {
             </div>
             <button className="add-project-btn" onClick={handleAddProject}>
               <span className="material-symbols-outlined">add</span>
-              Add Project
+              Add Progress
             </button>
           </div>
 
@@ -158,20 +180,36 @@ const Empproject = () => {
                       className="edit-btn"
                       onClick={() => handleEdit(project.id)}
                     >
-                      Edit
+                      Open
                     </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(project.id)}
-                    >
-                      Delete
-                    </button>
+                    
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        <div style={{ width: 1126, height: 109, left: 250, top: -10, position: 'absolute' }}>
+        
+          <div style={{ width: 252, height: 58, left: 799, top: 30, position: 'absolute' }}>
+            <div style={{ left: 77, top: 0, position: 'absolute', color: 'black', fontSize: 24, fontFamily: 'Inria Sans', fontWeight: '400', wordWrap: 'break-word' }}>Aashish Thapa</div>
+            <div style={{ width: 58, height: 58, left: 0, top: -6, position: 'absolute', borderRadius: 9999 }}>
+              <img src={require('./user.png')} alt="User" style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
+            </div>
+
+            <div style={{ left: 77, top: 29, position: 'absolute', color: 'rgba(0, 0, 0, 0.50)', fontSize: 16, fontFamily: 'Inria Sans', fontWeight: '400', wordWrap: 'break-word' }}>Employee</div>
+            <div style={{ width: 11, height: 11, left: 189, top: 34, position: 'absolute' }}>
+              <div style={{ width: 11, height: 11, left: 0, top: 0, position: 'absolute', background: '#00C608', borderRadius: 9999 }} />
+              <div style={{ width: 4.40, height: 4.40, left: 3.30, top: 3.30, position: 'absolute', background: 'white' }}></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Additional elements */}
+        <div style={{ left: 420, top: 80, position: 'absolute', color: 'Blue', fontSize: 20, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Projects</div>
+        <div style={{ left: 280, top: 77, position: 'absolute', color: 'rgba(0, 0, 0, 0.50)', fontSize: 24, fontFamily: 'Inria Sans', fontWeight: '700', wordWrap: 'break-word' }}>Dashboard &gt;</div>
+        <div style={{ width: 1090, height: 0, left: 280, top: 100, position: 'absolute', border: '1px black solid' }}></div>
       </main>
     </div>
   );
