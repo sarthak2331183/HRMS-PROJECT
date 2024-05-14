@@ -63,8 +63,7 @@ const Empleave = () => {
   };
 
   const openEmpdashboard = () => navigate("/Empdashboard");
-  const openEmpattendance = () => navigate("/Empattendance");
-  const openProject = () => navigate("/Project");
+
 
   const pendingRequests = leaveRequests.filter(request => request.status === "Pending");
   const approvedRequests = leaveRequests.filter(request => request.status === "Approved");
@@ -84,8 +83,8 @@ const Empleave = () => {
 
         <div className="sidebar">
           <NavItem itemName="Dashboard" icon="grid_view" onSelect={openEmpdashboard} />
-          <NavItem itemName="Attendance" icon="person_check" onSelect={openEmpattendance} />
-          <NavItem itemName="Projects" icon="model_training" onSelect={openProject} />
+          <NavItem itemName="Attendance" icon="person_check" onSelect={() => {}} />
+          <NavItem itemName="Projects" icon="model_training" onSelect={() => {}} />
           <NavItem itemName="Leave" icon="prompt_suggestion" selected={true} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
