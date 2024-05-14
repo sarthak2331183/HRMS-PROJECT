@@ -6,9 +6,8 @@ import { useNavigate } from "react-router-dom";
 import logo from "../Images/logo.png";
 import user from "../Employee/user.png";
 import Empdashboard from "./Empdashboard";
-import Popup from "./Popup"; // Import the Popup component
+import Popup from "./Popup"; // Ensure this is a default import
 import {
-
   getDocs,
   query,
   collection,
@@ -326,3 +325,6 @@ const EmpAttendance = () => {
 };
 
 export default EmpAttendance;
+
+
+

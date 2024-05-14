@@ -36,11 +36,7 @@ const View = ({ employee, showModal, setShowModal }) => {
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => setShowModal(false)}>&times;</span>
-            <div>
-              <h2>Employee Details</h2>
-              <p>Name: {employee.name}</p>
-              <p>Employee ID: {employee.employeeId}</p>
-            </div>
+
             <div>
               <h2>Work Details</h2>
               <p>Project: {employee.project}</p>

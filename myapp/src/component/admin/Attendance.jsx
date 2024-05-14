@@ -286,15 +286,16 @@ const Attendance = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-        const attendanceRef = collection(db, "attendance"); // Reference to the "attendance" collection
+        const attendanceRef = collection(db, "attendance");
         const querySnapshot = await getDocs(attendanceRef);
-
+  
         const attendanceData = [];
         querySnapshot.forEach((doc) => {
           const attendance = doc.data();
           attendanceData.push({
             id: doc.id,
             name: attendance.name,
+            email: attendance.email, // Add email field
             employeeId: attendance.employeeId,
             date: attendance.date,
             day: attendance.day,
@@ -303,12 +304,12 @@ const Attendance = () => {
             checkIn: attendance.checkIn ? attendance.checkIn.toDate() : null,
             checkOut: attendance.checkOut ? attendance.checkOut.toDate() : null,
             status: attendance.status,
-            project: attendance.project, // Include project in the employee data
-            task: attendance.task, // Include task in the employee data
-            note: attendance.note, // Include note in the employee data
+            project: attendance.project,
+            task: attendance.task,
+            note: attendance.note,
           });
         });
-
+  
         setEmployees(attendanceData);
         setLoading(false);
       } catch (error) {
@@ -316,9 +317,10 @@ const Attendance = () => {
         setLoading(false);
       }
     };
-
+  
     fetchAttendance();
   }, []);
+  
 
   // Function to calculate hours worked
   const calculateHoursWorked = (checkIn, checkOut) => {
@@ -439,8 +441,7 @@ const Attendance = () => {
             <thead>
               <tr>
                 <th>S.no</th>
-                <th>Name</th>
-                <th>Employee ID</th>
+                <th>Email</th>
                 <th>Date</th>
                 <th>Day</th>
                 <th>Check In Time</th>
@@ -450,22 +451,22 @@ const Attendance = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee, index) => (
-                <tr key={employee.id}>
-                  <td>{index + 1}</td>
-                  <td>{employee.name}</td>
-                  <td>{employee.employeeId}</td>
-                  <td>{employee.date}</td>
-                  <td>{employee.day}</td>
-                  <td>{employee.checkIn ? employee.checkIn.toLocaleTimeString() : '-'}</td>
-                  <td>{employee.checkOut ? employee.checkOut.toLocaleTimeString() : '-'}</td>
-                  <td>{calculateHoursWorked(employee.checkIn, employee.checkOut)}</td>
-                  <td>
-                    <button onClick={() => { setSelectedEmployee(employee); toggleModal(); }}>View</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+  {employees.map((employee, index) => (
+    <tr key={employee.id}>
+      <td>{index + 1}</td>
+      <td>{employee.email}</td> {/* Display email instead of name */}
+      <td>{employee.date}</td>
+      <td>{employee.day}</td>
+      <td>{employee.checkIn ? employee.checkIn.toLocaleTimeString() : '-'}</td>
+      <td>{employee.checkOut ? employee.checkOut.toLocaleTimeString() : '-'}</td>
+      <td>{calculateHoursWorked(employee.checkIn, employee.checkOut)}</td>
+      <td>
+        <button onClick={() => { setSelectedEmployee(employee); toggleModal(); }}>View</button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
           </table>
         </div>
       </main>

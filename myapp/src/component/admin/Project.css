@@ -1,4 +1,5 @@
 
+
 .project-stats {
   display: flex;
   gap: 50px;
@@ -77,4 +78,45 @@
 .edit-btn:hover,
 .delete-btn:hover {
   background: #ddd;
+}
+
+.status-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.status-btn {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.status-options {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.status-options .status-option {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.status-options .status-option:hover {
+  background-color: #ddd;
+}
+
+.status-dropdown .show {
+  display: block;
+}
+
+.status-message {
+  color: green;
+  font-size: 12px;
+  margin-top: 5px;
 }
