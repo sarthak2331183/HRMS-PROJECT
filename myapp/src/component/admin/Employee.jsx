@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Employee.css";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -62,7 +62,6 @@ const Employee = () => {
             email,
             age,
             parentsName
-
           } = doc.data();
           employeesData.push({
             id: doc.id,
@@ -116,9 +115,8 @@ const Employee = () => {
       return a.name.localeCompare(b.name);
     } else if (sortBy === "employeeId") {
       return a.employeeId.localeCompare(b.employeeId);
-    } else if (sortBy === "post") {
-      // Assuming "post" is a field in the employee object
-      return a.post.localeCompare(b.post);
+    } else if (sortBy === "jobTitle") { // Sort by jobTitle instead of post
+      return a.jobTitle.localeCompare(b.jobTitle);
     } else {
       return 0;
     }
@@ -256,7 +254,7 @@ const Employee = () => {
 
       {/* main section starts*/}
       <main>
-        <h1 id="employee">Employees</h1>
+        <h1 id="employee1">Employees</h1>
         <div className="search-container">
           <div className="search">
             {/* Search bar */}
@@ -274,7 +272,7 @@ const Employee = () => {
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="name">Sort by Name</option>
               <option value="employeeId">Sort by ID</option>
-              <option value="post">Sort by Post</option>
+              <option value="jobTitle">Sort by Post</option> {/* Update value to jobTitle */}
             </select>
           </div>
           <button className="add-employee-btn" onClick={openAddEmployee}>

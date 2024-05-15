@@ -65,7 +65,7 @@ aside .sidebar a:hover span {
 }
 
 /* table of employee */
-#employee {
+#employee1 {
   padding-left: 38px;
   padding-bottom: 38px;
 }
@@ -166,7 +166,7 @@ div.dropdown {
   align-items: center;
   text-align: center;
   padding-right: 4rem;
-  padding-bottom: 43px;
+  padding-bottom: 3px;
 
 }
 .dropdown select {
