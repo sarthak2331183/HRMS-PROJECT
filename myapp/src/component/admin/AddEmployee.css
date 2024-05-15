@@ -16,9 +16,9 @@
   gap: 1.5rem;
   box-shadow: var(--box-shadow);
   border-radius: var(--card-border-radius);
-  height: 76%;
-  padding-top: 30px;
+  height: 75%;
   width: 70%;
+  padding-top: 30px;
   transition: all 0.3s ease;
 
 
@@ -47,6 +47,27 @@
   font-size: 1.1rem;
 }
 
+.row4 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.row4 .column {
+  flex-basis: calc(33.33% - 0.5rem); 
+}
+
+.row4 label {
+  margin-bottom: 0.5rem;
+}
+
+.row4 select {
+  width: 100%;
+}
+
+
 select#branch,
 select#employmentType,
 select#gender {
@@ -60,35 +81,43 @@ select#gender {
   margin-top: 1.5rem;
 }
 .addbtn {
-  padding:20px;
-  border-radius: var(--card-border-radius);
+  padding: 10px 20px;
+  background: #7380ec;
+  color: white;
   border: none;
-  background-color: var(--clr-primary);
-  color: #fff;
-  font-size: 15px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease; 
+  margin-bottom: 2px; 
+  
 }
 
 .addbtn:hover {
-  background-color: #fff;
-  color: #1e293b;
+  border: 1px solid #7380ec;
+  background-color: #f8fafd;
+  color: #7380ec;
 }
 
 .cancelbtn {
   padding: 10px 20px;
-  border-radius: var(--card-border-radius);
+  background: #7380ec;
+  color: white;
   border: none;
-  background-color: var(--clr-primary);
-  color: #fff;
-  font-size: 15px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease; 
+  margin-bottom: 2px; 
+  
 }
 
 .cancelbtn:hover {
-  background-color: #fff;
-  color: #dc3545;
+  border: 1px solid #7380ec;
+  background-color: #f8fafd;
+  color: #7380ec;
 }
 
 

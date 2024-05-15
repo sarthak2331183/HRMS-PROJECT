@@ -65,7 +65,7 @@
   text-align: center;
 }
 
-.add-project-btn {
+.add-project-btn, .add-project-cancel {
   padding: 10px 20px;
   background: #7380ec;
   color: white;
@@ -74,11 +74,11 @@
   cursor: pointer;
   align-items: center;
   text-align: center;
-  transition: all 0.3s ease; /* Add transition for smoother hover effect */
-  margin-bottom: 2px; /* Adjust the margin-bottom to move the button higher */
+  transition: all 0.3s ease; 
+  margin-bottom: 2px; 
 }
 
-.add-project-btn:hover {
+.add-project-btn:hover, .add-project-cancel:hover{
   border: 1px solid #7380ec;
   background-color: #f8fafd;
   color: #7380ec;

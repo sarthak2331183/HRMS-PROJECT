@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
-import logo from '../Images/logo.png';
+import logo from "../Images/logo.png";
 import "./Leave.css";
 import { db } from "../../firebase";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
@@ -31,11 +31,11 @@ const Leave = () => {
       try {
         const leaveCollection = collection(db, "leave");
         const snapshot = await getDocs(leaveCollection);
-        const data = snapshot.docs.map(doc => ({
+        const data = snapshot.docs.map((doc) => ({
           id: doc.id,
           employeeName: doc.data().name,
           email: doc.data().email,
-          ...doc.data()
+          ...doc.data(),
         }));
         setLeaveRequests(data);
       } catch (error) {
@@ -74,21 +74,31 @@ const Leave = () => {
   );
 
   const filterByStatus = (status) => {
-    const filteredRequests = leaveRequests.filter(request => request.status === status);
+    const filteredRequests = leaveRequests.filter(
+      (request) => request.status === status
+    );
     setLeaveRequests(filteredRequests);
   };
 
   const resetLeaveRequests = () => {
-    const resetRequests = leaveRequests.filter(request => request.status !== "Deleted");
+    const resetRequests = leaveRequests.filter(
+      (request) => request.status !== "Deleted"
+    );
     setLeaveRequests(resetRequests);
   };
 
   const updateStatus = async (id, status) => {
     try {
+      // Update the status directly in the leaveRequests state
+      const updatedRequests = leaveRequests.map((request) =>
+        request.id === id ? { ...request, status: status } : request
+      );
+      setLeaveRequests(updatedRequests);
+  
+      // Update the status in the Firestore database
       const leaveRef = doc(db, "leave", id);
-      await updateDoc(leaveRef, {
-        status: status
-      });
+      await updateDoc(leaveRef, { status: status });
+  
       setStatusMessage("Status updated!");
       setTimeout(() => {
         setStatusMessage(null);
@@ -97,13 +107,15 @@ const Leave = () => {
       console.error("Error updating status:", error);
     }
   };
+  
 
   // Filtered leave requests based on search query
-  const filteredLeaveRequests = leaveRequests.filter(request => 
-    request.employeeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    request.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    request.leaveType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    request.status.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredLeaveRequests = leaveRequests.filter(
+    (request) =>
+      request.employeeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      request.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      request.leaveType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      request.status.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -119,11 +131,23 @@ const Leave = () => {
         </div>
 
         <div className="sidebar">
-          <NavItem itemName="Dashboard" icon="grid_view" onSelect={openDashboard} />
+          <NavItem
+            itemName="Dashboard"
+            icon="grid_view"
+            onSelect={openDashboard}
+          />
           <NavItem itemName="Admins" icon="diversity_3" onSelect={openAdmin} />
           <NavItem itemName="Employees" icon="badge" onSelect={openEmployee} />
-          <NavItem itemName="Attendance" icon="person_check" onSelect={openAttendance} />
-          <NavItem itemName="Projects" icon="model_training" onSelect={openProject} />
+          <NavItem
+            itemName="Attendance"
+            icon="person_check"
+            onSelect={openAttendance}
+          />
+          <NavItem
+            itemName="Projects"
+            icon="model_training"
+            onSelect={openProject}
+          />
           <NavItem itemName="Leave" icon="prompt_suggestion" selected={true} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
@@ -131,22 +155,36 @@ const Leave = () => {
 
       <main>
         <h1 id="employee1">Leave Requests</h1>
-        
+
         <div className="project-stats">
           {renderStatusButton("All", leaveRequests.length)}
-          {renderStatusButton("Pending", leaveRequests.filter(request => request.status === "Pending").length)}
-          {renderStatusButton("Approved", leaveRequests.filter(request => request.status === "Approved").length)}
-          {renderStatusButton("Denied", leaveRequests.filter(request => request.status === "Denied").length)}
-          <button className="stat-btn" onClick={resetLeaveRequests}>Reset</button>
+          {renderStatusButton(
+            "Pending",
+            leaveRequests.filter((request) => request.status === "Pending")
+              .length
+          )}
+          {renderStatusButton(
+            "Approved",
+            leaveRequests.filter((request) => request.status === "Approved")
+              .length
+          )}
+          {renderStatusButton(
+            "Denied",
+            leaveRequests.filter((request) => request.status === "Denied")
+              .length
+          )}
+          <button className="stat-btn" onClick={resetLeaveRequests}>
+            Reset
+          </button>
         </div>
-        
+
         <div className="employee_details">
           <div className="srh-container">
             <div className="search">
               <span className="material-symbols-outlined">search</span>
-              <input 
-                type="text" 
-                placeholder="Search..." 
+              <input
+                type="text"
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -155,7 +193,7 @@ const Leave = () => {
               Leave Type
             </button>
           </div>
-          
+
           <table>
             <thead>
               <tr>
@@ -177,7 +215,19 @@ const Leave = () => {
                   <td>{request.from.toDate().toLocaleDateString()}</td>
                   <td>{request.to.toDate().toLocaleDateString()}</td>
                   <td>
-                    <button onClick={() => handleDescriptionClick(request.description)}>
+                    <button
+                      onClick={() =>
+                        handleDescriptionClick(request.description)
+                      }
+                      style={{
+                        border: "1px solid black",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        padding: "5px 10px",
+                        background: "white",
+                        fontSize: "12px",
+                      }}
+                    >
                       Show Description
                     </button>
                   </td>
@@ -190,9 +240,13 @@ const Leave = () => {
                         updateStatus(request.id, newStatus);
                       }}
                       className={
-                        request.status === "Denied" ? "status-denied" :
-                        request.status === "Pending" ? "status-pending" :
-                        request.status === "Approved" ? "status-approved" : ""
+                        request.status === "Denied"
+                          ? "status-denied"
+                          : request.status === "Pending"
+                          ? "status-pending"
+                          : request.status === "Approved"
+                          ? "status-approved"
+                          : ""
                       }
                     >
                       <option value="Pending">Pending</option>
@@ -208,9 +262,12 @@ const Leave = () => {
         </div>
         {statusMessage && <div className="status-message">{statusMessage}</div>}
       </main>
-      
+
       {selectedDescription && (
-        <Popup3 description={selectedDescription} onClose={() => setSelectedDescription(null)} />
+        <Popup3
+          description={selectedDescription}
+          onClose={() => setSelectedDescription(null)}
+        />
       )}
     </div>
   );

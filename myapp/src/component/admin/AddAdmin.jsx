@@ -52,11 +52,17 @@ const AddAdmin = () => {
   const openEmployee = () => {
     navigate('/Employee');
   };
+  const openLeave = () => {
+    navigate('/Leave');
+  };
 
 
 
   const openAdmin = () => {
     navigate('/Admin');
+  };
+  const openAttendance = () => {
+    navigate('/Attendance');
   };
 
   const handleSubmit = async (e) => {
@@ -123,21 +129,20 @@ const AddAdmin = () => {
           />
           <NavItem
             itemName="Employees"
-            icon="diversity_3"
+            icon="badge"
             onSelect={openEmployee}
           />
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            onSelect={() => {}}
+            onSelect={openAttendance}
           />
           <NavItem
             itemName="Projects"
             icon="model_training"
             onSelect={() => {}}
           />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
+          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={openLeave} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>

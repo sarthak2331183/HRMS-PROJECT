@@ -65,6 +65,15 @@ const AddEmployee = () => {
   const openAdmin = () => {
     navigate('/Admin');
   };
+  const openAttendance = () => {
+    navigate('/Attendance');
+  };
+  const openProject = () => {
+    navigate('/Project');
+  };
+  const openLeave = () => {
+    navigate('/Leave');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,15 +157,14 @@ const AddEmployee = () => {
           <NavItem
             itemName="Attendance"
             icon="person_check"
-            onSelect={() => {}}
+            onSelect={openAttendance}
           />
           <NavItem
             itemName="Projects"
             icon="model_training"
-            onSelect={() => {}}
+            onSelect={openProject}
           />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
+          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={openLeave} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
@@ -235,7 +243,7 @@ const AddEmployee = () => {
               />
             </div>
           </div>
-          <div className="row">
+          <div className="row4">
             <div className="column">
               <label htmlFor="branch">Branch:</label>
               <select

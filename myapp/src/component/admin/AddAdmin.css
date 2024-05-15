@@ -16,31 +16,24 @@
   
   
   form button {
-  
-    padding: 0.5rem 2rem;
-  
-    border-radius: 0.5rem;
-  
-    border: none;
-  
-    background-color: #7380ec;
-  
-    color: #fff;
-  
-    font-size: 1.2rem;
-  
-    cursor: pointer;
-  
-    transition: all 0.3s ease-in-out;
+    padding: 10px 20px;
+  background: #7380ec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease; 
+  margin-bottom: 2px; 
   
   }
   
   
   form button:hover {
-  
-    background-color: #fff;
-  
-    color: #1e293b;
+    border: 1px solid #7380ec;
+    background-color: #f8fafd;
+    color: #7380ec;
   
   }
 

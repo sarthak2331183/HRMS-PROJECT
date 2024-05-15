@@ -9,20 +9,18 @@ main {
   padding: 2rem;
 }
 
-
 h1 {
-  padding-left: 38px;
-  padding-bottom: 30px;
-  color: var(--clr-primary); 
+  color: var(--clr-primary);
+  margin-bottom: 2rem;
 }
 
-.project-form {
+.add-project-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   box-shadow: var(--box-shadow); 
   border-radius: var(--card-border-radius);
-  height: 76%;
+  height: 82%;
   padding-top: 30px;
   width: 70%;
   transition: all 0.3s ease;
@@ -31,17 +29,17 @@ h1 {
   text-align: center;
 }
 
-.row {
+.add-project-row {
   display: flex;
   gap: 2rem;
 }
 
-.column {
+.add-project-column {
   flex: 1; 
 }
 
-.row input,
-.row select {
+.add-project-row input,
+.add-project-row textarea {
   width: 100%; 
   padding: 0.5rem;
   border-radius: 0.5rem;
@@ -49,58 +47,9 @@ h1 {
   font-size: 1.1rem; 
 }
 
-select#branch,
-select#employmentType,
-select#gender {
-  font-size: small; 
-  color: rgba(0, 0, 0, 0.531); 
-}
-
-.buttons {
+.add-project-buttons {
   display: flex;
   justify-content: center; 
   gap: 1rem;
   margin-top: 1.5rem;
-}
-
-.addbtn,
-.cancelbtn {
-  padding: 20px;
-  border-radius: var(--card-border-radius);
-  border: none;
-  background-color: var(--clr-primary); 
-  color: #fff; 
-  font-size: 15px; 
-  cursor: pointer; 
-  transition: all 0.3s ease-in-out; 
-}
-
-.addbtn:hover {
-  background-color: #fff; 
-  color: #1e293b; 
-}
-
-.cancelbtn:hover {
-  background-color: #fff; 
-  color: #dc3545; 
-}
-
-@media (max-width: 768px) {
-  .project-form .row {
-    flex-direction: column; 
-    gap: 1.5rem; 
-  }
-
-  .project-form .row .column {
-    width: 100%; 
-  }
-
-  .project-form .buttons {
-    flex-direction: column; 
-    align-items: flex-end; 
-  }
-
-  .project-form .buttons .addbtn {
-    margin-bottom: 1rem; 
-  }
 }
