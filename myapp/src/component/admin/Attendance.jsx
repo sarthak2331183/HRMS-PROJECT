@@ -33,7 +33,7 @@ const Attendance = () => {
       try {
         const attendanceRef = collection(db, "attendance");
         const querySnapshot = await getDocs(attendanceRef);
-  
+
         const attendanceData = [];
         querySnapshot.forEach((doc) => {
           const attendance = doc.data();
@@ -54,7 +54,7 @@ const Attendance = () => {
             note: attendance.note,
           });
         });
-  
+
         setEmployees(attendanceData);
         setLoading(false);
       } catch (error) {
@@ -62,10 +62,9 @@ const Attendance = () => {
         setLoading(false);
       }
     };
-  
+
     fetchAttendance();
   }, []);
-  
 
   // Function to calculate hours worked
   const calculateHoursWorked = (checkIn, checkOut) => {
@@ -81,8 +80,7 @@ const Attendance = () => {
   const toggleModal = () => {
     setShowModal(!showModal);
   };
- 
-   
+
   const handleLogout = () => {
     const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
@@ -95,7 +93,7 @@ const Attendance = () => {
         });
     }
   };
-   
+
   const openDashBoard = () => {
     navigate("/Dashboard");
   };
@@ -114,7 +112,7 @@ const Attendance = () => {
   const openLeave = () => {
     navigate("/Leave");
   };
-  
+
   const filteredEmployees = employees.filter((employee) =>
     employee.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -153,19 +151,23 @@ const Attendance = () => {
             onSelect={openDashBoard}
           />
           <NavItem itemName="Admins" icon="diversity_3" onSelect={openAdmin} />
-          <NavItem
-            itemName="Employees"
-            icon="badge"
-            onSelect={openEmployee}
-          />
+          <NavItem itemName="Employees" icon="badge" onSelect={openEmployee} />
           <NavItem
             itemName="Attendance"
             icon="person_check"
             selected={true}
             onSelect={() => {}}
           />
-          <NavItem itemName="Projects" icon="model_training" onSelect={openProject} />
-          <NavItem itemName="Leave" icon="Prompt_suggestion" onSelect={openLeave} />
+          <NavItem
+            itemName="Projects"
+            icon="model_training"
+            onSelect={openProject}
+          />
+          <NavItem
+            itemName="Leave"
+            icon="Prompt_suggestion"
+            onSelect={openLeave}
+          />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
@@ -214,14 +216,40 @@ const Attendance = () => {
               {sortedEmployees.map((employee, index) => (
                 <tr key={employee.id}>
                   <td>{index + 1}</td>
-                  <td>{employee.email}</td> {/* Display email instead of name */}
+                  <td>{employee.email}</td>{" "}
+                  {/* Display email instead of name */}
                   <td>{employee.date}</td>
                   <td>{employee.day}</td>
-                  <td>{employee.checkIn ? employee.checkIn.toLocaleTimeString() : '-'}</td>
-                  <td>{employee.checkOut ? employee.checkOut.toLocaleTimeString() : '-'}</td>
-                  <td>{calculateHoursWorked(employee.checkIn, employee.checkOut)}</td>
                   <td>
-                    <button onClick={() => { setSelectedEmployee(employee); toggleModal(); }}>View</button>
+                    {employee.checkIn
+                      ? employee.checkIn.toLocaleTimeString()
+                      : "-"}
+                  </td>
+                  <td>
+                    {employee.checkOut
+                      ? employee.checkOut.toLocaleTimeString()
+                      : "-"}
+                  </td>
+                  <td>
+                    {calculateHoursWorked(employee.checkIn, employee.checkOut)}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        setSelectedEmployee(employee);
+                        toggleModal();
+                      }}
+                      style={{
+                        padding: "5px 10px",
+                        background: "rgb(107, 192, 107)",
+                        border: "1px solid white",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        color: "white",
+                      }}
+                    >
+                      View
+                    </button>
                   </td>
                 </tr>
               ))}

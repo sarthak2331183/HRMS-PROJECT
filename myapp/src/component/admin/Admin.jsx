@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../../firebase"; // Import db from firebase.js
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import { signOut } from "firebase/auth";
 import { collection, getDocs, query, where, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import logo from "../Images/logo.png";
-import AdmDet from "./AdmDet"; // Import the AdmDet component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -12,7 +11,7 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => {
       href="#"
       className={selected ? "active" : ""}
       onClick={(e) => {
-        e.preventDefault(); // Prevent default anchor behavior
+        e.preventDefault();
         onSelect();
       }}
     >
@@ -37,8 +36,8 @@ const Admin = () => {
 
         const adminsData = [];
         querySnapshot.forEach((doc) => {
-          const { name, gender, mobile, age, citizenshipId, email, parentsName } = doc.data();
-          adminsData.push({ id: doc.id, name, gender, mobile, age, citizenshipId, email, parentsName, editable: false });
+          const data = doc.data();
+          adminsData.push({ id: doc.id, ...data, editable: false });
         });
 
         setAdmins(adminsData);
@@ -89,11 +88,15 @@ const Admin = () => {
   };
 
   const handleSaveAdmin = async (updatedAdmin) => {
+    console.log("Saving admin:", updatedAdmin);
     try {
-      await updateDoc(doc(db, "users", updatedAdmin.id), updatedAdmin);
+      await updateDoc(doc(db, "users", updatedAdmin.id), {
+        name: updatedAdmin.name,
+        mobile: updatedAdmin.mobile,
+      });
       setAdmins((prevAdmins) =>
         prevAdmins.map((admin) =>
-          admin.id === updatedAdmin.id ? updatedAdmin : admin
+          admin.id === updatedAdmin.id ? { ...updatedAdmin, editable: false } : admin
         )
       );
     } catch (error) {
@@ -101,13 +104,19 @@ const Admin = () => {
     }
   };
 
-  // Filter admins based on the search query
+  const handleFieldChange = (adminId, field, value) => {
+    setAdmins((prevAdmins) =>
+      prevAdmins.map((admin) =>
+        admin.id === adminId ? { ...admin, [field]: value } : admin
+      )
+    );
+  };
+
   const filteredAdmins = admins.filter((admin) =>
     admin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     admin.mobile.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Sort admins based on the selected criteria
   const sortedAdmins = [...filteredAdmins].sort((a, b) => {
     if (sortBy === "name") {
       return a.name.localeCompare(b.name);
@@ -118,22 +127,8 @@ const Admin = () => {
     }
   });
 
-  const handleDetailsClick = (admin) => {
-    setSelectedAdmin(admin);
-    setShowDetailsPopup(true);
-  };
-
-  const [selectedAdmin, setSelectedAdmin] = useState(null);
-  const [showDetailsPopup, setShowDetailsPopup] = useState(false);
-
-  const handleCancel = () => {
-    setSelectedAdmin(null);
-    setShowDetailsPopup(false);
-  };
-
   return (
     <div className="container">
-      {/* Aside Section */}
       <aside>
         <div className="top">
           <div className="logo">
@@ -145,38 +140,16 @@ const Admin = () => {
         </div>
 
         <div className="sidebar">
-          <NavItem
-            itemName="Dashboard"
-            icon="grid_view"
-            onSelect={openDashBoard}
-          />
-          <NavItem
-            itemName="Admins"
-            icon="diversity_3"
-            selected={true}
-            onSelect={() => navigate("/Admin")}
-          />
-          <NavItem
-            itemName="Employees"
-            icon="badge"
-            onSelect={openEmployee}
-          />
-          <NavItem
-            itemName="Attendance"
-            icon="person_check"
-            onSelect={openAttendance}
-          />
-          <NavItem
-            itemName="Projects"
-            icon="model_training"
-            onSelect={openProject}
-          />
+          <NavItem itemName="Dashboard" icon="grid_view" onSelect={openDashBoard} />
+          <NavItem itemName="Admins" icon="diversity_3" selected={true} onSelect={() => navigate("/Admin")} />
+          <NavItem itemName="Employees" icon="badge" onSelect={openEmployee} />
+          <NavItem itemName="Attendance" icon="person_check" onSelect={openAttendance} />
+          <NavItem itemName="Projects" icon="model_training" onSelect={openProject} />
           <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={openLeave} />
           <NavItem itemName="Log Out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
 
-      {/* Main Section */}
       <main>
         <h1>Admins</h1>
 
@@ -193,10 +166,7 @@ const Admin = () => {
 
           <div className="dropdown">
             <span className="material-symbols-outlined">sort</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="name">Sort by Name</option>
               <option value="id">Sort by ID</option>
             </select>
@@ -220,7 +190,6 @@ const Admin = () => {
                   <th>Gender</th>
                   <th>Contact No.</th>
                   <th>Actions</th>
-                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
@@ -232,13 +201,7 @@ const Admin = () => {
                         <input
                           type="text"
                           value={admin.name}
-                          onChange={(e) =>
-                            setAdmins((prevAdmins) =>
-                              prevAdmins.map((a) =>
-                                a.id === admin.id ? { ...a, name: e.target.value } : a
-                              )
-                            )
-                          }
+                          onChange={(e) => handleFieldChange(admin.id, "name", e.target.value)}
                         />
                       ) : (
                         admin.name
@@ -250,13 +213,7 @@ const Admin = () => {
                         <input
                           type="text"
                           value={admin.mobile}
-                          onChange={(e) =>
-                            setAdmins((prevAdmins) =>
-                              prevAdmins.map((a) =>
-                                a.id === admin.id ? { ...a, mobile: e.target.value } : a
-                              )
-                            )
-                          }
+                          onChange={(e) => handleFieldChange(admin.id, "mobile", e.target.value)}
                         />
                       ) : (
                         admin.mobile
@@ -264,33 +221,16 @@ const Admin = () => {
                     </td>
                     <td>
                       {admin.editable ? (
-                        <button
-                          className="save-btn"
-                          onClick={() => handleSaveAdmin(admin)}
-                        >
+                        <button className="save-btn" onClick={() => handleSaveAdmin(admin)}>
                           Save
                         </button>
                       ) : (
-                        <button
-                          className="edit-btn"
-                          onClick={() => handleEditAdmin(admin.id)}
-                        >
+                        <button className="edit-btn" onClick={() => handleEditAdmin(admin.id)}>
                           Edit
                         </button>
                       )}
-                      <button
-                        className="delete-btn"
-                        onClick={() => handleDeleteAdmin(admin.id)}
-                      >
+                      <button className="delete-btn" onClick={() => handleDeleteAdmin(admin.id)}>
                         Delete
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="details-link"
-                        onClick={() => handleDetailsClick(admin)}
-                      >
-                        Details
                       </button>
                     </td>
                   </tr>
@@ -298,15 +238,6 @@ const Admin = () => {
               </tbody>
             </table>
           </div>
-        )}
-
-        {/* Details Popup */}
-        {showDetailsPopup && (
-          <AdmDet
-            admin={selectedAdmin}
-            onSave={handleSaveAdmin}
-            onCancel={handleCancel}
-          />
         )}
       </main>
     </div>

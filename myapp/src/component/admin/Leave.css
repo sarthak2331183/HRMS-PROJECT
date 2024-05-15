@@ -1,12 +1,18 @@
 
-.submit-btn,
-.delete-btn, .save-btn, .view-btn{
-  padding: 5px 10px;
-  background: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-}
+  .delete-btn{
+    padding: 5px 10px;
+    background: rgb(234, 76, 76);
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+  }
+  .delete-btn:hover{
+    border: 1px solid red;
+    color: black;
+    background-color: white;
+    
+  }
 .submit-btn {
     margin-right: 10px; 
 }
@@ -31,8 +37,7 @@
 
 
 
-.submit-btn:hover,
-.delete-btn:hover {
+.submit-btn:hover {
   background: #ddd;
 }
 .leaveType-btn {

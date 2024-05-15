@@ -89,20 +89,40 @@
 }
 
 
-.edit-btn,
-.delete-btn {
+.edit-btn{
   padding: 5px 10px;
-  background: #f0f0f0;
-  border: 1px solid #ccc;
+  background: rgb(107, 192, 107);
+  border: 1px solid white;
   border-radius: 5px;
   cursor: pointer;
+  color: white;
+}
+.save-btn, .open-btn{
+  padding: 5px 10px;
+  background:rgb(107, 192, 107);
+  border: 1px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
 }
 
 .edit-btn {
   margin-right: 10px;
 }
 
-.edit-btn:hover,
-.delete-btn:hover {
-  background: #ddd;
+.edit-btn:hover, .open-btn:hover{
+  background: white;
+  border: 1px solid green;
+  color: black;
+}
+.save-btn:hover{
+  background: white;
+  border: 1px solid green;
+  color: black;
+}
+.save-btn {
+  margin-right: 10px;
+}
+.open-btn {
+  margin-right: 10px;
 }
