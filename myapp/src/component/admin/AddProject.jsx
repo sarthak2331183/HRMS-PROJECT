@@ -33,7 +33,7 @@ const AddProject = () => {
     const fetchUsers = async () => {
       const usersCollection = collection(db, "users");
       const snapshot = await getDocs(usersCollection);
-      const userList = snapshot.docs.map(doc => doc.data());
+      const userList = snapshot.docs.map((doc) => doc.data());
       setUsers(userList);
     };
     fetchUsers();
@@ -50,7 +50,10 @@ const AddProject = () => {
         endDate,
         description: projectDescription,
         status: "Pending",
-        members: selectedUsers.map(user => ({ name: user.name, email: user.email }))
+        members: selectedUsers.map((user) => ({
+          name: user.name,
+          email: user.email,
+        })),
       });
 
       setSuccessMessage("Project added successfully!");
@@ -81,90 +84,111 @@ const AddProject = () => {
         </div>
 
         <div className="sidebar">
-          <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Dashboard")} />
-          <NavItem itemName="Admins" icon="diversity_3" onSelect={() => navigate("/Admin")} />
-          <NavItem itemName="Employees" icon="diversity_3" onSelect={() => navigate("/Employee")} />
+          <NavItem
+            itemName="Dashboard"
+            icon="grid_view"
+            onSelect={() => navigate("/Dashboard")}
+          />
+          <NavItem
+            itemName="Admins"
+            icon="diversity_3"
+            onSelect={() => navigate("/Admin")}
+          />
+          <NavItem
+            itemName="Employees"
+            icon="diversity_3"
+            onSelect={() => navigate("/Employee")}
+          />
           <NavItem itemName="Projects" icon="model_training" selected={true} />
           <NavItem itemName="Payroll" icon="paid" />
           <NavItem itemName="Setting" icon="settings" />
-          <NavItem itemName="Log out" icon="logout" onSelect={() => {
-            const confirmed = window.confirm("Are you sure you want to log out?");
-            if (confirmed) navigate("/");
-          }} />
+          <NavItem
+            itemName="Log out"
+            icon="logout"
+            onSelect={() => {
+              const confirmed = window.confirm(
+                "Are you sure you want to log out?"
+              );
+              if (confirmed) navigate("/");
+            }}
+          />
         </div>
       </aside>
 
       <main>
-  <h1>Add Project</h1>
+        <h1>Add Project</h1>
 
-  {successMessage && <p className="add-project-success-message">{successMessage}</p>}
-  {errorMessage && <p className="add-project-error-message">{errorMessage}</p>}
+        {successMessage && (
+          <p className="add-project-success-message">{successMessage}</p>
+        )}
+        {errorMessage && (
+          <p className="add-project-error-message">{errorMessage}</p>
+        )}
 
-  <form onSubmit={handleSubmit} className="add-project-form">
-    <div className="add-project-row">
-      <div className="add-project-column">
-        <label htmlFor="projectTitle">Project Title:</label>
-        <input
-          type="text"
-          id="projectTitle"
-          value={projectTitle}
-          onChange={(e) => setProjectTitle(e.target.value)}
-          required
-        />
-      </div>
-    </div>
+        <form onSubmit={handleSubmit} className="add-project-form">
+          <div className="add-project-row">
+            <div className="add-project-column">
+              <label htmlFor="projectTitle">Project Title:</label>
+              <input
+                type="text"
+                id="projectTitle"
+                value={projectTitle}
+                onChange={(e) => setProjectTitle(e.target.value)}
+                required
+              />
+            </div>
+          </div>
 
-    <div className="add-project-row">
-      <div className="add-project-column">
-        <label htmlFor="startDate">Start Date:</label>
-        <input
-          type="date"
-          id="startDate"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          required
-        />
-      </div>
-      <div className="add-project-column">
-        <label htmlFor="endDate">End Date:</label>
-        <input
-          type="date"
-          id="endDate"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          required
-        />
-      </div>
-    </div>
+          <div className="add-project-row">
+            <div className="add-project-column">
+              <label htmlFor="startDate">Start Date:</label>
+              <input
+                type="date"
+                id="startDate"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                required
+              />
+            </div>
+            <div className="add-project-column">
+              <label htmlFor="endDate">End Date:</label>
+              <input
+                type="date"
+                id="endDate"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
+              />
+            </div>
+          </div>
 
-    <div className="add-project-row">
-      <div className="add-project-column">
-        <label htmlFor="projectDescription">Project Description:</label>
-        <textarea
-          id="projectDescription"
-          value={projectDescription}
-          onChange={(e) => setProjectDescription(e.target.value)}
-          required
-          rows="10"
-        />
-      </div>
-    </div>
+          <div className="add-project-row">
+            <div className="add-project-column">
+              <label htmlFor="projectDescription">Project Description:</label>
+              <textarea
+                id="projectDescription"
+                value={projectDescription}
+                onChange={(e) => setProjectDescription(e.target.value)}
+                required
+                rows="10"
+              />
+            </div>
+          </div>
 
-    <div className="add-project-row add-project-buttons">
-      <button type="submit" className="add-project-btn">
-        Add Project
-      </button>
-      <button
-        type="button"
-        className="add-project-cancel-btn"
-        onClick={() => navigate("/Project")}
-      >
-        Cancel
-      </button>
-    </div>
-  </form>
-</main>
-
+          <div className="add-project-row add-project-buttons">
+            <button type="submit" className="add-project-btn">
+              Add Project
+            </button>
+            <button
+              type="button"
+              className="add-project-cancel-btn"
+              onClick={() => navigate("/Project")}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </main>
     </div>
   );
 };

@@ -34,17 +34,6 @@
 .status-denied {
   color: #dc3545; 
 }
-.show-description-btn {
-  padding: 5px 10px;
-  background: rgb(107, 192, 107);
-  border: 1px solid white;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-}
-
-
-
 
 .submit-btn:hover {
   background: #ddd;

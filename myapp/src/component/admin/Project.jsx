@@ -20,7 +20,9 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => (
 const Project = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("All");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -29,6 +31,7 @@ const Project = () => {
         const snapshot = await getDocs(projectCollection);
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setProjects(data);
+        setFilteredProjects(data); // Initially, set filteredProjects to all projects
       } catch (error) {
         console.error("Error fetching projects:", error);
       }
@@ -50,7 +53,9 @@ const Project = () => {
     if (confirmed) {
       try {
         await deleteDoc(doc(db, "project", projectId));
+        // Update both projects and filteredProjects after deletion
         setProjects((prevProjects) => prevProjects.filter((p) => p.id !== projectId));
+        setFilteredProjects((prevFilteredProjects) => prevFilteredProjects.filter((p) => p.id !== projectId));
       } catch (error) {
         console.error("Error deleting project:", error);
       }
@@ -62,14 +67,37 @@ const Project = () => {
       const projectRef = doc(db, "project", projectId);
       await updateDoc(projectRef, { status: newStatus });
       setProjects((prevProjects) => prevProjects.map((p) => p.id === projectId ? { ...p, status: newStatus } : p));
+      setFilteredProjects((prevFilteredProjects) => prevFilteredProjects.map((p) => p.id === projectId ? { ...p, status: newStatus } : p));
     } catch (error) {
       console.error("Error updating project status:", error);
     }
   };
 
-  const filteredProjects = projects.filter(project =>
-    project.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filterProjects = (status) => {
+    if (status === "All") {
+      return projects;
+    } else {
+      return projects.filter(project => project.status === status);
+    }
+  };
+
+  const handleFilterClick = (status) => {
+    setFilter(status);
+    if (status === "All") {
+      setFilteredProjects(projects); // Set filteredProjects to all projects
+    } else {
+      const filtered = projects.filter(project => project.status === status);
+      setFilteredProjects(filtered);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    const filtered = projects.filter(project =>
+      project.title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredProjects(filtered);
+  };
 
   return (
     <div className="container">
@@ -101,11 +129,11 @@ const Project = () => {
         <h1 id="employee1">Project</h1>
 
         <div className="project-stats">
-          <button className="stat-btn">Upcoming: {projects.filter(project => new Date(project.startDate) > new Date()).length}</button>
-          <button className="stat-btn">In Progress: {projects.filter(project => project.status === 'Ongoing').length}</button>
-          <button className="stat-btn">Completed: {projects.filter(project => project.status === 'Completed').length}</button>
-          <button className="stat-btn">Cancelled: {projects.filter(project => project.status === 'Cancelled').length}</button>
-          <button className="stat-btn">Ended: {projects.filter(project => new Date(project.endDate) < new Date() || project.status === 'Ended').length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("All")}>All: {projects.length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Ongoing")}>In Progress: {projects.filter(project => project.status === 'Ongoing').length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Completed")}>Completed: {projects.filter(project => project.status === 'Completed').length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Cancelled")}>Cancelled: {projects.filter(project => project.status === 'Cancelled').length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Ended")}>Ended: {projects.filter(project => new Date(project.endDate) < new Date() || project.status === 'Ended').length}</button>
         </div>
 
         <div className="employee_details">
@@ -116,7 +144,7 @@ const Project = () => {
                 type="text"
                 placeholder="Enter project title..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearchChange}
               />
             </div>
             <button className="add-project-btn" onClick={handleAddProject}>
@@ -142,7 +170,7 @@ const Project = () => {
                   <td>{project.title}</td>
                   <td>{project.description}</td>
                   <td>
-                    <select value={project.status} onChange={(e) => handleStatusChange(project.id, e.target.value)}>
+                    <select value={project.status} onChange={(e) =>  handleStatusChange(project.id, e.target.value)}>
                       <option value="Ongoing">Ongoing</option>
                       <option value="Completed">Completed</option>
                       <option value="Pending">Pending</option>
@@ -165,3 +193,4 @@ const Project = () => {
 };
 
 export default Project;
+

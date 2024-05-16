@@ -17,7 +17,6 @@ import EmpAttendance from './component/Employee/EmpAttendance'
 import AddProject from './component/admin/AddProject';
 import Empleave from './component/Employee/Empleave';
 import Leave from './component/admin/Leave';
-import LeaveTypes from './component/admin/LeaveTypes';
 import Empproject from './component/Employee/Empproject';
 import OpenProject from './component/admin/OpenProject';
 
@@ -59,7 +58,6 @@ function App() {
         <Route path="/AddProject" element={<AddProject />} />
         <Route path="/Empleave" element={<Empleave />} />
         <Route path="/Leave" element={<Leave />} />
-        <Route path="/LeaveTypes" element={<LeaveTypes />} />
         <Route path="/Empproject" element={<Empproject />} />
         <Route path="/OpenProject/:projectId" element={<RequireAuth><OpenProject /></RequireAuth>} />
       </Routes>

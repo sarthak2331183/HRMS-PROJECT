@@ -13,7 +13,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import Det from "./Det"; // Update import statement
+import Det from "./Det"; 
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (

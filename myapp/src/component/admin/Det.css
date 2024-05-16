@@ -8,6 +8,8 @@
   background-color: white;
   border: 1px solid #ccc;
   padding: 20px;
+  border-radius: 10px; /* Add border radius for a rounded appearance */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
 }
 
 .popup_inner1 {
@@ -23,6 +25,7 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
+  color: #333; /* Change color to make it visible */
 }
 
 .popup1 h2 {
@@ -31,3 +34,34 @@
   text-align: center;
 }
 
+.popup1 > div {
+  /* Add padding between elements */
+  margin-top: 20px;
+}
+
+.popup1 label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.popup1 input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.popup1 button {
+  padding: 10px 20px;
+  background-color: #7380ec;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup1 button:hover {
+  background-color: #5269e3;
+}

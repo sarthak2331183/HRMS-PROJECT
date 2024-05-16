@@ -189,9 +189,6 @@ const Leave = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <button className="leaveType-btn" onClick={openLeaveTypes}>
-              Leave Type
-            </button>
           </div>
 
           <table>
