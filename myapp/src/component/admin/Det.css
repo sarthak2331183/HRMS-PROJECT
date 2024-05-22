@@ -1,5 +1,4 @@
 .popup1 {
-  /* Center the popup */
   position: fixed;
   top: 50%;
   left: 50%;
@@ -8,12 +7,15 @@
   background-color: white;
   border: 1px solid #ccc;
   padding: 20px;
-  border-radius: 10px; /* Add border radius for a rounded appearance */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-height: 80%; /* Limit the maximum height */
+  overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
+  width: 90%; /* Make it responsive for smaller screens */
+  max-width: 600px; /* Set a maximum width */
 }
 
 .popup_inner1 {
-  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -25,7 +27,7 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: #333; /* Change color to make it visible */
+  color: #333;
 }
 
 .popup1 h2 {
@@ -34,13 +36,18 @@
   text-align: center;
 }
 
-.popup1 > div {
-  /* Add padding between elements */
-  margin-top: 20px;
+.form-grid, .details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
 
 .popup1 label {
-  display: block;
   margin-bottom: 5px;
 }
 

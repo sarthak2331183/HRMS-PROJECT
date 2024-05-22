@@ -219,13 +219,695 @@
 
 
 
+// import React, { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { collection, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
+// import { db } from "../../firebase";
+
+// import logo from '../Images/logo.png';
+
+
+// const NavItem = ({ itemName, icon, selected, onSelect }) => (
+//   <a
+//     href="#"
+//     className={selected ? "active" : ""}
+//     onClick={() => onSelect(itemName)}
+//   >
+//     <span className="material-symbols-outlined">{icon}</span>
+//     <h3>{itemName}</h3>
+//   </a>
+// );
+
+// const Empproject = () => {
+//   const navigate = useNavigate();
+//   const [projects, setProjects] = useState([]);
+//   const [filteredProjects, setFilteredProjects] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [filter, setFilter] = useState("All");
+
+//   useEffect(() => {
+//     const fetchProjects = async () => {
+//       try {
+//         const projectCollection = collection(db, "project");
+//         const snapshot = await getDocs(projectCollection);
+//         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//         setProjects(data);
+//         setFilteredProjects(data); // Initially, set filteredProjects to all projects
+//       } catch (error) {
+//         console.error("Error fetching projects:", error);
+//       }
+//     };
+
+//     fetchProjects();
+//   }, []);
+
+//   const handleAddProject = () => {
+//     navigate('/AddProject');
+//   };
+
+//   const handleOpenProject = (projectId) => {
+//     navigate(`/OpenProject/${projectId}`);
+//   };
+
+//   const handleDelete = async (projectId) => {
+//     const confirmed = window.confirm("Are you sure you want to delete this project?");
+//     if (confirmed) {
+//       try {
+//         await deleteDoc(doc(db, "project", projectId));
+//         // Update both projects and filteredProjects after deletion
+//         setProjects((prevProjects) => prevProjects.filter((p) => p.id !== projectId));
+//         setFilteredProjects((prevFilteredProjects) => prevFilteredProjects.filter((p) => p.id !== projectId));
+//       } catch (error) {
+//         console.error("Error deleting project:", error);
+//       }
+//     }
+//   };
+
+//   const handleStatusChange = async (projectId, newStatus) => {
+//     try {
+//       const projectRef = doc(db, "project", projectId);
+//       await updateDoc(projectRef, { status: newStatus });
+//       setProjects((prevProjects) => prevProjects.map((p) => p.id === projectId ? { ...p, status: newStatus } : p));
+//       setFilteredProjects((prevFilteredProjects) => prevFilteredProjects.map((p) => p.id === projectId ? { ...p, status: newStatus } : p));
+//     } catch (error) {
+//       console.error("Error updating project status:", error);
+//     }
+//   };
+
+//   const filterProjects = (status) => {
+//     if (status === "All") {
+//       return projects;
+//     } else {
+//       return projects.filter(project => project.status === status);
+//     }
+//   };
+
+//   const handleFilterClick = (status) => {
+//     setFilter(status);
+//     if (status === "All") {
+//       setFilteredProjects(projects); // Set filteredProjects to all projects
+//     } else {
+//       const filtered = projects.filter(project => project.status === status);
+//       setFilteredProjects(filtered);
+//     }
+//   };
+
+//   const handleSearchChange = (e) => {
+//     setSearchTerm(e.target.value);
+//     const filtered = projects.filter(project =>
+//       project.title.toLowerCase().includes(e.target.value.toLowerCase())
+//     );
+//     setFilteredProjects(filtered);
+//   };
+
+//   return (
+//     <div className="container">
+//       <aside>
+//         <div className="top">
+//           <div className="logo">
+//             <img src={logo} alt="Logo" />
+//           </div>
+//           <div className="close">
+//             <span className="material-symbols-outlined">crowdsource</span>
+//           </div>
+//         </div>
+
+//         <div className="sidebar">
+//           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Dashboard")} />
+//           <NavItem itemName="Admins" icon="diversity_3" onSelect={() => navigate("/Admin")} />
+//           <NavItem itemName="Employees" icon="badge" onSelect={() => navigate("/Employee")} />
+//           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/Attendance")} />
+//           <NavItem itemName="Projects" icon="model_training" selected={true} />
+//           <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={() => navigate("/Leave")} />
+//           <NavItem itemName="Log out" icon="logout" onSelect={() => {
+//             const confirmed = window.confirm("Are you sure you want to log out?");
+//             if (confirmed) navigate("/");
+//           }} />
+//         </div>
+//       </aside>
+
+//       <main>
+//         <h1 id="employee1">Project</h1>
+
+//         <div className="project-stats">
+//           <button className="stat-btn" onClick={() => handleFilterClick("All")}>All: {projects.length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Ongoing")}>In Progress: {projects.filter(project => project.status === 'Ongoing').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Completed")}>Completed: {projects.filter(project => project.status === 'Completed').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Cancelled")}>Cancelled: {projects.filter(project => project.status === 'Cancelled').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Ended")}>Ended: {projects.filter(project => new Date(project.endDate) < new Date() || project.status === 'Ended').length}</button>
+//         </div>
+
+//         <div className="employee_details">
+//           <div className="srh-container">
+//             <div className="search">
+//               <span className="material-symbols-outlined">search</span>
+//               <input
+//                 type="text"
+//                 placeholder="Enter project title..."
+//                 value={searchTerm}
+//                 onChange={handleSearchChange}
+//               />
+//             </div>
+//             <button className="add-project-btn" onClick={handleAddProject}>
+//               <span className="material-symbols-outlined">add</span>
+//               Add Project
+//             </button>
+//           </div>
+
+//           <table>
+//             <thead>
+//               <tr>
+//                 <th>Project Title</th>
+//                 <th>Project Description</th>
+//                 <th>Status</th>
+//                 <th>Start Date</th>
+//                 <th>End Date</th>
+//                 <th>Actions</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {filteredProjects.map((project) => (
+//                 <tr key={project.id}>
+//                   <td>{project.title}</td>
+//                   <td>{project.description}</td>
+//                   <td>
+//                     <select value={project.status} onChange={(e) =>  handleStatusChange(project.id, e.target.value)}>
+//                       <option value="Ongoing">Ongoing</option>
+//                       <option value="Completed">Completed</option>
+//                       <option value="Pending">Pending</option>
+//                     </select>
+//                   </td>
+//                   <td>{project.startDate}</td>
+//                   <td>{project.endDate}</td>
+//                   <td>
+//                     <button className="open-btn" onClick={() => handleOpenProject(project.id)}>Open</button>
+//                     <button className="delete-btn" onClick={() => handleDelete(project.id)}>Delete</button>
+//                   </td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default Empproject;
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { collection, getDocs } from "firebase/firestore";
+// import { db } from "../../firebase";
+// import logo from '../Images/logo.png';
+// import "./Empproject.css";
+
+// const NavItem = ({ itemName, icon, selected, onSelect }) => (
+//   <a
+//     href="#"
+//     className={selected ? "active" : ""}
+//     onClick={() => onSelect(itemName)}
+//   >
+//     <span className="material-symbols-outlined">{icon}</span>
+//     <h3>{itemName}</h3>
+//   </a>
+// );
+
+// const Empproject = () => {
+//   const navigate = useNavigate();
+//   const [projects, setProjects] = useState([]);
+//   const [filteredProjects, setFilteredProjects] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [filter, setFilter] = useState("All");
+
+//   useEffect(() => {
+//     const fetchProjects = async () => {
+//       try {
+//         const projectCollection = collection(db, "project");
+//         const snapshot = await getDocs(projectCollection);
+//         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//         setProjects(data);
+//         setFilteredProjects(data); // Initially, set filteredProjects to all projects
+//       } catch (error) {
+//         console.error("Error fetching projects:", error);
+//       }
+//     };
+
+//     fetchProjects();
+//   }, []);
+
+//   const handleOpenProject = (projectId) => {
+//     navigate(`/OpenProject/${projectId}`);
+//   };
+
+//   const filterProjects = (status) => {
+//     if (status === "All") {
+//       return projects;
+//     } else {
+//       return projects.filter(project => project.status === status);
+//     }
+//   };
+
+//   const handleFilterClick = (status) => {
+//     setFilter(status);
+//     if (status === "All") {
+//       setFilteredProjects(projects); // Set filteredProjects to all projects
+//     } else {
+//       const filtered = projects.filter(project => project.status === status);
+//       setFilteredProjects(filtered);
+//     }
+//   };
+
+//   const handleSearchChange = (e) => {
+//     setSearchTerm(e.target.value);
+//     const filtered = projects.filter(project =>
+//       project.title.toLowerCase().includes(e.target.value.toLowerCase())
+//     );
+//     setFilteredProjects(filtered);
+//   };
+
+//   return (
+//     <div className="container">
+//       <aside>
+//         <div className="top">
+//           <div className="logo">
+//             <img src={logo} alt="Logo" />
+//           </div>
+//           <div className="close">
+//             <span className="material-symbols-outlined">crowdsource</span>
+//           </div>
+//         </div>
+
+//         <div className="sidebar">
+//           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Empdashboard")} />
+//           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/EmpAttendance")} />
+//           <NavItem itemName="Projects" icon="model_training" selected={true} />
+//           <NavItem itemName="Leave" icon="paid" onSelect={() => navigate("/Empleave")} />
+//           <NavItem itemName="Log out" icon="logout" onSelect={() => {
+//             const confirmed = window.confirm("Are you sure you want to log out?");
+//             if (confirmed) navigate("/");
+//           }} />
+//         </div>
+//       </aside>
+
+//       <main>
+//         <h1 id="employee1">Projects</h1>
+
+//         <div className="project-stats">
+//           <button className="stat-btn" onClick={() => handleFilterClick("All")}>All: {projects.length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Ongoing")}>In Progress: {projects.filter(project => project.status === 'Ongoing').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Completed")}>Completed: {projects.filter(project => project.status === 'Completed').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Cancelled")}>Cancelled: {projects.filter(project => project.status === 'Cancelled').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Ended")}>Ended: {projects.filter(project => new Date(project.endDate) < new Date() || project.status === 'Ended').length}</button>
+//         </div>
+
+//         <div className="employee_details">
+//           <div className="srh-container">
+//             <div className="search">
+//               <span className="material-symbols-outlined">search</span>
+//               <input
+//                 type="text"
+//                 placeholder="Enter project title..."
+//                 value={searchTerm}
+//                 onChange={handleSearchChange}
+//               />
+//             </div>
+//           </div>
+
+//           <table>
+//             <thead>
+//               <tr>
+//                 <th>Project Title</th>
+//                 <th>Project Description</th>
+//                 <th>Status</th>
+//                 <th>Start Date</th>
+//                 <th>End Date</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {filteredProjects.map((project) => (
+//                 <tr key={project.id}>
+//                   <td>{project.title}</td>
+//                   <td>{project.description}</td>
+//                   <td>{project.status}</td>
+//                   <td>{project.startDate}</td>
+//                   <td>{project.endDate}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default Empproject;
+
+
+
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { collection, getDocs, query, where } from "firebase/firestore";
+// import { auth, db } from "../../firebase";
+// import { onAuthStateChanged } from "firebase/auth";
+// import logo from '../Images/logo.png';
+// import "./Empproject.css";
+
+// const NavItem = ({ itemName, icon, selected, onSelect }) => (
+//   <a
+//     href="#"
+//     className={selected ? "active" : ""}
+//     onClick={() => onSelect(itemName)}
+//   >
+//     <span className="material-symbols-outlined">{icon}</span>
+//     <h3>{itemName}</h3>
+//   </a>
+// );
+
+// const Empproject = () => {
+//   const navigate = useNavigate();
+//   const [projects, setProjects] = useState([]);
+//   const [filteredProjects, setFilteredProjects] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [filter, setFilter] = useState("All");
+//   const [currentUserEmail, setCurrentUserEmail] = useState("");
+
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+//       if (user) {
+//         const userEmail = user.email;
+//         setCurrentUserEmail(userEmail);
+//         console.log("Logged in user email:", userEmail);
+
+//         try {
+//           const projectCollection = collection(db, "project");
+//           const q = query(
+//             projectCollection,
+//             where("member1Email", "==", userEmail)
+//           );
+
+//           const q2 = query(
+//             projectCollection,
+//             where("member2Email", "==", userEmail)
+//           );
+
+//           const snapshot = await getDocs(q);
+//           const snapshot2 = await getDocs(q2);
+
+//           const data = snapshot.docs.concat(snapshot2.docs).map(doc => ({ id: doc.id, ...doc.data() }));
+//           console.log("Fetched projects data:", data);
+
+//           setProjects(data);
+//           setFilteredProjects(data);
+//         } catch (error) {
+//           console.error("Error fetching projects:", error);
+//         }
+//       } else {
+//         setCurrentUserEmail("");
+//       }
+//     });
+//     return () => unsubscribe();
+//   }, []);
+
+//   const handleOpenProject = (projectId) => {
+//     navigate(`/OpenProject/${projectId}`);
+//   };
+
+//   const handleFilterClick = (status) => {
+//     setFilter(status);
+//     if (status === "All") {
+//       setFilteredProjects(projects);
+//     } else {
+//       const filtered = projects.filter(project => project.status === status);
+//       setFilteredProjects(filtered);
+//     }
+//   };
+
+//   const handleSearchChange = (e) => {
+//     setSearchTerm(e.target.value);
+//     const filtered = projects.filter(project =>
+//       project.title.toLowerCase().includes(e.target.value.toLowerCase())
+//     );
+//     setFilteredProjects(filtered);
+//   };
+
+//   return (
+//     <div className="container">
+//       <aside>
+//         <div className="top">
+//           <div className="logo">
+//             <img src={logo} alt="Logo" />
+//           </div>
+//           <div className="close">
+//             <span className="material-symbols-outlined">crowdsource</span>
+//           </div>
+//         </div>
+
+//         <div className="sidebar">
+//           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Empdashboard")} />
+//           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/EmpAttendance")} />
+//           <NavItem itemName="Projects" icon="model_training" selected={true} />
+//           <NavItem itemName="Leave" icon="paid" onSelect={() => navigate("/Empleave")} />
+//           <NavItem itemName="Log out" icon="logout" onSelect={() => {
+//             const confirmed = window.confirm("Are you sure you want to log out?");
+//             if (confirmed) navigate("/");
+//           }} />
+//         </div>
+//       </aside>
+
+//       <main>
+//         <h1 id="employee1">Projects</h1>
+
+//         <div className="project-stats">
+//           <button className="stat-btn" onClick={() => handleFilterClick("All")}>All: {projects.length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Ongoing")}>In Progress: {projects.filter(project => project.status === 'Ongoing').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Completed")}>Completed: {projects.filter(project => project.status === 'Completed').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Cancelled")}>Cancelled: {projects.filter(project => project.status === 'Cancelled').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Ended")}>Ended: {projects.filter(project => new Date(project.endDate) < new Date() || project.status === 'Ended').length}</button>
+//         </div>
+
+//         <div className="employee_details">
+//           <div className="srh-container">
+//             <div className="search">
+//               <span className="material-symbols-outlined">search</span>
+//               <input
+//                 type="text"
+//                 placeholder="Enter project title..."
+//                 value={searchTerm}
+//                 onChange={handleSearchChange}
+//               />
+//             </div>
+//           </div>
+
+//           <table>
+//             <thead>
+//               <tr>
+//                 <th>Project Title</th>
+//                 <th>Project Description</th>
+//                 <th>Status</th>
+//                 <th>Start Date</th>
+//                 <th>End Date</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {filteredProjects.map((project) => (
+//                 <tr key={project.id} onClick={() => handleOpenProject(project.id)}>
+//                   <td>{project.title}</td>
+//                   <td>{project.description}</td>
+//                   <td>{project.status}</td>
+//                   <td>{project.startDate}</td>
+//                   <td>{project.endDate}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default Empproject;
+
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { collection, getDocs } from "firebase/firestore";
+// import { auth, db } from "../../firebase";
+// import { onAuthStateChanged } from "firebase/auth";
+// import logo from '../Images/logo.png';
+// import "./Empproject.css";
+
+// const NavItem = ({ itemName, icon, selected, onSelect }) => (
+//   <a
+//     href="#"
+//     className={selected ? "active" : ""}
+//     onClick={() => onSelect(itemName)}
+//   >
+//     <span className="material-symbols-outlined">{icon}</span>
+//     <h3>{itemName}</h3>
+//   </a>
+// );
+
+// const Empproject = () => {
+//   const navigate = useNavigate();
+//   const [projects, setProjects] = useState([]);
+//   const [filteredProjects, setFilteredProjects] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [filter, setFilter] = useState("All");
+//   const [currentUserEmail, setCurrentUserEmail] = useState("");
+
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+//       if (user) {
+//         const userEmail = user.email;
+//         setCurrentUserEmail(userEmail);
+//         console.log("Logged in user email:", userEmail);
+
+//         try {
+//           const projectCollection = collection(db, "project");
+//           const snapshot = await getDocs(projectCollection);
+
+//           const data = snapshot.docs
+//             .map(doc => ({ id: doc.id, ...doc.data() }))
+//             .filter(project => {
+//               const memberEmails = Object.keys(project).filter(key => key.startsWith("member") && key.endsWith("Email"));
+//               return memberEmails.some(key => project[key].toLowerCase() === userEmail.toLowerCase());
+//             });
+
+//           console.log("Fetched projects data:", data);
+
+//           setProjects(data);
+//           setFilteredProjects(data);
+//         } catch (error) {
+//           console.error("Error fetching projects:", error);
+//         }
+//       } else {
+//         setCurrentUserEmail("");
+//       }
+//     });
+//     return () => unsubscribe();
+//   }, []);
+
+//   const handleOpenProject = (projectId) => {
+//     navigate(`/OpenProject/${projectId}`);
+//   };
+
+//   const handleFilterClick = (status) => {
+//     setFilter(status);
+//     if (status === "All") {
+//       setFilteredProjects(projects);
+//     } else {
+//       const filtered = projects.filter(project => project.status === status);
+//       setFilteredProjects(filtered);
+//     }
+//   };
+
+//   const handleSearchChange = (e) => {
+//     setSearchTerm(e.target.value);
+//     const filtered = projects.filter(project =>
+//       project.title.toLowerCase().includes(e.target.value.toLowerCase())
+//     );
+//     setFilteredProjects(filtered);
+//   };
+
+//   return (
+//     <div className="container">
+//       <aside>
+//         <div className="top">
+//           <div className="logo">
+//             <img src={logo} alt="Logo" />
+//           </div>
+//           <div className="close">
+//             <span className="material-symbols-outlined">crowdsource</span>
+//           </div>
+//         </div>
+
+//         <div className="sidebar">
+//           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Empdashboard")} />
+//           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/EmpAttendance")} />
+//           <NavItem itemName="Projects" icon="model_training" selected={true} />
+//           <NavItem itemName="Leave" icon="paid" onSelect={() => navigate("/Empleave")} />
+//           <NavItem itemName="Log out" icon="logout" onSelect={() => {
+//             const confirmed = window.confirm("Are you sure you want to log out?");
+//             if (confirmed) navigate("/");
+//           }} />
+//         </div>
+//       </aside>
+
+//       <main>
+//         <h1 id="employee1">Projects</h1>
+
+//         <div className="project-stats">
+//           <button className="stat-btn" onClick={() => handleFilterClick("All")}>All: {projects.length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Ongoing")}>In Progress: {projects.filter(project => project.status === 'Ongoing').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Completed")}>Completed: {projects.filter(project => project.status === 'Completed').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Cancelled")}>Cancelled: {projects.filter(project => project.status === 'Cancelled').length}</button>
+//           <button className="stat-btn" onClick={() => handleFilterClick("Ended")}>Ended: {projects.filter(project => new Date(project.endDate) < new Date() || project.status === 'Ended').length}</button>
+//         </div>
+
+//         <div className="employee_details">
+//           <div className="srh-container">
+//             <div className="search">
+//               <span className="material-symbols-outlined">search</span>
+//               <input
+//                 type="text"
+//                 placeholder="Enter project title..."
+//                 value={searchTerm}
+//                 onChange={handleSearchChange}
+//               />
+//             </div>
+//           </div>
+
+//           <table>
+//             <thead>
+//               <tr>
+//                 <th>Project Title</th>
+//                 <th>Project Description</th>
+//                 <th>Status</th>
+//                 <th>Start Date</th>
+//                 <th>End Date</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {filteredProjects.map((project) => (
+//                 <tr key={project.id} onClick={() => handleOpenProject(project.id)}>
+//                   <td>{project.title}</td>
+//                   <td>{project.description}</td>
+//                   <td>{project.status}</td>
+//                   <td>{project.startDate}</td>
+//                   <td>{project.endDate}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default Empproject;
+
+
 
 
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "../../firebase";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import logo from '../Images/logo.png';
 import "./Empproject.css";
 
@@ -242,98 +924,64 @@ const NavItem = ({ itemName, icon, selected, onSelect }) => (
 
 const Empproject = () => {
   const navigate = useNavigate();
-  const { projectId } = useParams();
+  const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("All");
+  const [currentUserEmail, setCurrentUserEmail] = useState("");
 
-  const [projectTitle, setProjectTitle] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-  const [projectStatus, setProjectStatus] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [members, setMembers] = useState([]);
-  const [selectedMember, setSelectedMember] = useState("");
-  const [workProgress, setWorkProgress] = useState([]);
-  const [workDescription, setWorkDescription] = useState("");
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userEmail = user.email;
+        setCurrentUserEmail(userEmail);
+        console.log("Logged in user email:", userEmail);
 
-  const fetchProjectDetails = async () => {
-    try {
-      const projectDoc = await getDoc(doc(db, "project", projectId));
-      if (projectDoc.exists()) {
-        const projectData = projectDoc.data();
-        console.log("Project data:", projectData); // Debugging
-        if (projectData) {
-          setProjectTitle(projectData.title || "");
-          setProjectDescription(projectData.description || "");
-          setProjectStatus(projectData.status || "");
-          setStartDate(projectData.startDate || "");
-          setEndDate(projectData.endDate || "");
-          setMembers(projectData.members || []);
-        } else {
-          console.error("Project data is undefined");
+        try {
+          const projectCollection = collection(db, "project");
+          const snapshot = await getDocs(projectCollection);
+
+          const data = snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .filter(project => {
+              const memberEmails = Object.keys(project).filter(key => key.startsWith("member") && key.endsWith("Email"));
+              return memberEmails.some(key => project[key].toLowerCase() === userEmail.toLowerCase());
+            });
+
+          console.log("Fetched projects data:", data);
+
+          setProjects(data);
+          setFilteredProjects(data);
+        } catch (error) {
+          console.error("Error fetching projects:", error);
         }
       } else {
-        console.error("No such project!");
+        setCurrentUserEmail("");
       }
-    } catch (error) {
-      console.error("Error fetching project details:", error);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleOpenProject = (projectId) => {
+    navigate(`/EmpOpenProject/${projectId}`);
+  };
+
+  const handleFilterClick = (status) => {
+    setFilter(status);
+    if (status === "All") {
+      setFilteredProjects(projects);
+    } else {
+      const filtered = projects.filter(project => project.status === status);
+      setFilteredProjects(filtered);
     }
   };
 
-  const fetchMemberWorkProgress = async (memberEmail) => {
-    try {
-      const projectDoc = await getDoc(doc(db, "project", projectId));
-      if (projectDoc.exists()) {
-        const projectData = projectDoc.data();
-        const memberData = (projectData.members || []).find(
-          (member) => member.email === memberEmail
-        );
-        setWorkProgress(memberData?.workProgress || []); // Handle case when workProgress is not present
-      }
-    } catch (error) {
-      console.error("Error fetching member work progress:", error);
-    }
-  };
-
-  useEffect(() => {
-    console.log("Fetching project details...");
-    fetchProjectDetails();
-  }, [projectId]);
-
-  useEffect(() => {
-    if (selectedMember) {
-      fetchMemberWorkProgress(selectedMember);
-    }
-  }, [selectedMember]);
-
-  const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      navigate("/");
-    }
-  };
-
-  const handleSubmitWorkProgress = async (e) => {
-    e.preventDefault();
-    try {
-      const memberEmail = selectedMember;
-      const projectDocRef = doc(db, "project", projectId);
-      const memberIndex = members.findIndex(member => member.email === memberEmail);
-
-      console.log("Selected Member:", memberEmail);
-      console.log("Work Description:", workDescription);
-
-      if (memberIndex !== -1) {
-        await updateDoc(projectDocRef, {
-          [`members.${memberIndex}.workProgress`]: arrayUnion({ description: workDescription }),
-        });
-
-        alert("Work progress updated successfully");
-      } else {
-        alert(`Member with email ${memberEmail} not found in the project.`);
-      }
-    } catch (error) {
-      console.error("Error updating work progress:", error.message);
-      alert(`Error updating work progress: ${error.message}`);
-    }
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    const filtered = projects.filter(project =>
+      project.title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredProjects(filtered);
   };
 
   return (
@@ -350,86 +998,65 @@ const Empproject = () => {
 
         <div className="sidebar">
           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Empdashboard")} />
-          <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/Attendance")} />
-          <NavItem itemName="Projects" icon="model_training" onSelect={() => navigate("/Projects")} />
-          <NavItem itemName="Leave" icon="paid" onSelect={() => navigate("/Leave")} />
-          <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
+          <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/EmpAttendance")} />
+          <NavItem itemName="Projects" icon="model_training" selected={true} />
+          <NavItem itemName="Leave" icon="paid" onSelect={() => navigate("/Empleave")} />
+          <NavItem itemName="Log out" icon="logout" onSelect={() => {
+            const confirmed = window.confirm("Are you sure you want to log out?");
+            if (confirmed) navigate("/");
+          }} />
         </div>
       </aside>
 
       <main>
-        <h1>Project Details</h1>
+        <h1 id="employee1">Projects</h1>
 
-        <div className="About-Project">
-          <div className="form-group">
-            <label htmlFor="projectTitle">Project Title:</label>
-            <input
-              type="text"
-              id="projectTitle"
-              value={projectTitle || "book management"}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="projectDescription">Project Description:</label>
-            <textarea
-              id="projectDescription"
-              value={projectDescription || "Must be made a book management system"}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="projectStatus">Project Status:</label>
-            <input
-              type="text"
-              id="projectStatus"
-              value={projectStatus || "Pending"}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="startDate">Start Date:</label>
-            <input
-              type="date"
-              id="startDate"
-              value={startDate || "2024-05-15"}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="endDate">End Date:</label>
-            <input
-              type="date"
-              id="endDate"
-              value={endDate || "2024-06-04"}
-              readOnly
-            />
-          </div>
-
-          
-
-          <div className="work-progress-section">
-            <h1>Work Progress</h1>
-            {workProgress.map((progress, index) => (
-              <div key={index}>
-                <p>{progress.description}</p>
-              </div>
-            ))}
-            <form onSubmit={handleSubmitWorkProgress}>
-              <div className="form-group">
-                <label htmlFor="workDescription">Work Description:</label>
-                <textarea
-                  id="workDescription"
-                  value={workDescription}
-                  onChange={(e) => setWorkDescription(e.target.value)}
-                />
-              </div>
-              <button className="submit" type="submit">Submit Work Progress</button>
-            </form>
-          </div>
+        <div className="project-stats">
+          <button className="stat-btn" onClick={() => handleFilterClick("All")}>All: {projects.length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Ongoing")}>In Progress: {projects.filter(project => project.status === 'Ongoing').length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Completed")}>Completed: {projects.filter(project => project.status === 'Completed').length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Cancelled")}>Cancelled: {projects.filter(project => project.status === 'Cancelled').length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Ended")}>Ended: {projects.filter(project => new Date(project.endDate) < new Date() || project.status === 'Ended').length}</button>
         </div>
 
-        <button className="back-btn" onClick={() => navigate("/Projects")}>Back to Projects</button>
+        <div className="employee_details">
+          <div className="srh-container">
+            <div className="search">
+              <span className="material-symbols-outlined">search</span>
+              <input
+                type="text"
+                placeholder="Enter project title..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Project Title</th>
+                <th>Project Description</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProjects.map((project) => (
+                <tr key={project.id}>
+                  <td>{project.title}</td>
+                  <td>{project.description}</td>
+                  <td>{project.status}</td>
+                  <td>{project.startDate}</td>
+                  <td>{project.endDate}</td>
+                  <td><button onClick={() => handleOpenProject(project.id)}>Open</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </main>
     </div>
   );

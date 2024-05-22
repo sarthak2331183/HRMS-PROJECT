@@ -410,235 +410,7 @@
 
 
 
-// import React, { useState, useEffect } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import { doc, getDoc, updateDoc } from "firebase/firestore";
-// import { auth, db } from "../../firebase";
-// import { signOut } from "firebase/auth";
-// import logo from "../Images/logo.png";
-// import "./OpenProject.css";
 
-// const NavItem = ({ itemName, icon, selected, onSelect }) => (
-//   <a
-//     href="#"
-//     className={selected ? "active" : ""}
-//     onClick={(e) => {
-//       e.preventDefault(); // Prevent default anchor behavior
-//       onSelect();
-//     }}
-//   >
-//     <span className="material-symbols-outlined">{icon}</span>
-//     <h3>{itemName}</h3>
-//   </a>
-// );
-
-// const OpenProject = () => {
-//   const { projectId } = useParams();
-//   const navigate = useNavigate();
-
-//   const [projectTitle, setProjectTitle] = useState("");
-//   const [projectDescription, setProjectDescription] = useState("");
-//   const [projectStatus, setProjectStatus] = useState("");
-//   const [startDate, setStartDate] = useState("");
-//   const [endDate, setEndDate] = useState("");
-//   const [workProgress, setWorkProgress] = useState([]);
-//   const [members, setMembers] = useState([]);
-
-//   const fetchProjectDetails = async () => {
-//     try {
-//       const projectDoc = await getDoc(doc(db, "project", projectId));
-//       if (projectDoc.exists()) {
-//         const projectData = projectDoc.data();
-//         setProjectTitle(projectData.title);
-//         setProjectDescription(projectData.description);
-//         setProjectStatus(projectData.status);
-//         setStartDate(projectData.startDate);
-//         setEndDate(projectData.endDate);
-//         setMembers(projectData.members || []);
-//       } else {
-//         console.error("No such project!");
-//       }
-//     } catch (error) {
-//       console.error("Error fetching project details:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchProjectDetails();
-//   }, [projectId]);
-
-//   const handleBack = () => {
-//     navigate("/Project");
-//   };
-
-//   const handleLogout = () => {
-//     const confirmed = window.confirm("Are you sure you want to log out?");
-//     if (confirmed) {
-//       signOut(auth)
-//         .then(() => navigate("/"))
-//         .catch((error) => console.error("Error signing out:", error));
-//     }
-//   };
-
-//   const handleSubmitWorkProgress = (e) => {
-//     e.preventDefault();
-//     const employeeName = e.target.elements.employeeName.value;
-//     const submittedOn = e.target.elements.submittedOn.value;
-//     const time = e.target.elements.time.value;
-//     const description = e.target.elements.description.value;
-//     const comments = e.target.elements.comments.value;
-
-//     setWorkProgress([
-//       ...workProgress,
-//       {
-//         employeeName,
-//         submittedOn,
-//         time,
-//         description,
-//         comments,
-//       },
-//     ]);
-
-//     e.target.reset();
-//   };
-
-//   const handleStatusChange = async (newStatus) => {
-//     try {
-//       const projectRef = doc(db, "project", projectId);
-//       await updateDoc(projectRef, { status: newStatus });
-//       setProjectStatus(newStatus);
-//     } catch (error) {
-//       console.error("Error updating project status:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       <aside>
-//         <div className="top">
-//           <div className="logo">
-//             <img src={logo} alt="Logo" />
-//           </div>
-//           <div className="close">
-//             <span className="material-symbols-outlined">crowdsource</span>
-//           </div>
-//         </div>
-
-//         <div className="sidebar">
-//           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Dashboard")} />
-//           <NavItem itemName="Admins" icon="diversity_3" onSelect={() => navigate("/Admin")} />
-//           <NavItem itemName="Employees" icon="badge" onSelect={() => navigate("/Employee")} />
-//           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/Attendance")} />
-//           <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={() => navigate("/Leave")} />
-//           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
-//         </div>
-//       </aside>
-
-//       <main>
-//         <h1>Project Details</h1>
-
-//         <div className="About-Project">
-//           <div className="form-group">
-//             <label htmlFor="projectTitle">Project Title:</label>
-//             <input
-//               type="text"
-//               id="projectTitle"
-//               value={projectTitle}
-//               onChange={(e) => setProjectTitle(e.target.value)}
-//             />
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="projectDescription">Project Description:</label>
-//             <textarea
-//               id="projectDescription"
-//               value={projectDescription}
-//               onChange={(e) => setProjectDescription(e.target.value)}
-//             />
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="projectStatus">Project Status:</label>
-//             <select
-//               id="projectStatus"
-//               value={projectStatus}
-//               onChange={(e) => handleStatusChange(e.target.value)}
-//             >
-//               <option value="Ongoing">Ongoing</option>
-//               <option value="Completed">Completed</option>
-//               <option value="Pending">Pending</option>
-//             </select>
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="startDate">Start Date:</label>
-//             <input
-//               type="date"
-//               id="startDate"
-//               value={startDate}
-//               onChange={(e) => setStartDate(e.target.value)}
-//             />
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="endDate">End Date:</label>
-//             <input
-//               type="date"
-//               id="endDate"
-//               value={endDate}
-//               onChange={(e) => setEndDate(e.target.value)}
-//             />
-//           </div>
-
-//           <div className="form-group">
-//             <h2>Assigned Members</h2>
-//             <ul>
-//               {members.map((member, index) => (
-//                 <li key={index}>{member.name} ({member.email})</li>
-//               ))}
-//             </ul>
-//           </div>
-
-//           <div className="work-progress-section">
-//             <h1>Work Progress</h1>
-//             {workProgress.map((progress, index) => (
-//               <div key={index} className="work-progress-item">
-//                 <p>Employee Name: {progress.employeeName}</p>
-//                 <p>Submitted On: {progress.submittedOn}</p>
-//                 <p>Time: {progress.time}</p>
-//                 <p>Description: {progress.description}</p>
-//                 <p>Comments: {progress.comments}</p>
-//               </div>
-//             ))}
-//             <form onSubmit={handleSubmitWorkProgress}>
-//               <div className="form-group">
-//                 <label htmlFor="employeeName">Employee Name:</label>
-//                 <input type="text" id="employeeName" />
-//               </div>
-//               <div className="form-group">
-//                 <label htmlFor="submittedOn">Submitted On:</label>
-//                 <input type="date" id="submittedOn" />
-//               </div>
-//               <div className="form-group">
-//                 <label htmlFor="time">Time:</label>
-//                 <input type="time" id="time" />
-//               </div>
-//               <div className="form-group">
-//                 <label htmlFor="description">Description:</label>
-//                 <textarea id="description" />
-//               </div>
-//               <div className="form-group">
-//                 <label htmlFor="comments">Comments:</label>
-//                 <input type="text" id="comments" />
-//               </div>
-//               <button className="submit" type="submit">Submit Work Progress</button>
-//             </form>
-//           </div>
-//         </div>
-
-//         <button className="back-btn" onClick={handleBack}>Back to Projects</button>
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default OpenProject;
 
 
 
@@ -688,7 +460,17 @@ const OpenProject = () => {
         setProjectStatus(projectData.status);
         setStartDate(projectData.startDate);
         setEndDate(projectData.endDate);
-        setMembers(projectData.members || []);
+
+        // Extract member names and emails from the project data
+        const projectMembers = [];
+        for (let i = 1; i <= 6; i++) {
+          const memberName = projectData[`member${i}Name`];
+          const memberEmail = projectData[`member${i}Email`];
+          if (memberName && memberEmail) {
+            projectMembers.push({ name: memberName, email: memberEmail });
+          }
+        }
+        setMembers(projectMembers);
       } else {
         console.error("No such project!");
       }
