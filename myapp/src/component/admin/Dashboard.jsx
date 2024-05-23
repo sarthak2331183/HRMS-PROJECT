@@ -332,12 +332,17 @@
 
 
 
+
+
+
+
+
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { auth, db } from "../../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { getDocs, query, collection, where } from "firebase/firestore";
+import { getDocs, query, collection, where, orderBy, limit } from "firebase/firestore";
 import user from "../Employee/user.png";
 import logo from "../Images/logo.png";
 
@@ -363,12 +368,12 @@ const Dashboard = () => {
   const [onDutyCount, setOnDutyCount] = useState(0);
   const [onLeaveCount, setOnLeaveCount] = useState(0);
   const [totalProjects, setTotalProjects] = useState(0);
+  const [upcomingProjects, setUpcomingProjects] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUserEmail(user.email);
-        // Fetch name from Firestore based on user email
         try {
           const querySnapshot = await getDocs(
             query(collection(db, "users"), where("email", "==", user.email))
@@ -397,8 +402,8 @@ const Dashboard = () => {
       setCurrentDateTime(formattedDateTime);
     };
 
-    updateDateTime(); // Update immediately
-    const interval = setInterval(updateDateTime, 1000); // Update every second
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -438,12 +443,28 @@ const Dashboard = () => {
         const today = new Date();
         const leaveQuery = query(
           collection(db, "leave"),
-          where("from", "<=", today),
-          where("to", ">=", today),
           where("status", "==", "Approved")
         );
         const leaveSnapshot = await getDocs(leaveQuery);
-        setOnLeaveCount(leaveSnapshot.size);
+        let leaveCount = 0;
+
+        leaveSnapshot.forEach((doc) => {
+          const leaveData = doc.data();
+          const fromDate = leaveData.from.toDate();
+          const toDate = leaveData.to.toDate();
+
+          console.log("Leave Data:", leaveData);
+          console.log("From Date:", fromDate);
+          console.log("To Date:", toDate);
+          console.log("Today's Date:", today);
+
+          if (fromDate <= today && toDate >= today) {
+            leaveCount += 1;
+          }
+        });
+
+        console.log("Total on leave:", leaveCount);
+        setOnLeaveCount(leaveCount);
       } catch (error) {
         console.error("Error fetching on-leave count:", error);
       }
@@ -458,9 +479,27 @@ const Dashboard = () => {
       }
     };
 
+    const fetchUpcomingProjects = async () => {
+      try {
+        const today = new Date().toISOString().split("T")[0];
+        const upcomingProjectsQuery = query(
+          collection(db, "project"),
+          where("endDate", ">=", today),
+          orderBy("endDate", "asc"),
+          limit(3)
+        );
+        const upcomingProjectsSnapshot = await getDocs(upcomingProjectsQuery);
+        const projects = upcomingProjectsSnapshot.docs.map((doc) => doc.data());
+        setUpcomingProjects(projects);
+      } catch (error) {
+        console.error("Error fetching upcoming projects:", error);
+      }
+    };
+
     fetchOnDutyCount();
     fetchOnLeaveCount();
     fetchTotalProjects();
+    fetchUpcomingProjects();
   }, []);
 
   const handleLogout = () => {
@@ -495,7 +534,6 @@ const Dashboard = () => {
 
   return (
     <div className="container">
-      {/* aside section starts*/}
       <aside>
         <div className="top">
           <div className="logo">
@@ -514,11 +552,7 @@ const Dashboard = () => {
             onSelect={() => {}}
           />
           <NavItem itemName="Admins" icon="diversity_3" onSelect={openAdmin} />
-          <NavItem
-            itemName="Employees"
-            icon="badge"
-            onSelect={openEmployee}
-          />
+          <NavItem itemName="Employees" icon="badge" onSelect={openEmployee} />
           <NavItem
             itemName="Attendance"
             icon="person_check"
@@ -537,9 +571,7 @@ const Dashboard = () => {
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
-      {/* aside section ends */}
 
-      {/* main section starts*/}
       <main>
         <h1>Dashboard</h1>
         <h2>{greeting}</h2>
@@ -547,30 +579,22 @@ const Dashboard = () => {
         <p>Admin</p>
 
         <div className="inside">
-          {/* start on duty */}
           <div className="sales">
             <h3>On Duty</h3>
             <h3>{onDutyCount}</h3>
           </div>
-          {/* ends on duty */}
 
-          {/* start on leave */}
           <div className="expenses">
             <h3>On Leave</h3>
             <h3>{onLeaveCount}</h3>
           </div>
-          {/* ends on leave */}
 
-          {/* start total projects */}
           <div className="income">
             <h3>Total Projects</h3>
             <h3>{totalProjects}</h3>
           </div>
-          {/* ends total projects */}
         </div>
-        {/* inside ends */}
 
-        {/* start recent order */}
         <div className="recent_order">
           <h2>New Joins</h2>
           <table>
@@ -579,7 +603,6 @@ const Dashboard = () => {
                 <th>Full Name</th>
                 <th>Location</th>
                 <th>Branch</th>
-                {/* <th>Status</th> */}
               </tr>
             </thead>
             <tbody>
@@ -587,51 +610,36 @@ const Dashboard = () => {
                 <td>Innovate Suite</td>
                 <td>IS-2023</td>
                 <td className="danger">Pending</td>
-                {/* <td className="warning">Processing</td> */}
               </tr>
               <tr>
-                <td>CloudConnect</td>
-                <td>CC-2452</td>
-                <td className="danger">Paid</td>
-                {/* <td className="warning">Delivered</td> */}
-              </tr>
-              <tr>
-                <td>NetGuard Pro</td>
+                <td>NextGen Systems</td>
                 <td>NG-2314</td>
                 <td className="danger">Pending</td>
-                {/* <td className="warning">Processing</td> */}
               </tr>
               <tr>
                 <td>SmartTrack Lite</td>
                 <td>ST-6563</td>
                 <td className="danger">Pending</td>
-                {/* <td className="warning">Processing</td> */}
               </tr>
               <tr>
                 <td>DataScape Pro</td>
                 <td>DS-5643</td>
                 <td className="danger">Paid</td>
-                {/* <td className="warning">Shipped</td> */}
               </tr>
             </tbody>
           </table>
         </div>
-        {/* ends recent order */}
       </main>
-      {/* main section ends*/}
 
-      {/* right section starts*/}
       <div className="right">
         <div className="top">
           <button id="menu_bar">
             <span className="material-symbols-outlined">menu</span>
           </button>
         </div>
-        {/* ends top */}
         <div className="date">
           <input type="text" value={currentDateTime} disabled />
         </div>
-        {/* Starts upcoming tasks*/}
         <div className="upcoming_tasks">
           <div className="emp">
             <img src={user} alt="" />
@@ -641,69 +649,28 @@ const Dashboard = () => {
           </div>
           <h2>Upcoming Tasks</h2>
           <div className="Meetings">
-            <div className="meeting">
-              <div className="circle">
-                <span className="number">1</span>
+            {upcomingProjects.map((project, index) => (
+              <div className="meeting" key={index}>
+                <div className="circle">
+                  <span className="number">{index + 1}</span>
+                </div>
+                <div className="details">
+                  <p>
+                    <b>{project.title}</b>
+                  </p>
+                  <p>End Date: {new Date(project.endDate).toLocaleDateString()}</p>
+                  <small className="text-muted"></small>
+                </div>
+                <div className="time">
+                  <span className="material-symbols-outlined">more_vert</span>
+                </div>
               </div>
-
-              <div className="details">
-                <p>
-                  <b>Team Meeting</b>
-                </p>
-                <p>Group D</p>
-                <small className="text-muted"></small>
-              </div>
-              <div className="time">
-                <p>12:00-13:00</p>
-                <span className="material-symbols-outlined">more_vert</span>
-              </div>
-            </div>
-
-            <div className="meeting">
-              <div className="circle">
-                <span className="number">2</span>
-              </div>
-              <div className="details">
-                <p>
-                  <b>Team Meeting</b>
-                </p>
-                <p>Group D</p>
-                <small className="text-muted"></small>
-              </div>
-              <div className="time">
-                <p>12:00-13:00</p>
-                <span className="material-symbols-outlined">more_vert</span>
-              </div>
-            </div>
-
-            <div className="meeting">
-              <div className="circle">
-                <span className="number">3</span>
-              </div>
-              <div className="details">
-                <p>
-                  <b>Team Meeting</b>
-                </p>
-                <p>Group D</p>
-                <small className="text-muted"></small>
-              </div>
-              <div className="time">
-                <p>1:00-13:00</p>
-                <span className="material-symbols-outlined">more_vert</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-        {/* Ends upcoming tasks*/}
       </div>
-      {/* right section ends*/}
     </div>
   );
 };
 
 export default Dashboard;
-
-
-
-
-
