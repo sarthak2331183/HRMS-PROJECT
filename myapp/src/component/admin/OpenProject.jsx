@@ -414,6 +414,711 @@
 
 
 
+// import React, { useState, useEffect } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
+// import { doc, getDoc, updateDoc } from "firebase/firestore";
+// import { auth, db } from "../../firebase";
+// import { signOut } from "firebase/auth";
+// import logo from "../Images/logo.png";
+// import "./OpenProject.css";
+
+// const NavItem = ({ itemName, icon, selected, onSelect }) => (
+//   <a
+//     href="#"
+//     className={selected ? "active" : ""}
+//     onClick={(e) => {
+//       e.preventDefault();
+//       onSelect();
+//     }}
+//   >
+//     <span className="material-symbols-outlined">{icon}</span>
+//     <h3>{itemName}</h3>
+//   </a>
+// );
+
+// const OpenProject = () => {
+//   const { projectId } = useParams();
+//   const navigate = useNavigate();
+
+//   const [projectTitle, setProjectTitle] = useState("");
+//   const [projectDescription, setProjectDescription] = useState("");
+//   const [projectStatus, setProjectStatus] = useState("");
+//   const [startDate, setStartDate] = useState("");
+//   const [endDate, setEndDate] = useState("");
+//   const [members, setMembers] = useState([]);
+//   const [selectedMember, setSelectedMember] = useState("");
+//   const [workProgress, setWorkProgress] = useState([]);
+//   const [workDescription, setWorkDescription] = useState("");
+
+//   const fetchProjectDetails = async () => {
+//     try {
+//       const projectDoc = await getDoc(doc(db, "project", projectId));
+//       if (projectDoc.exists()) {
+//         const projectData = projectDoc.data();
+//         setProjectTitle(projectData.title);
+//         setProjectDescription(projectData.description);
+//         setProjectStatus(projectData.status);
+//         setStartDate(projectData.startDate);
+//         setEndDate(projectData.endDate);
+
+//         // Extract member names and emails from the project data
+//         const projectMembers = [];
+//         for (let i = 1; i <= 6; i++) {
+//           const memberName = projectData[`member${i}Name`];
+//           const memberEmail = projectData[`member${i}Email`];
+//           if (memberName && memberEmail) {
+//             projectMembers.push({ name: memberName, email: memberEmail });
+//           }
+//         }
+//         setMembers(projectMembers);
+//       } else {
+//         console.error("No such project!");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching project details:", error);
+//     }
+//   };
+
+//   const fetchMemberWorkProgress = async (memberEmail) => {
+//     try {
+//       const workProgressDoc = await getDoc(doc(db, "workProgress", memberEmail + "_" + projectId));
+//       if (workProgressDoc.exists()) {
+//         setWorkDescription(workProgressDoc.data().description);
+//       } else {
+//         setWorkDescription("");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching member work progress:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchProjectDetails();
+//   }, [projectId]);
+
+//   useEffect(() => {
+//     if (selectedMember) {
+//       fetchMemberWorkProgress(selectedMember);
+//     }
+//   }, [selectedMember]);
+
+//   const handleBack = () => {
+//     navigate("/Project");
+//   };
+
+//   const handleLogout = () => {
+//     const confirmed = window.confirm("Are you sure you want to log out?");
+//     if (confirmed) {
+//       signOut(auth)
+//         .then(() => navigate("/"))
+//         .catch((error) => console.error("Error signing out:", error));
+//     }
+//   };
+
+//   const handleSubmitWorkProgress = async (e) => {
+//     e.preventDefault();
+//     try {
+//       await updateDoc(doc(db, "workProgress", selectedMember + "_" + projectId), {
+//         description: workDescription,
+//       });
+//       alert("Work progress updated successfully");
+//     } catch (error) {
+//       console.error("Error updating work progress:", error);
+//     }
+//   };
+
+//   const handleStatusChange = async (newStatus) => {
+//     try {
+//       const projectRef = doc(db, "project", projectId);
+//       await updateDoc(projectRef, { status: newStatus });
+//       setProjectStatus(newStatus);
+//     } catch (error) {
+//       console.error("Error updating project status:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="container">
+//       <aside>
+//         <div className="top">
+//           <div className="logo">
+//             <img src={logo} alt="Logo" />
+//           </div>
+//           <div className="close">
+//             <span className="material-symbols-outlined">crowdsource</span>
+//           </div>
+//         </div>
+
+//         <div className="sidebar">
+//           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Dashboard")} />
+//           <NavItem itemName="Admins" icon="diversity_3" onSelect={() => navigate("/Admin")} />
+//           <NavItem itemName="Employees" icon="badge" onSelect={() => navigate("/Employee")} />
+//           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/Attendance")} />
+//           <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={() => navigate("/Leave")} />
+//           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
+//         </div>
+//       </aside>
+
+//       <main>
+//         <h1>Project Details</h1>
+
+//         <div className="About-Project">
+//           <div className="form-group">
+//             <label htmlFor="projectTitle">Project Title:</label>
+//             <input
+//               type="text"
+//               id="projectTitle"
+//               value={projectTitle}
+//               onChange={(e) => setProjectTitle(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="projectDescription">Project Description:</label>
+//             <textarea
+//               id="projectDescription"
+//               value={projectDescription}
+//               onChange={(e) => setProjectDescription(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="projectStatus">Project Status:</label>
+//             <select
+//               id="projectStatus"
+//               value={projectStatus}
+//               onChange={(e) => handleStatusChange(e.target.value)}
+//             >
+//               <option value="Ongoing">Ongoing</option>
+//               <option value="Completed">Completed</option>
+//               <option value="Pending">Pending</option>
+//             </select>
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="startDate">Start Date:</label>
+//             <input
+//               type="date"
+//               id="startDate"
+//               value={startDate}
+//               onChange={(e) => setStartDate(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="endDate">End Date:</label>
+//             <input
+//               type="date"
+//               id="endDate"
+//               value={endDate}
+//               onChange={(e) => setEndDate(e.target.value)}
+//             />
+//           </div>
+
+//           <div className="form-group">
+//             <h2>Assigned Members</h2>
+//             <select
+//               id="assignedMembers"
+//               value={selectedMember}
+//               onChange={(e) => setSelectedMember(e.target.value)}
+//             >
+//               <option value="">Select a member</option>
+//               {members.map((member, index) => (
+//                 <option key={index} value={member.email}>
+//                   {member.name} ({member.email})
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+
+//           <div className="work-progress-section">
+//             <h1>Work Progress</h1>
+//             <form onSubmit={handleSubmitWorkProgress}>
+//               <div className="form-group">
+//                 <label htmlFor="workDescription">Work Description:</label>
+//                 <textarea
+//                   id="workDescription"
+//                   value={workDescription}
+//                   onChange={(e) => setWorkDescription(e.target.value)}
+//                 />
+//               </div>
+//               <button className="submit" type="submit">Submit Work Progress</button>
+//             </form>
+//           </div>
+//         </div>
+
+//         <button className="back-btn" onClick={handleBack}>Back to Projects</button>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default OpenProject;
+
+
+// import React, { useState, useEffect } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
+// import { doc, getDoc, updateDoc } from "firebase/firestore";
+// import { auth, db } from "../../firebase";
+// import { signOut } from "firebase/auth";
+// import logo from "../Images/logo.png";
+// import "./OpenProject.css";
+
+// const NavItem = ({ itemName, icon, selected, onSelect }) => (
+//   <a
+//     href="#"
+//     className={selected ? "active" : ""}
+//     onClick={(e) => {
+//       e.preventDefault();
+//       onSelect();
+//     }}
+//   >
+//     <span className="material-symbols-outlined">{icon}</span>
+//     <h3>{itemName}</h3>
+//   </a>
+// );
+
+// const OpenProject = () => {
+//   const { projectId } = useParams();
+//   const navigate = useNavigate();
+
+//   const [projectTitle, setProjectTitle] = useState("");
+//   const [projectDescription, setProjectDescription] = useState("");
+//   const [projectStatus, setProjectStatus] = useState("");
+//   const [startDate, setStartDate] = useState("");
+//   const [endDate, setEndDate] = useState("");
+//   const [members, setMembers] = useState([]);
+//   const [selectedMember, setSelectedMember] = useState("");
+//   const [workDescription, setWorkDescription] = useState("");
+
+//   const fetchProjectDetails = async () => {
+//     try {
+//       const projectDoc = await getDoc(doc(db, "project", projectId));
+//       if (projectDoc.exists()) {
+//         const projectData = projectDoc.data();
+//         setProjectTitle(projectData.title);
+//         setProjectDescription(projectData.description);
+//         setProjectStatus(projectData.status);
+//         setStartDate(projectData.startDate);
+//         setEndDate(projectData.endDate);
+
+//         const projectMembers = [];
+//         for (let i = 1; i <= 6; i++) {
+//           const memberName = projectData[`member${i}Name`];
+//           const memberEmail = projectData[`member${i}Email`];
+//           if (memberName && memberEmail) {
+//             projectMembers.push({ name: memberName, email: memberEmail });
+//           }
+//         }
+//         setMembers(projectMembers);
+//       } else {
+//         console.error("No such project!");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching project details:", error);
+//     }
+//   };
+
+//   const fetchMemberWorkProgress = async (memberEmail) => {
+//     try {
+//       const projectDoc = await getDoc(doc(db, "project", projectId));
+//       if (projectDoc.exists()) {
+//         const workProgress = projectDoc.data().workProgress;
+//         if (workProgress && workProgress[memberEmail]) {
+//           setWorkDescription(workProgress[memberEmail].com || "");
+//         } else {
+//           setWorkDescription("");
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Error fetching member work progress:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchProjectDetails();
+//   }, [projectId]);
+
+//   useEffect(() => {
+//     if (selectedMember) {
+//       fetchMemberWorkProgress(selectedMember);
+//     }
+//   }, [selectedMember]);
+
+//   const handleBack = () => {
+//     navigate("/Project");
+//   };
+
+//   const handleLogout = () => {
+//     const confirmed = window.confirm("Are you sure you want to log out?");
+//     if (confirmed) {
+//       signOut(auth)
+//         .then(() => navigate("/"))
+//         .catch((error) => console.error("Error signing out:", error));
+//     }
+//   };
+
+//   const handleStatusChange = async (newStatus) => {
+//     try {
+//       const projectRef = doc(db, "project", projectId);
+//       await updateDoc(projectRef, { status: newStatus });
+//       setProjectStatus(newStatus);
+//     } catch (error) {
+//       console.error("Error updating project status:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="container">
+//       <aside>
+//         <div className="top">
+//           <div className="logo">
+//             <img src={logo} alt="Logo" />
+//           </div>
+//           <div className="close">
+//             <span className="material-symbols-outlined">crowdsource</span>
+//           </div>
+//         </div>
+
+//         <div className="sidebar">
+//           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Dashboard")} />
+//           <NavItem itemName="Admins" icon="diversity_3" onSelect={() => navigate("/Admin")} />
+//           <NavItem itemName="Employees" icon="badge" onSelect={() => navigate("/Employee")} />
+//           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/Attendance")} />
+//           <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={() => navigate("/Leave")} />
+//           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
+//         </div>
+//       </aside>
+
+//       <main>
+//         <h1>Project Details</h1>
+
+//         <div className="About-Project">
+//           <div className="form-group">
+//             <label htmlFor="projectTitle">Project Title:</label>
+//             <input
+//               type="text"
+//               id="projectTitle"
+//               value={projectTitle}
+//               onChange={(e) => setProjectTitle(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="projectDescription">Project Description:</label>
+//             <textarea
+//               id="projectDescription"
+//               value={projectDescription}
+//               onChange={(e) => setProjectDescription(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="projectStatus">Project Status:</label>
+//             <select
+//               id="projectStatus"
+//               value={projectStatus}
+//               onChange={(e) => handleStatusChange(e.target.value)}
+//             >
+//               <option value="Ongoing">Ongoing</option>
+//               <option value="Completed">Completed</option>
+//               <option value="Pending">Pending</option>
+//             </select>
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="startDate">Start Date:</label>
+//             <input
+//               type="date"
+//               id="startDate"
+//               value={startDate}
+//               onChange={(e) => setStartDate(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="endDate">End Date:</label>
+//             <input
+//               type="date"
+//               id="endDate"
+//               value={endDate}
+//               onChange={(e) => setEndDate(e.target.value)}
+//             />
+//           </div>
+
+//           <div className="form-group">
+//             <h2>Assigned Members</h2>
+//             <select
+//               id="assignedMembers"
+//               value={selectedMember}
+//               onChange={(e) => setSelectedMember(e.target.value)}
+//             >
+//               <option value="">Select a member</option>
+//               {members.map((member, index) => (
+//                 <option key={index} value={member.email}>
+//                   {member.name} ({member.email})
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+
+//           <div className="work-progress-section">
+//             <h2>Work Progress</h2>
+//             <div className="form-group">
+//               <label htmlFor="workDescription">Work Description:</label>
+//               <textarea
+//                 id="workDescription"
+//                 value={workDescription}
+//                 readOnly
+//               />
+//             </div>
+//           </div>
+//         </div>
+
+//         <button className="back-btn" onClick={handleBack}>Back to Projects</button>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default OpenProject;
+
+
+
+// Your complete modified code with the added functionality
+
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
+// import { doc, getDoc, updateDoc } from "firebase/firestore";
+// import { auth, db } from "../../firebase";
+// import { signOut } from "firebase/auth";
+// import logo from "../Images/logo.png";
+// import "./OpenProject.css";
+
+// const NavItem = ({ itemName, icon, selected, onSelect }) => (
+//   <a
+//     href="#"
+//     className={selected ? "active" : ""}
+//     onClick={(e) => {
+//       e.preventDefault();
+//       onSelect();
+//     }}
+//   >
+//     <span className="material-symbols-outlined">{icon}</span>
+//     <h3>{itemName}</h3>
+//   </a>
+// );
+
+// const OpenProject = () => {
+//   const { projectId } = useParams();
+//   const navigate = useNavigate();
+
+//   const [projectTitle, setProjectTitle] = useState("");
+//   const [projectDescription, setProjectDescription] = useState("");
+//   const [projectStatus, setProjectStatus] = useState("");
+//   const [startDate, setStartDate] = useState("");
+//   const [endDate, setEndDate] = useState("");
+//   const [members, setMembers] = useState([]);
+//   const [selectedMember, setSelectedMember] = useState("");
+//   const [workDescription, setWorkDescription] = useState("");
+
+//   const fetchProjectDetails = async () => {
+//     try {
+//       const projectDoc = await getDoc(doc(db, "project", projectId));
+//       if (projectDoc.exists()) {
+//         const projectData = projectDoc.data();
+//         setProjectTitle(projectData.title);
+//         setProjectDescription(projectData.description);
+//         setProjectStatus(projectData.status);
+//         setStartDate(projectData.startDate);
+//         setEndDate(projectData.endDate);
+
+//         const projectMembers = [];
+//         for (let i = 1; i <= 6; i++) {
+//           const memberName = projectData[`member${i}Name`];
+//           const memberEmail = projectData[`member${i}Email`];
+//           if (memberName && memberEmail) {
+//             projectMembers.push({ name: memberName, email: memberEmail });
+//           }
+//         }
+//         setMembers(projectMembers);
+//       } else {
+//         console.error("No such project!");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching project details:", error);
+//     }
+//   };
+
+//   const fetchMemberWorkProgress = async (memberEmail) => {
+//     try {
+//       console.log("Fetching work progress for member:", memberEmail);
+//       const projectDoc = await getDoc(doc(db, "project", projectId));
+//       if (projectDoc.exists()) {
+//         const workProgress = projectDoc.data().workProgress;
+//         console.log("Work progress:", workProgress);
+//         if (workProgress && workProgress[memberEmail]) {
+//           setWorkDescription(workProgress[memberEmail].description || "");
+//         } else {
+//           setWorkDescription("");
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Error fetching member work progress:", error);
+//     }
+//   };
+  
+
+//   useEffect(() => {
+//     fetchProjectDetails();
+//   }, [projectId]);
+
+//   useEffect(() => {
+//     if (selectedMember) {
+//       fetchMemberWorkProgress(selectedMember);
+//     }
+//   }, [selectedMember]);
+
+//   const handleBack = () => {
+//     navigate("/Project");
+//   };
+
+//   const handleLogout = () => {
+//     const confirmed = window.confirm("Are you sure you want to log out?");
+//     if (confirmed) {
+//       signOut(auth)
+//         .then(() => navigate("/"))
+//         .catch((error) => console.error("Error signing out:", error));
+//     }
+//   };
+
+//   const handleStatusChange = async (newStatus) => {
+//     try {
+//       const projectRef = doc(db, "project", projectId);
+//       await updateDoc(projectRef, { status: newStatus });
+//       setProjectStatus(newStatus);
+//     } catch (error) {
+//       console.error("Error updating project status:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="container">
+//       <aside>
+//         <div className="top">
+//           <div className="logo">
+//             <img src={logo} alt="Logo" />
+//           </div>
+//           <div className="close">
+//             <span className="material-symbols-outlined">crowdsource</span>
+//           </div>
+//         </div>
+
+//         <div className="sidebar">
+//           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Dashboard")} />
+//           <NavItem itemName="Admins" icon="diversity_3" onSelect={() => navigate("/Admin")} />
+//           <NavItem itemName="Employees" icon="badge" onSelect={() => navigate("/Employee")} />
+//           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/Attendance")} />
+//           <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={() => navigate("/Leave")} />
+//           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
+//         </div>
+//       </aside>
+
+//       <main>
+//         <h1>Project Details</h1>
+
+//         <div className="About-Project">
+//           <div className="form-group">
+//             <label htmlFor="projectTitle">Project Title:</label>
+//             <input
+//               type="text"
+//               id="projectTitle"
+//               value={projectTitle}
+//               onChange={(e) => setProjectTitle(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="projectDescription">Project Description:</label>
+//             <textarea
+//               id="projectDescription"
+//               value={projectDescription}
+//               onChange={(e) => setProjectDescription(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="projectStatus">Project Status:</label>
+//             <select
+//               id="projectStatus"
+//               value={projectStatus}
+//               onChange={(e) => handleStatusChange(e.target.value)}
+//             >
+//               <option value="Ongoing">Ongoing</option>
+//               <option value="Completed">Completed</option>
+//               <option value="Pending">Pending</option>
+//             </select>
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="startDate">Start Date:</label>
+//             <input
+//               type="date"
+//               id="startDate"
+//               value={startDate}
+//               onChange={(e) => setStartDate(e.target.value)}
+//             />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="endDate">End Date:</label>
+//             <input
+//               type="date"
+//               id="endDate"
+//               value={endDate}
+//               onChange={(e) => setEndDate(e.target.value)}
+//             />
+//           </div>
+
+//           <div className="form-group">
+//             <h2>Assigned Members</h2>
+//             <select
+//               id="assignedMembers"
+//               value={selectedMember}
+//               onChange={(e) => setSelectedMember(e.target.value)}
+//             >
+//               <option value="">Select a member</option>
+//               {members.map((member, index) => (
+//                 <option key={index} value={member.email}>
+//                   {member.name} ({member.email})
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+
+//           <div className="work-progress-section">
+//             <h2>Work Progress</h2>
+//             <div className="form-group">
+//               <label htmlFor="workDescription">Work Description:</label>
+//               <textarea
+//                 id="workDescription"
+//                 value={workDescription}
+//                 readOnly
+//               />
+//             </div>
+//           </div>
+//         </div>
+
+//         <button className="back-btn" onClick={handleBack}>Back to Projects</button>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default OpenProject;
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -447,7 +1152,6 @@ const OpenProject = () => {
   const [endDate, setEndDate] = useState("");
   const [members, setMembers] = useState([]);
   const [selectedMember, setSelectedMember] = useState("");
-  const [workProgress, setWorkProgress] = useState([]);
   const [workDescription, setWorkDescription] = useState("");
 
   const fetchProjectDetails = async () => {
@@ -461,7 +1165,6 @@ const OpenProject = () => {
         setStartDate(projectData.startDate);
         setEndDate(projectData.endDate);
 
-        // Extract member names and emails from the project data
         const projectMembers = [];
         for (let i = 1; i <= 6; i++) {
           const memberName = projectData[`member${i}Name`];
@@ -481,11 +1184,19 @@ const OpenProject = () => {
 
   const fetchMemberWorkProgress = async (memberEmail) => {
     try {
-      const workProgressDoc = await getDoc(doc(db, "workProgress", memberEmail + "_" + projectId));
-      if (workProgressDoc.exists()) {
-        setWorkDescription(workProgressDoc.data().description);
-      } else {
-        setWorkDescription("");
+      console.log("Fetching work progress for member:", memberEmail);
+      const projectDoc = await getDoc(doc(db, "project", projectId));
+      if (projectDoc.exists()) {
+        const workProgress = projectDoc.data().workProgress || [];
+        console.log("Work progress:", workProgress);
+
+        const memberProgress = workProgress.find(entry => entry.email === memberEmail);
+
+        if (memberProgress) {
+          setWorkDescription(memberProgress.description);
+        } else {
+          setWorkDescription("");
+        }
       }
     } catch (error) {
       console.error("Error fetching member work progress:", error);
@@ -512,18 +1223,6 @@ const OpenProject = () => {
       signOut(auth)
         .then(() => navigate("/"))
         .catch((error) => console.error("Error signing out:", error));
-    }
-  };
-
-  const handleSubmitWorkProgress = async (e) => {
-    e.preventDefault();
-    try {
-      await updateDoc(doc(db, "workProgress", selectedMember + "_" + projectId), {
-        description: workDescription,
-      });
-      alert("Work progress updated successfully");
-    } catch (error) {
-      console.error("Error updating work progress:", error);
     }
   };
 
@@ -628,18 +1327,15 @@ const OpenProject = () => {
           </div>
 
           <div className="work-progress-section">
-            <h1>Work Progress</h1>
-            <form onSubmit={handleSubmitWorkProgress}>
-              <div className="form-group">
-                <label htmlFor="workDescription">Work Description:</label>
-                <textarea
-                  id="workDescription"
-                  value={workDescription}
-                  onChange={(e) => setWorkDescription(e.target.value)}
-                />
-              </div>
-              <button className="submit" type="submit">Submit Work Progress</button>
-            </form>
+            <h2>Work Progress</h2>
+            <div className="form-group">
+              <label htmlFor="workDescription">Work Description:</label>
+              <textarea
+                id="workDescription"
+                value={workDescription}
+                readOnly
+              />
+            </div>
           </div>
         </div>
 

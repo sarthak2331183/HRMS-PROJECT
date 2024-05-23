@@ -903,6 +903,10 @@
 
 
 
+
+
+
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
@@ -1015,8 +1019,7 @@ const Empproject = () => {
           <button className="stat-btn" onClick={() => handleFilterClick("All")}>All: {projects.length}</button>
           <button className="stat-btn" onClick={() => handleFilterClick("Ongoing")}>In Progress: {projects.filter(project => project.status === 'Ongoing').length}</button>
           <button className="stat-btn" onClick={() => handleFilterClick("Completed")}>Completed: {projects.filter(project => project.status === 'Completed').length}</button>
-          <button className="stat-btn" onClick={() => handleFilterClick("Cancelled")}>Cancelled: {projects.filter(project => project.status === 'Cancelled').length}</button>
-          <button className="stat-btn" onClick={() => handleFilterClick("Ended")}>Ended: {projects.filter(project => new Date(project.endDate) < new Date() || project.status === 'Ended').length}</button>
+          <button className="stat-btn" onClick={() => handleFilterClick("Pending")}>Pending: {projects.filter(project => project.status === 'Pending').length}</button>
         </div>
 
         <div className="employee_details">
