@@ -337,6 +337,9 @@
 
 
 
+
+
+
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { auth, db } from "../../firebase";
@@ -366,7 +369,7 @@ const Dashboard = () => {
   const [greeting, setGreeting] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [onDutyCount, setOnDutyCount] = useState(0);
-  const [onLeaveCount, setOnLeaveCount] = useState(0);
+  const [employeeCount, setEmployeeCount] = useState(0);
   const [totalProjects, setTotalProjects] = useState(0);
   const [upcomingProjects, setUpcomingProjects] = useState([]);
 
@@ -438,35 +441,12 @@ const Dashboard = () => {
       }
     };
 
-    const fetchOnLeaveCount = async () => {
+    const fetchEmployeeCount = async () => {
       try {
-        const today = new Date();
-        const leaveQuery = query(
-          collection(db, "leave"),
-          where("status", "==", "Approved")
-        );
-        const leaveSnapshot = await getDocs(leaveQuery);
-        let leaveCount = 0;
-
-        leaveSnapshot.forEach((doc) => {
-          const leaveData = doc.data();
-          const fromDate = leaveData.from.toDate();
-          const toDate = leaveData.to.toDate();
-
-          console.log("Leave Data:", leaveData);
-          console.log("From Date:", fromDate);
-          console.log("To Date:", toDate);
-          console.log("Today's Date:", today);
-
-          if (fromDate <= today && toDate >= today) {
-            leaveCount += 1;
-          }
-        });
-
-        console.log("Total on leave:", leaveCount);
-        setOnLeaveCount(leaveCount);
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        setEmployeeCount(usersSnapshot.size);
       } catch (error) {
-        console.error("Error fetching on-leave count:", error);
+        console.error("Error fetching employee count:", error);
       }
     };
 
@@ -497,7 +477,7 @@ const Dashboard = () => {
     };
 
     fetchOnDutyCount();
-    fetchOnLeaveCount();
+    fetchEmployeeCount();
     fetchTotalProjects();
     fetchUpcomingProjects();
   }, []);
@@ -585,8 +565,8 @@ const Dashboard = () => {
           </div>
 
           <div className="expenses">
-            <h3>On Leave</h3>
-            <h3>{onLeaveCount}</h3>
+            <h3>Employee</h3>
+            <h3>{employeeCount}</h3>
           </div>
 
           <div className="income">

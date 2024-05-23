@@ -199,13 +199,11 @@
 
 
 
-
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { getDocs, query, collection, where, addDoc, serverTimestamp, doc, deleteDoc, updateDoc, getDoc } from "firebase/firestore";
+import { getDocs, query, collection, where, deleteDoc, doc } from "firebase/firestore";
 import logo from "../Images/logo.png";
 import Popup2 from "./Popup2"; // Import the Popup2 component
 import "./Empdashboard.css";
@@ -291,42 +289,6 @@ const Empleave = () => {
     }
   };
 
-  const handleStatusChange = async (leaveRequestId, newStatus) => {
-    // Check if the new status is one of the allowed statuses
-    const allowedStatuses = ["Pending", "Approved", "Denied"];
-    if (!allowedStatuses.includes(newStatus)) {
-      console.error("Invalid status:", newStatus);
-      return;
-    }
-
-    // Retrieve the leave request from the database
-    const leaveRequestRef = doc(db, "leave", leaveRequestId);
-    const leaveRequestSnapshot = await getDoc(leaveRequestRef);
-
-    if (leaveRequestSnapshot.exists()) {
-      const leaveRequestData = leaveRequestSnapshot.data();
-
-      // Check if the status change is allowed based on certain conditions
-      // For example, you can restrict status change if it's not Pending
-      if (leaveRequestData.status !== "Pending") {
-        console.error("Status change not allowed for this request.");
-        return;
-      }
-
-      try {
-        // Update the status in the database
-        await updateDoc(leaveRequestRef, { status: newStatus });
-
-        // Update the local state only after the status has been updated in the database
-        setLeaveRequests(leaveRequests.map(request => request.id === leaveRequestId ? { ...request, status: newStatus } : request));
-      } catch (error) {
-        console.error("Error updating leave request status:", error);
-      }
-    } else {
-      console.error("Leave request not found.");
-    }
-  };
-
   const openEmpdashboard = () => navigate('/Empdashboard');
 
   const pendingRequests = leaveRequests.filter(request => request.status === "Pending");
@@ -391,35 +353,19 @@ const Empleave = () => {
                   <td>{request.from.toDate().toLocaleDateString()}</td>
                   <td>{request.to.toDate().toLocaleDateString()}</td>
                   <td>{request.description}</td>
-                  <td>
-                    <select
-                                           value={request.status}
-                                           onChange={(e) => handleStatusChange(request.id, e.target.value)}
-                                          //  className={
-                                          //    request.status === "Denied" ? "status-denied" :
-                                          //    request.status === "Pending" ? "status-pending" :
-                                          //    request.status === "Approved" ? "status-approved" : ""
-                                          //  }
-                                         >
-                                           <option value="Pending">Pending</option>
-                                           <option value="Approved">Approved</option>
-                                           <option value="Denied">Denied</option>
-                                         </select>
-                                       </td>
-                                       <td>{request.appliedOn.toDate().toLocaleDateString()}</td>
+                  <td>{request.status}</td>
+                  <td>{request.appliedOn.toDate().toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
 
-                                     </tr>
-                                   ))}
-                                 </tbody>
-                               </table>
-                             </div>
-                           </main>
-                     
-                           {/* Popup2 component */}
-                           {showPopup && <Popup2 onClose={togglePopup} userEmail={userEmail} userName={userName} />}
-                         </div>
-                       );
-                     };
-                     
-                     export default Empleave;
-                     
+      {/* Popup2 component */}
+      {showPopup && <Popup2 onClose={togglePopup} userEmail={userEmail} userName={userName} />}
+    </div>
+  );
+};
+
+export default Empleave;
