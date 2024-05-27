@@ -1,232 +1,251 @@
-.mytask{
-    border: 2px solid green;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    height: 50vh;
-    border-radius: 20px;
+.mytask {
+   border: 2px solid green;
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   height: 50vh;
+   border-radius: 20px;
 }
 
-.mytask .lef{
-    
-    width: 40%;
-    height: 30vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-}
-.mytask .mid{
-    
-    width: 40%;
-    height: 30vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    
-}
-.mytask .rig{
-    border: 2px solid green;
-    width: 40%;
-    height: 30vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    
+.mytask .lef {
+   width: 40%;
+   height: 30vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
 }
 
-.upcoming_tasks h4{
-    height: 50px;
-    width: 40vh;
-    border: 2px solid black ;
-    border-radius: 7px;
-    margin-bottom: 20px;
-    padding-top: 10px;
-    font-size: large;
-    padding-left: 10px;
-    background: #52CE6D;
-    cursor: pointer;
-    
-
+.mytask .mid {
+   width: 40%;
+   height: 30vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
 }
 
-
-.Above{
-    display: flex;
-    float: right;
-    margin-bottom: 20px;
+.mytask .rig {
+   border: 2px solid green;
+   width: 40%;
+   height: 30vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
 }
 
-.Above img{
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    margin-left:20px ;
-    border-radius: 50%;
-   
- 
-}
-.mainn h1{
-    margin-top: 45px;
-    
-}
-.gm p{
-    margin-top: 20px;
-    font-size: 35px;
-}
-.gm h2{
-    color: #7380EC;
-    margin-top: 40px;
-    margin-bottom: -80px;
-}
-.emp{
-    display: flex;
-    padding: 15px;
-    margin-bottom: 30px;
-    
-}
-.emp h3{
-    font-size: 20px;   
-    padding: 10px;
-}
-.emp img{
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    background: rgb(201, 199, 199);
-}
-.rnd{
-    margin-top: 20vh;
-}
- .emp2 p{
-    margin-top: -10px;
-    margin-left: 1.5vh ;
- }
- .tasks{
-    display: flex;
-    flex-direction: column;
-
-
-
-    background-color: var(--clr-white);
-    padding: var(--card-padding);
-    border-radius: var(--card-border-radius);
-    margin-top: 1rem;
-    box-shadow: var(--box-shadow);
-    transition: all 0.3s ease;
-    
- }
- main .tasks:hover {
-    box-shadow: none;
-}
-
-
-
- .table_head h2{
-    background: #d3d3d5;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-
- }
-
- .bar_info{
-    display: flex;
-    gap: 25vh;
-    padding: 10px;
- }
- .tasksleft{
-    display: flex;
-    gap: 20vh;
-    margin-top: 10px;
-    padding: 10px;
-    margin-bottom: 10px;
-
- }
- .tasksleft h3{
-    margin-left: 35px;
-
- }
- .tasksleft input {
-    margin-left: 10vh;
-    border: 1px solid black;
-    width: 15vh;
-    color: #FF7A00;
- }
-
- .tasksleft input::placeholder{
-    color: #FF7A00;
- }
-
- .alltasks h2{
-    cursor: pointer;
-    background:none ;
-    font-weight: 400;
-    text-align: center;
-    padding: 10px;
+.upcoming_tasks h4 {
+   height: 50px;
+   width: 40vh;
+   border: 2px solid black;
+   border-radius: 7px;
+   margin-bottom: 20px;
+   padding-top: 10px;
    font-size: large;
-   color : #1045FF;
-   text-decoration: underline;
- }
-hr{
-    margin: auto;
-    height: 1.5px;
-    width: 160vh;
-    background: black;
+   padding-left: 10px;
+   background: #52CE6D;
+   cursor: pointer;
 }
- .alltasks hr{
-  
-    margin: auto;
-    height: 1px;
-    width: 100vh;
-    background:black;
- }
 
- .rnd{
-    margin-top: 70px;
- }
- h4 img{
-    width: 32px;
-    float: right;
-    margin-right: 10px;
+.Above {
+   display: flex;
+   float: right;
+   margin-bottom: 20px;
+}
 
- }
- .hrs h2{
-    margin-bottom: 25px;
- }
+.Above img {
+   width: 30px;
+   height: 30px;
+   cursor: pointer;
+   margin-left: 20px;
+   border-radius: 50%;
+}
 
- .chart_hrs{
-    display: flex;
-    gap: 5vh;
-    padding: 20px;
-    margin-top: 20px;
- }
- .chart_hrs img{
-    width: 75vh;
- }
- .working_hour{
-    border: solid 2px black;
-    border-radius: 8px;
-    max-width: 110vh;
-    margin: auto;
-    margin-top : 10px;
- }
- .tasks{
-    border: solid 2px black;
-    border-radius: 8px;
-    max-width: 110vh;
-    margin: auto;
-    margin-top : 115px;
+.mainn h1 {
+   margin-top: 45px;
+}
 
+.gm p {
+   margin-top: 20px;
+   font-size: 35px;
+}
 
-    background-color: var(--clr-white);
-    padding: var(--card-padding);
-    border-radius: var(--card-border-radius);
-    margin-top: 1rem;
-    box-shadow: var(--box-shadow);
-    transition: all 0.3s ease;
+.gm h2 {
+   color: #7380EC;
+   margin-top: 40px;
+   margin-bottom: -80px;
+}
 
+.emp {
+   display: flex;
+   padding: 15px;
+   margin-bottom: 30px;
+}
 
+.emp h3 {
+   font-size: 20px;
+   padding: 10px;
+}
+
+.emp img {
+   border-radius: 50%;
+   width: 60px;
+   height: 60px;
+   background: rgb(201, 199, 199);
+}
+
+.rnd {
+   margin-top: 20vh;
+}
+
+.emp2 p {
+   margin-top: -10px;
+   margin-left: 1.5vh;
+}
+
+.tasks {
+   display: flex;
+   flex-direction: column;
+   background-color: var(--clr-white);
+   padding: var(--card-padding);
+   border-radius: var(--card-border-radius);
+   margin-top: 1rem;
+   box-shadow: var(--box-shadow);
+   transition: all 0.3s ease;
+}
+
+main .tasks:hover {
+   box-shadow: none;
+}
+
+.table_head h2 {
+   background: #d3d3d5;
+   border-top-left-radius: 8px;
+   border-top-right-radius: 8px;
+}
+
+.bar_info {
+   display: flex;
+   gap: 25vh;
+   padding: 10px;
+}
+
+.tasksleft {
+   display: flex;
+   gap: 20vh;
+   margin-top: 10px;
+   padding: 10px;
+   margin-bottom: 10px;
+}
+
+.tasksleft h3 {
+   margin-left: 35px;
+}
+
+.tasksleft input {
+   margin-left: 10vh;
+   border: 1px solid black;
+   width: 15vh;
+   color: #ff7a00;
+}
+
+.tasksleft input::placeholder {
+   color: #ff7a00;
+}
+
+.alltasks h2 {
+   cursor: pointer;
+   background: none;
+   font-weight: 400;
+   text-align: center;
+   padding: 10px;
+   font-size: large;
+   color: #1045ff;
+   text-decoration: underline;
+}
+
+hr {
+   margin: auto;
+   height: 1.5px;
+   width: 160vh;
+   background: black;
+}
+
+.alltasks hr {
+   margin: auto;
+   height: 1px;
+   width: 100vh;
+   background: black;
+}
+
+.rnd {
+   margin-top: 70px;
+}
+
+h4 img {
+   width: 32px;
+   float: right;
+   margin-right: 10px;
+}
+
+.hrs h2 {
+   margin-bottom: 25px;
+}
+
+.chart_hrs {
+   display: flex;
+   gap: 5vh;
+   padding: 20px;
+   margin-top: 20px;
+}
+
+.chart_hrs img {
+   width: 75vh;
+}
+
+.working_hour {
+   border: solid 2px black;
+   border-radius: 8px;
+   max-width: 110vh;
+   margin: auto;
+   margin-top: 10px;
+}
+
+.tasks {
+   border: solid 2px black;
+   border-radius: 8px;
+   max-width: 110vh;
+   margin: auto;
+   margin-top: 115px;
+   background-color: var(--clr-white);
+   padding: var(--card-padding);
+   border-radius: var(--card-border-radius);
+   margin-top: 1rem;
+   box-shadow: var(--box-shadow);
+   transition: all 0.3s ease;
+}
+
+.tasks .table_head h2 {
+   background: #7380EC;
+   color: #fff;
+   padding: 1rem;
+   border-top-left-radius: 8px;
+   border-top-right-radius: 8px;
+}
+
+/* Sidebar hover effect */
+.sidebar a:hover {
+   background-color: #7380EC; /* Change background color on hover */
+   font-weight: bold; /* Make text bold on hover */
+}
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+   .container {
+     flex-direction: column;
+   }
+ 
+   .likelynav, .right {
+     width: 100%;
+   }
  }
