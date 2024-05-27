@@ -3,18 +3,12 @@ import "./Empdashboard.css";
 import { auth, db } from '../../firebase'; // Import db from firebase.js
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
-import logo from '../Images/logo.png'
-import search from '../Employee/search_mg.png'
-import notification from '../Employee/notification.png'
-import user from '../Employee/user.png'
-import attendance from '../Employee/attendance.png'
-import profile from '../Employee/profile.png'
-import chart from '../Employee/chart.png'
+import logo from '../Images/logo.png';
+import userImg from '../Employee/user.png';
+import attendance from '../Employee/attendance.png';
+import profile from '../Employee/profile.png';
 import { getDocs, query, collection, where } from "firebase/firestore";
-import Profile from './Profile'
-import EmpAttendance from "./EmpAttendance";
-import Empleave from "./Empleave"
-import Empproject from "./Empproject";
+
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
     <a
@@ -32,6 +26,7 @@ const Empdashboard = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
+  const [filteredProjects, setFilteredProjects] = useState([]); // Define filteredProjects state
   const [greeting, setGreeting] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState("");
 
@@ -53,9 +48,23 @@ const Empdashboard = () => {
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
+        // Fetch projects for the user
+        try {
+          const projectSnapshot = await getDocs(
+            query(collection(db, "projects"), where("userEmail", "==", user.email))
+          );
+          const projects = [];
+          projectSnapshot.forEach((doc) => {
+            projects.push(doc.data());
+          });
+          setFilteredProjects(projects);
+        } catch (error) {
+          console.error('Error fetching projects:', error);
+        }
       } else {
         setUserEmail("");
         setUserName("");
+        setFilteredProjects([]);
       }
     });
     return () => unsubscribe();
@@ -113,13 +122,9 @@ const Empdashboard = () => {
   const openProject = () => {
     navigate('/Empproject');
   };
-  // const openAdmin = () => {
-  //   navigate('/Admin');
-  // };
 
   return (
     <div className="container">
-      {/* aside section starts*/}
       <aside className="likelynav">
         <div className="top">
           <div className="logo">
@@ -129,7 +134,6 @@ const Empdashboard = () => {
             <span className="material-symbols-outlined">crowdsource</span>
           </div>
         </div>
-        {/* top ends */}
 
         <div className="sidebar">
           <NavItem
@@ -149,137 +153,66 @@ const Empdashboard = () => {
             onSelect={openProject}
           />
           <NavItem itemName="Leave" icon="paid" onSelect={openLeave} />
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
-      {/* aside section ends */}
 
-      {/* Top Section  */}
-      {/* main section starts*/}
       <main>
-      <h1>Dashboard</h1>
+        <h1>Dashboard</h1>
         <h2>{greeting}</h2>
         <p>Employee</p>
         
         <div className="tasks">
           <span className="table_head"><h2>My tasks</h2></span> 
           <div className="bar_info">
-            <p>1 Active Task </p>
+            <p>Active Task </p>
             <p>Due Date</p>
             <p>Status</p>
           </div>
           <div className="tasksleft">
-            <h3>Sprint 1 designining</h3>
-            <h3>Today</h3> 
-            <input type="number" placeholder="In Progress" name="" id="" />
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((project, index) => (
+                <div key={index}>
+                  <h3>{project.title}</h3>
+                  <p>Due: {project.endDate}</p>
+                  <p>Status</p>
+                </div>
+              ))
+            ) : (
+              <p>No tasks available</p>
+            )}
           </div>
   
-          <div className="alltasks">
+          <div className="alltasks" onClick={openProject} style={{ cursor: 'pointer' }}>
             <hr />
             <h2>See all tasks</h2>
           </div>
         </div>
-
-        <div className="working_hour">
-          <span className="table_head"><h2>Total hours worked this week</h2></span> 
-          <div className="chart_hrs">
-            <div className="hrs">
-              <h2>8 hrs</h2>
-              <h2>6 hrs</h2>
-              <h2>4 hrs</h2>
-              <h2>2 hrs</h2>
-            </div>
-
-            <div className="chart">
-              <img src={chart} alt="" />
-            </div>
-          </div>
-        </div>
       </main>
-      {/* main section ends*/}
 
-      {/* right section starts*/}
       <div className="right">
         <div className="top">
           <button id="menu_bar">
             <span className="material-symbols-outlined">menu</span>
           </button>
         </div>
-        {/* ends top */}
        
-        {/* Starts upcoming tasks*/}
         <div className="upcoming_tasks">
         <p>{currentDateTime}</p> 
           <div className="emp">
-          
-            <img src={user} alt="" />  
+            <img src={userImg} alt="User" />  
             <div className="emp2">
               <h3>{userName}</h3>
               <p>Employee</p>
             </div>      
           </div>
         
-        
           <div className="rnd">
-            <h4 onClick={openAttendance}>Attendance <img src={attendance} alt="" /></h4>
-            <h4 onClick={openProfile} style={{ cursor: 'pointer' }}>Profile <img src={profile} alt="" /></h4>
-            <h2>Upcoming Tasks</h2>
-            <div className="Meetings">
-              <div className="meeting">
-                <div className="circle">
-                  <span className="number">1</span>
-                </div>
-                <div className="details">
-                  <p>
-                    <b>Team Meeting</b>
-                  </p>
-                  <p>Group D</p>
-                  <small className="text-muted"></small>
-                </div>
-                <div className="time">
-                  <p>12:00-13:00</p>
-                  <span className="material-symbols-outlined">more_vert</span>
-                </div>
-              </div>
-              <div className="meeting">
-                <div className="circle">
-                  <span className="number">2</span>
-                </div>
-                <div className="details">
-                  <p>
-                    <b>Team Meeting</b>
-                  </p>
-                  <p>Group D</p>
-                  <small className="text-muted"></small>
-                </div>
-                <div className="time">
-                  <p>12:00-13:00</p>
-                  <span className="material-symbols-outlined">more_vert</span>
-                </div>
-              </div>
-              <div className="meeting">
-                <div className="circle">
-                  <span className="number">3</span>
-                </div>
-                <div className="details">
-                  <p>
-                    <b>Team Meeting</b>
-                  </p>
-                  <p>Group D</p>
-                  <small className="text-muted"></small>
-                </div>
-                <div className="time">
-                  <p>1:00-13:00</p>
-                  <span className="material-symbols-outlined">more_vert</span>
-                </div>
-              </div>
-            </div>
+            <h4 onClick={openAttendance}>Attendance <img src={attendance} alt="Attendance" /></h4>
+            <h4 onClick={openProfile} style={{ cursor: 'pointer' }}>Profile <img src={profile} alt="Profile" /></h4>
           </div>
         </div>
-        {/* Ends upcoming tasks*/}
-      </div> 
-      {/* right section ends*/}
+      </div>
     </div>
   );
 };

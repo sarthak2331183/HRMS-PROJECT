@@ -207,6 +207,8 @@ import { getDocs, query, collection, where, deleteDoc, doc } from "firebase/fire
 import logo from "../Images/logo.png";
 import Popup2 from "./Popup2"; // Import the Popup2 component
 import "./Empdashboard.css";
+import Empproject from "./Empproject";
+import EmpAttendance from "./EmpAttendance";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => (
   <a
@@ -290,6 +292,8 @@ const Empleave = () => {
   };
 
   const openEmpdashboard = () => navigate('/Empdashboard');
+  const openEmpproject = () => navigate('/Empproject');
+  const openEmpAttendance = () => navigate('/EmpAttendance');
 
   const pendingRequests = leaveRequests.filter(request => request.status === "Pending");
   const approvedRequests = leaveRequests.filter(request => request.status === "Approved");
@@ -309,8 +313,8 @@ const Empleave = () => {
 
         <div className="sidebar">
           <NavItem itemName="Dashboard" icon="grid_view" onSelect={openEmpdashboard} />
-          <NavItem itemName="Attendance" icon="person_check" onSelect={() => {}} />
-          <NavItem itemName="Projects" icon="model_training" onSelect={() => {}} />
+          <NavItem itemName="Attendance" icon="person_check" onSelect={openEmpAttendance} />
+          <NavItem itemName="Projects" icon="model_training" onSelect={openEmpproject} />
           <NavItem itemName="Leave" icon="prompt_suggestion" selected={true} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>

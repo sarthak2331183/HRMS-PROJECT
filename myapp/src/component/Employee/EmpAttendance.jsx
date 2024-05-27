@@ -7,6 +7,7 @@ import logo from "../Images/logo.png";
 import user from "../Employee/user.png";
 import Empdashboard from "./Empdashboard";
 import Popup from "./Popup"; // Ensure this is a default import
+import Empproject from "./Empproject";
 import {
   getDocs,
   query,
@@ -119,7 +120,9 @@ const EmpAttendance = () => {
   const openEmpdashboard = () => {
     navigate('/Empdashboard');
   };
-
+  const openEmpproject = () => {
+    navigate('/Empproject');
+  };
   const recordAttendance = async (checkType) => {
     try {
       const now = new Date();
@@ -222,9 +225,9 @@ const EmpAttendance = () => {
           <NavItem
             itemName="Projects"
             icon="model_training"
-            onSelect={() => {}}
+            onSelect={openEmpproject}
           />
-          <NavItem itemName="Payroll" icon="paid" onSelect={() => {}} />
+
           <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
           <NavItem
             itemName="Log out"
