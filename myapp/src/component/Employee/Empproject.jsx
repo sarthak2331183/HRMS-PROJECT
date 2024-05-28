@@ -116,7 +116,13 @@ const Empproject = () => {
       </aside>
 
       <main>
-        <h1 id="employee1">Projects</h1>
+        <div className="profile-dashboard">
+          <div className="profile-title">Projects</div>
+          <div className="dashboard-title">Dashboard &gt;</div>
+          <div className="separator"></div>
+        </div>
+
+      
 
         <div className="project-stats">
           <button className="stat-btn" onClick={() => handleFilterClick("All")}>All: {projects.length}</button>
@@ -157,7 +163,7 @@ const Empproject = () => {
                   <td>{project.status}</td>
                   <td>{project.startDate}</td>
                   <td>{project.endDate}</td>
-                  <td><button onClick={() => handleOpenProject(project.id)}>Open</button></td>
+                  <td><button className="action-btn" onClick={() => handleOpenProject(project.id)}>Open</button></td>
                 </tr>
               ))}
             </tbody>

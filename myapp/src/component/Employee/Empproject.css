@@ -1,44 +1,34 @@
+/* Styles for project stats */
 .project-stats {
   display: flex;
   gap: 10px;
-  margin-bottom: 100px; /* Adjusted margin to shift everything down */
+  margin-top: 110px;
   padding-left: 38px;
-  padding-top: 5px; /* Added padding to create space */
-}
-#employee {
-  color: #808080; /* Grey color */
-  font-size: 18px; /* Reduced font size */
-  margin-top: 70px; /* Adjusted margin to shift it down */
-  font-weight: bold; /* Remove bold style */
+  padding-top: 5px;
 }
 
-
-
-.stat-btn {
+.project-stats button {
   padding: 10px 20px;
   background: #7380ec;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.stat-btn:hover {
+.project-stats button:hover {
   border: 1px solid #7380ec;
   background-color: #f8fafd;
   color: #7380ec;
 }
 
-.employee_details {
-  padding: 20px;
-}
-
+/* Styles for search container */
 .srh-container {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-top: 20px;
   padding-left: 38px;
-  margin-top: -56px;
 }
 
 .search {
@@ -46,83 +36,102 @@
   align-items: center;
   padding: 10px;
   border-radius: 5px;
+  background-color: #f0f0f0;
 }
+
 .search input {
   border: none;
   outline: none;
   background: transparent;
   padding-left: 10px;
+  flex: 1;
 }
 
-.add-project-btn {
-  padding: 10px 20px;
-  background: #7380ec;
+.search input::placeholder {
+  color: #888;
+}
+
+/* Styles for employee details */
+.employee_details {
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.employee_details table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employee_details th,
+.employee_details td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.employee_details th {
+  background-color: #f0f0f0;
+}
+
+.employee_details tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Styles for buttons */
+.action-btn {
+  padding: 8px 12px;
+  background-color: #5469d4;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  align-items: center;
-  text-align: center;
+  transition: background-color 0.3s ease;
 }
 
-.add-project-btn, .add-project-cancel {
-  padding: 10px 20px;
-  background: #7380ec;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  align-items: center;
-  text-align: center;
-  transition: all 0.3s ease; 
-  margin-bottom: 2px; 
+.action-btn:hover {
+  background-color: #4454b6;
 }
 
-.add-project-btn:hover, .add-project-cancel:hover{
-  border: 1px solid #7380ec;
-  background-color: #f8fafd;
+/* Box separator */
+.box-separator {
+  width: 100%;
+  height: 1px;
+  background-color: #ddd;
+  margin: 20px 0;
+}
+
+/* Profile and dashboard titles */
+.profile-dashboard {
+  position: relative;
+  top: 20px;
+}
+
+.profile-title {
+  left: 177px;
+  top: 14px;
+  position: absolute;
   color: #7380ec;
+  font-size: 20px;
+  font-family: 'Inria Sans';
+  font-weight: 700;
 }
 
-.add-project-btn .material-symbols-outlined {
-  margin-right: 5px; /* Adjust the margin-right to add space between the icon and text */
+.dashboard-title {
+  left: 28px;
+  top: 12px;
+  position: absolute;
+  color: rgba(0, 0, 0, 0.50);
+  font-size: 24px;
+  font-family: 'Inria Sans';
+  font-weight: 700;
 }
 
-
-.edit-btn{
-  padding: 5px 10px;
-  background: rgb(107, 192, 107);
-  border: 1px solid white;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-}
-.save-btn, .open-btn{
-  padding: 5px 10px;
-  background:rgb(107, 192, 107);
-  border: 1px solid white;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-}
-
-.edit-btn {
-  margin-right: 10px;
-}
-
-.edit-btn:hover, .open-btn:hover{
-  background: white;
-  border: 1px solid green;
-  color: black;
-}
-.save-btn:hover{
-  background: white;
-  border: 1px solid green;
-  color: black;
-}
-.save-btn {
-  margin-right: 10px;
-}
-.open-btn {
-  margin-right: 10px;
+/* Horizontal separator */
+.separator {
+  width: calc(100% - 28px);
+  height: 0;
+  left: 28px;
+  top: 47px;
+  position: absolute;
+  border: 1px black solid;
 }
