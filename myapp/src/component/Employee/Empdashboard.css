@@ -76,8 +76,11 @@ color: #7380EC;
 
 .mainn h1 {
    margin-top: 45px;
+   
 }
-
+.main{
+   margin-left: 15px;
+}
 .gm p {
    margin-top: 20px;
    font-size: 35px;
@@ -136,6 +139,7 @@ main .tasks:hover {
    background: #d3d3d5;
    border-top-left-radius: 8px;
    border-top-right-radius: 8px;
+   text-align: center;
 }
 
 .bar_info {
@@ -238,7 +242,6 @@ h4 img {
    margin-top: 115px;
    background-color: var(--clr-white);
    padding: var(--card-padding);
-   border-radius: var(--card-border-radius);
    margin-top: 1rem;
    box-shadow: var(--box-shadow);
    transition: all 0.3s ease;

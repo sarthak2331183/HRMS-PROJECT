@@ -173,9 +173,9 @@ const Empdashboard = () => {
       </aside>
 
       <main>
-        <h1>Dashboard</h1>
-        <h2>{greeting}</h2>
-        <p>Employee</p>
+        <h1 className="main">Dashboard</h1>
+        <h2 className="main">{greeting}</h2>
+        <p className="main">Employee</p>
         
         <div className="tasks">
           <span className="table_head"><h2>About us </h2></span> 
