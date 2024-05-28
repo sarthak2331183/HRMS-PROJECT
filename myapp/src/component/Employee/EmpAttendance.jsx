@@ -125,6 +125,9 @@ const EmpAttendance = () => {
   const openEmpproject = () => {
     navigate('/Empproject');
   };
+  const openLeave = () => {
+    navigate('/Empleave');
+  };
   const recordAttendance = async (checkType) => {
     try {
       const now = new Date();
@@ -230,7 +233,7 @@ const EmpAttendance = () => {
             onSelect={openEmpproject}
           />
 
-          <NavItem itemName="Setting" icon="settings" onSelect={() => {}} />
+          <NavItem itemName="Leave" icon="paid" onSelect={openLeave} />
           <NavItem
             itemName="Log out"
             icon="logout"
