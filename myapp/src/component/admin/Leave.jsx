@@ -152,7 +152,7 @@ const Leave = () => {
             icon="model_training"
             onSelect={openProject}
           />
-          <NavItem itemName="Leave" icon="prompt_suggestion" selected={true} />
+          <NavItem itemName="Leave" icon="prompt_suggestion" selected={true} onSelect={() => {}}/>
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>

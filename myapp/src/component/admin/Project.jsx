@@ -116,7 +116,7 @@ const Project = () => {
           <NavItem itemName="Admins" icon="diversity_3" onSelect={() => navigate("/Admin")} />
           <NavItem itemName="Employees" icon="badge" onSelect={() => navigate("/Employee")} />
           <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/Attendance")} />
-          <NavItem itemName="Projects" icon="model_training" selected={true} />
+          <NavItem itemName="Projects" icon="model_training" selected={true} onSelect={() => {}}/>
           <NavItem itemName="Leave" icon="prompt_suggestion" onSelect={() => navigate("/Leave")} />
           <NavItem itemName="Log out" icon="logout" onSelect={() => {
             const confirmed = window.confirm("Are you sure you want to log out?");

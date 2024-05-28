@@ -311,8 +311,8 @@ const Empleave = () => {
           <NavItem itemName="Dashboard" icon="grid_view" onSelect={openEmpdashboard} />
           <NavItem itemName="Attendance" icon="person_check" onSelect={openEmpAttendance} />
           <NavItem itemName="Projects" icon="model_training" onSelect={openEmpproject} />
-          <NavItem itemName="Leave" icon="prompt_suggestion" selected={true} />
-          <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
+          <NavItem itemName="Leave" icon="prompt_suggestion" selected={true} onSelect={() => {}}/>
+          <NavItem itemName="Log out" icon="logout" onSelect={handleLogout}/>
         </div>
       </aside>
 

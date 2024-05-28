@@ -216,12 +216,12 @@ const EmpAttendance = () => {
           <NavItem
             itemName="Dashboard"
             icon="grid_view"
-            selected={true}
             onSelect={openEmpdashboard}
           />
           <NavItem
             itemName="Attendance"
             icon="person_check"
+            selected={true}
             onSelect={() => {}}
           />
           <NavItem
@@ -272,10 +272,7 @@ const EmpAttendance = () => {
           <div className="left-section">
             <h2>Attendance Record</h2>
           </div>
-          <div className="right-section">
-            <button className="gray-button">Calendar</button>
-            <button className="show-button">Show</button>
-          </div>
+          
         </div>
 
         <table className="attendance-table">
