@@ -180,7 +180,7 @@ const Empdashboard = () => {
         <div className="tasks">
           <span className="table_head"><h2>About us </h2></span> 
           <div className="bar_info">
-            <p>Based in Baneshwor, Nepal since 2017, our tech company is a pioneer in the digital realm. We specialize in innovative software solutions and top-tier IT services, tailored to meet the unique needs of our clients. With a commitment to excellence and a passion for creativity, we're dedicated to driving forward progress in the dynamic world of technology </p>
+            <p>Based in Baneshwor, Nepal since 2017, our tech company is a pioneer in the digital realm. We specialize in innovative software solutions and top-tier IT services, tailored to meet the unique needs of our clients. With a commitment to excellence and a passion for creativity, we're dedicated to driving forward progress in the dynamic world of technology. </p>
           </div>
           <div className="tasksleft">
             {filteredProjects.length > 0 && filteredProjects.map((project, index) => (

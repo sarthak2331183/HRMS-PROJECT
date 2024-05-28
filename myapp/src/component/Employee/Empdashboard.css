@@ -38,14 +38,26 @@
 .upcoming_tasks h4 {
    height: 50px;
    width: 40vh;
-   border: 2px solid black;
    border-radius: 7px;
    margin-bottom: 20px;
    padding-top: 10px;
    font-size: large;
    padding-left: 10px;
-   background: #52CE6D;
+   background: #7380EC;
    cursor: pointer;
+   color: #fff;
+   font-weight: 400;
+   transition: all 0.3s;
+}
+.upcoming_tasks h4:hover{
+border: #7380EC solid 2px;
+background-color: #fff;
+color: #7380EC;
+}
+.upcoming_tasks {
+   background-color: #fff;
+   padding: 40px;
+  height: 115%;
 }
 
 .Above {
@@ -97,6 +109,7 @@
 
 .rnd {
    margin-top: 20vh;
+   
 }
 
 .emp2 p {
@@ -129,6 +142,11 @@ main .tasks:hover {
    display: flex;
    gap: 25vh;
    padding: 10px;
+}
+.bar_info p{
+   text-align: justify;
+   margin-top: 20px;
+   margin-right: 23px;
 }
 
 .tasksleft {
@@ -231,8 +249,7 @@ h4 img {
    color: #fff;
    padding: 1rem;
    
-   border-top-left-radius: 8px;
-   border-top-right-radius: 8px;
+   border-radius: 10px;
 }
 
 /* Sidebar hover effect */
