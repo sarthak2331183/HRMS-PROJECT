@@ -12,9 +12,10 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  addDoc,
 } from "firebase/firestore";
-import Det from "./Det"; 
-import ConfirmModal from '../Employee/ConfirmModal'; // Import the ConfirmModal component from the Employee component
+import Det from "./Det";
+import ConfirmModal from "../Employee/ConfirmModal"; // Import the ConfirmModal component from the Employee component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -63,7 +64,7 @@ const Employee = () => {
             citizenshipId,
             email,
             age,
-            parentsName
+            parentsName,
           } = doc.data();
           employeesData.push({
             id: doc.id,
@@ -117,7 +118,8 @@ const Employee = () => {
       return a.name.localeCompare(b.name);
     } else if (sortBy === "employeeId") {
       return a.employeeId.localeCompare(b.employeeId);
-    } else if (sortBy === "jobTitle") { // Sort by jobTitle instead of post
+    } else if (sortBy === "jobTitle") {
+      // Sort by jobTitle instead of post
       return a.jobTitle.localeCompare(b.jobTitle);
     } else {
       return 0;
@@ -211,9 +213,22 @@ const Employee = () => {
     );
   };
 
+  const addEmployee = async (newEmployee) => {
+    try {
+      await addDoc(collection(db, "users"), {
+        ...newEmployee,
+        userRole: "employee",
+        createdAt: new Date(), // Add the createdAt field
+      });
+      setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
+    } catch (error) {
+      console.error("Error adding employee:", error);
+    }
+  };
+
   return (
     <div className="container">
-      {/* aside section starts*/}
+      {/* aside section starts */}
       <aside>
         <div className="top">
           <div className="logo">
@@ -258,7 +273,7 @@ const Employee = () => {
       </aside>
       {/* aside section ends */}
 
-      {/* main section starts*/}
+      {/* main section starts */}
       <main>
         <h1 id="employee1">Employees</h1>
         <div className="search-container">
@@ -278,7 +293,8 @@ const Employee = () => {
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="name">Sort by Name</option>
               <option value="employeeId">Sort by ID</option>
-              <option value="jobTitle">Sort by Post</option> {/* Update value to jobTitle */}
+              <option value="jobTitle">Sort by Post</option>{" "}
+              {/* Update value to jobTitle */}
             </select>
           </div>
           <button className="add-employee-btn" onClick={openAddEmployee}>
