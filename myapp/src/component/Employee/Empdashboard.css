@@ -236,16 +236,6 @@ h4 img {
 
 /* Sidebar hover effect */
 .sidebar a:hover {
-   background-color: #7380EC; /* Change background color on hover */
+   background-color: #f2f2f5; /* Change background color on hover */
    font-weight: bold; /* Make text bold on hover */
 }
-/* Responsive styles */
-@media screen and (max-width: 768px) {
-   .container {
-     flex-direction: column;
-   }
- 
-   .likelynav, .right {
-     width: 100%;
-   }
- }
