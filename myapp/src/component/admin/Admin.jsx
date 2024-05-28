@@ -4,7 +4,7 @@ import { auth, db } from "../../firebase";
 import { signOut } from "firebase/auth";
 import { collection, getDocs, query, where, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import logo from "../Images/logo.png";
-
+import ConfirmModal from '../Employee/ConfirmModal'; // Import the ConfirmModal component from the Employee component
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
     <a
@@ -52,12 +52,20 @@ const Admin = () => {
   }, []);
 
   const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      signOut(auth)
-        .then(() => navigate("/"))
-        .catch((error) => console.error("Error signing out:", error));
-    }
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   const openDashBoard = () => navigate("/Dashboard");
@@ -66,6 +74,7 @@ const Admin = () => {
   const openAttendance = () => navigate("/Attendance");
   const openProject = () => navigate("/Project");
   const openLeave = () => navigate("/Leave");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleDeleteAdmin = async (adminId) => {
     const confirmed = window.confirm("Are you sure you want to delete this admin?");
@@ -240,6 +249,15 @@ const Admin = () => {
           </div>
         )}
       </main>
+      {showLogoutModal && (
+        <ConfirmModal
+          message="Are you sure you want to log out?"
+          confirmText="Log Out"
+          cancelText="Cancel"
+          onConfirm={confirmLogout}
+          onCancel={cancelLogout}
+        />
+      )}
     </div>
   );
 };

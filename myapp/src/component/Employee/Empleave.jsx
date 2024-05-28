@@ -195,10 +195,6 @@
 
 // export default Empleave;
 
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
@@ -206,16 +202,11 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDocs, query, collection, where, deleteDoc, doc } from "firebase/firestore";
 import logo from "../Images/logo.png";
 import Popup2 from "./Popup2"; // Import the Popup2 component
+import ConfirmModal from "./ConfirmModal"; // Import the modal component
 import "./Empdashboard.css";
-import Empproject from "./Empproject";
-import EmpAttendance from "./EmpAttendance";
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => (
-  <a
-    href="#"
-    className={selected ? "active" : ""}
-    onClick={() => onSelect(itemName)}
-  >
+  <a href="#" className={selected ? "active" : ""} onClick={() => onSelect(itemName)}>
     <span className="material-symbols-outlined">{icon}</span>
     <h3>{itemName}</h3>
   </a>
@@ -227,6 +218,7 @@ const Empleave = () => {
   const [userName, setUserName] = useState("");
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // State for modal visibility
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -269,12 +261,16 @@ const Empleave = () => {
   }, [userEmail]);
 
   const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      signOut(auth)
-        .then(() => navigate("/"))
-        .catch((error) => console.error("Error signing out:", error));
-    }
+    setShowConfirmModal(true);
+  };
+
+  const confirmLogout = () => {
+    signOut(auth).then(() => {
+      navigate('/');
+    }).catch((error) => {
+      console.error('Error signing out:', error);
+    });
+    setShowConfirmModal(false);
   };
 
   const togglePopup = () => setShowPopup(!showPopup);
@@ -348,6 +344,7 @@ const Empleave = () => {
                 <th>Description</th>
                 <th>Status</th>
                 <th>Applied On</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -359,6 +356,9 @@ const Empleave = () => {
                   <td>{request.description}</td>
                   <td>{request.status}</td>
                   <td>{request.appliedOn.toDate().toLocaleDateString()}</td>
+                  <td>
+                    <button className="delete-btn" onClick={() => handleDelete(request.id)}>Delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -368,6 +368,15 @@ const Empleave = () => {
 
       {/* Popup2 component */}
       {showPopup && <Popup2 onClose={togglePopup} userEmail={userEmail} userName={userName} />}
+
+      {/* ConfirmModal component */}
+      {showConfirmModal && (
+        <ConfirmModal
+          message="Are you sure you want to log out?"
+          onConfirm={confirmLogout}
+          onCancel={() => setShowConfirmModal(false)}
+        />
+      )}
     </div>
   );
 };

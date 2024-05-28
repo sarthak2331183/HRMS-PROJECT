@@ -8,6 +8,7 @@ import user from "../Employee/user.png";
 import Empdashboard from "./Empdashboard";
 import Popup from "./Popup"; // Ensure this is a default import
 import Empproject from "./Empproject";
+import ConfirmModal from './ConfirmModal'; // Import the modal component
 import {
   getDocs,
   query,
@@ -42,6 +43,8 @@ const EmpAttendance = () => {
   const [checkOutStatus, setCheckOutStatus] = useState("");
   const [workProgressStatus, setWorkProgressStatus] = useState("");
   const [workProgressSubmitted, setWorkProgressSubmitted] = useState(false); // State to track if work progress is submitted
+  
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // State for modal visibility
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -102,16 +105,15 @@ const EmpAttendance = () => {
   }, [userEmail]);
 
   const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      signOut(auth)
-        .then(() => {
-          navigate("/");
-        })
-        .catch((error) => {
-          console.error("Error signing out:", error);
-        });
-    }
+    setShowConfirmModal(true);
+  };
+  const confirmLogout = () => {
+    signOut(auth).then(() => {
+      navigate('/');
+    }).catch((error) => {
+      console.error('Error signing out:', error);
+    });
+    setShowConfirmModal(false);
   };
 
   const togglePopup = () => {
@@ -323,8 +325,17 @@ const EmpAttendance = () => {
 
       {/* Popup */}
       {showPopup && <Popup onClose={togglePopup} userEmail={userEmail} userName={userName} setMessage={setWorkProgressStatus} onWorkProgressSubmit={handleWorkProgressSubmit} />}
-    </div>
+    
   );
+  {showConfirmModal && (
+    <ConfirmModal
+      message="Are you sure you want to log out?"
+      onConfirm={confirmLogout}
+      onCancel={() => setShowConfirmModal(false)}
+    />
+  )}
+</div>
+);
 };
 
 export default EmpAttendance;

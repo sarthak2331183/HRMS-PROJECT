@@ -348,6 +348,7 @@ import { useNavigate } from "react-router-dom";
 import { getDocs, query, collection, where, orderBy, limit } from "firebase/firestore";
 import user from "../Employee/user.png";
 import logo from "../Images/logo.png";
+import ConfirmModal from '../Employee/ConfirmModal'; // Import the ConfirmModal component from the Employee component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -372,6 +373,7 @@ const Dashboard = () => {
   const [employeeCount, setEmployeeCount] = useState(0);
   const [totalProjects, setTotalProjects] = useState(0);
   const [upcomingProjects, setUpcomingProjects] = useState([]);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -483,16 +485,21 @@ const Dashboard = () => {
   }, []);
 
   const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      signOut(auth)
-        .then(() => {
-          navigate("/");
-        })
-        .catch((error) => {
-          console.error("Error signing out:", error);
-        });
-    }
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   const openEmployee = () => {
@@ -649,6 +656,16 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {showLogoutModal && (
+        <ConfirmModal
+          message="Are you sure you want to log out?"
+          confirmText="Log Out"
+          cancelText="Cancel"
+          onConfirm={confirmLogout}
+          onCancel={cancelLogout}
+        />
+      )}
     </div>
   );
 };

@@ -14,6 +14,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import Det from "./Det"; 
+import ConfirmModal from '../Employee/ConfirmModal'; // Import the ConfirmModal component from the Employee component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -38,6 +39,7 @@ const Employee = () => {
 
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showDetailsPopup, setShowDetailsPopup] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -123,16 +125,20 @@ const Employee = () => {
   });
 
   const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      signOut(auth)
-        .then(() => {
-          navigate("/");
-        })
-        .catch((error) => {
-          console.error("Error signing out:", error);
-        });
-    }
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   const openDashBoard = () => {
@@ -441,7 +447,15 @@ const Employee = () => {
         )}
         {/* Details Popup ends */}
       </main>
-      {/* main section ends*/}
+      {showLogoutModal && (
+        <ConfirmModal
+          message="Are you sure you want to log out?"
+          confirmText="Log Out"
+          cancelText="Cancel"
+          onConfirm={confirmLogout}
+          onCancel={cancelLogout}
+        />
+      )}
     </div>
   );
 };

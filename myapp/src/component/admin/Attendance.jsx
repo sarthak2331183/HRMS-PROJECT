@@ -5,6 +5,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import logo from "../Images/logo.png";
 import { collection, getDocs } from "firebase/firestore";
 import View from "./View";
+import ConfirmModal from '../Employee/ConfirmModal'; 
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -27,6 +28,7 @@ const Attendance = () => {
   const [sortBy, setSortBy] = useState("name"); // Default sort by name
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const fetchAttendance = async () => {
@@ -82,17 +84,22 @@ const Attendance = () => {
   };
 
   const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      signOut(auth)
-        .then(() => {
-          navigate("/");
-        })
-        .catch((error) => {
-          console.error("Error signing out:", error);
-        });
-    }
+    setShowLogoutModal(true);
   };
+
+  const confirmLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
+  };
+
 
   const openDashBoard = () => {
     navigate("/Dashboard");
@@ -265,8 +272,18 @@ const Attendance = () => {
         showModal={showModal}
         setShowModal={setShowModal}
       />
-    </div>
-  );
+    
+    {showLogoutModal && (
+      <ConfirmModal
+        message="Are you sure you want to log out?"
+        confirmText="Log Out"
+        cancelText="Cancel"
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+      />
+    )}
+  </div>
+);
 };
-
+ 
 export default Attendance;

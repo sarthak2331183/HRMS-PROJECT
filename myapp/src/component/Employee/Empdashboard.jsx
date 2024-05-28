@@ -9,6 +9,7 @@ import attendance from '../Employee/attendance.png';
 import profile from '../Employee/profile.png';
 import { getDocs, query, collection, where, doc, updateDoc } from "firebase/firestore";
 import EmpDet from './EmpDet';
+import ConfirmModal from './ConfirmModal'; // Import the modal component
 
 const NavItem = ({ itemName, icon, selected, onSelect }) => {
   return (
@@ -32,6 +33,7 @@ const Empdashboard = () => {
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // State for modal visibility
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -103,14 +105,16 @@ const Empdashboard = () => {
   }, [userName]);
 
   const handleLogout = () => {
-    const confirmed = window.confirm('Are you sure you want to log out?');
-    if (confirmed) {
-      signOut(auth).then(() => {
-        navigate('/');
-      }).catch((error) => {
-        console.error('Error signing out:', error);
-      });
-    }
+    setShowConfirmModal(true);
+  };
+
+  const confirmLogout = () => {
+    signOut(auth).then(() => {
+      navigate('/');
+    }).catch((error) => {
+      console.error('Error signing out:', error);
+    });
+    setShowConfirmModal(false);
   };
 
   const openAttendance = () => {
@@ -224,6 +228,14 @@ const Empdashboard = () => {
          employee={selectedEmployee}
          onSave={handleSaveEmployee}
          onCancel={() => setShowPopup(false)}
+       />
+     )}
+
+     {showConfirmModal && (
+       <ConfirmModal
+         message="Are you sure you want to log out?"
+         onConfirm={confirmLogout}
+         onCancel={() => setShowConfirmModal(false)}
        />
      )}
    </div>

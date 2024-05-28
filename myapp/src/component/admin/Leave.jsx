@@ -5,18 +5,10 @@ import logo from "../Images/logo.png";
 import "./Leave.css";
 import { db } from "../../firebase";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import { signOut } from "firebase/auth"; // Import signOut from Firebase Authentication
+import { auth } from "../../firebase"; // Import auth from Firebase Authentication
 import Popup3 from "./Popup3";
-
-const NavItem = ({ itemName, icon, selected, onSelect }) => (
-  <a
-    href="#"
-    className={selected ? "active" : ""}
-    onClick={() => onSelect(itemName)}
-  >
-    <span className="material-symbols-outlined">{icon}</span>
-    <h3>{itemName}</h3>
-  </a>
-);
+import ConfirmModal from '../Employee/ConfirmModal'; 
 
 const Leave = () => {
   const navigate = useNavigate();
@@ -25,6 +17,7 @@ const Leave = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDescription, setSelectedDescription] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // Define showLogoutModal state
 
   useEffect(() => {
     const fetchLeaveRequests = async () => {
@@ -51,10 +44,21 @@ const Leave = () => {
   };
 
   const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      navigate("/");
-    }
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   const openDashboard = () => navigate("/Dashboard");
@@ -218,8 +222,7 @@ const Leave = () => {
                       }
                       style={{
                         border: "1px solid black",
-                        borderRadius: "5px",
-                        cursor: "pointer",
+                        borderRadius: "5px",                        cursor: "pointer",
                         padding: "5px 10px",
                         background: "white",
                         fontSize: "12px",
@@ -266,8 +269,29 @@ const Leave = () => {
           onClose={() => setSelectedDescription(null)}
         />
       )}
+      {showLogoutModal && ( // Display the ConfirmModal if showLogoutModal is true
+        <ConfirmModal
+          message="Are you sure you want to log out?"
+          confirmText="Log Out"
+          cancelText="Cancel"
+          onConfirm={confirmLogout}
+          onCancel={cancelLogout}
+        />
+      )}
     </div>
   );
 };
 
+const NavItem = ({ itemName, icon, selected, onSelect }) => (
+  <a
+    href="#"
+    className={selected ? "active" : ""}
+    onClick={() => onSelect(itemName)}
+  >
+    <span className="material-symbols-outlined">{icon}</span>
+    <h3>{itemName}</h3>
+  </a>
+);
+
 export default Leave;
+
