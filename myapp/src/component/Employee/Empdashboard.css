@@ -230,12 +230,13 @@ h4 img {
    background: #7380EC;
    color: #fff;
    padding: 1rem;
+   
    border-top-left-radius: 8px;
    border-top-right-radius: 8px;
 }
 
 /* Sidebar hover effect */
 .sidebar a:hover {
-   background-color: #f2f2f5; /* Change background color on hover */
+   background-color: hsl(0, 0%, 100%); /* Change background color on hover */
    font-weight: bold; /* Make text bold on hover */
 }
