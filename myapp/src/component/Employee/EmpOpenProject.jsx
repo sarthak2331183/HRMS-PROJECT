@@ -815,6 +815,9 @@ const EmpOpenProject = () => {
 
         <div className="sidebar">
           <NavItem itemName="Dashboard" icon="grid_view" onSelect={() => navigate("/Empdashboard")} />
+          <NavItem itemName="Attendance" icon="person_check" onSelect={() => navigate("/EmpAttendance")} />
+          <NavItem itemName="Projects" icon="model_training" selected={true} onSelect={() => {}}/>
+          <NavItem itemName="Leave" icon="paid" onSelect={() => navigate("/Empleave")} />
           <NavItem itemName="Log out" icon="logout" onSelect={handleLogout} />
         </div>
       </aside>
