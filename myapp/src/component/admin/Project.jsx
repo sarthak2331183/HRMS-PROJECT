@@ -179,7 +179,6 @@ const Project = () => {
                   <td>{project.endDate}</td>
                   <td>
                     <button className="open-btn" onClick={() => handleOpenProject(project.id)}>Open</button>                   
-                     <button className="open-btn" onClick={() => handleOpenProject(project.id)}>Open</button>
                     <button className="delete-btn" onClick={() => handleDelete(project.id)}>Delete</button>
                   </td>
                 </tr>
